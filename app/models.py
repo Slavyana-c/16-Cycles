@@ -27,7 +27,8 @@ class Bikes(db.Model):
 # The Bike_Types database model
 class Bike_Types(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    brand = db.Column(db.String(100),nullable=False)
+    brand = db.Column(db.String(50),nullable=False)
+    model = db.Column(db.String(50),nullable=False)
     image = db.Column(db.String(20), nullable=False, default='default.jpg')
     colour = db.Column(db.String(50),nullable=False)
     user_type = db.Column(db.String(100),nullable=False)
