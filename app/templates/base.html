@@ -20,8 +20,9 @@
       </div>
       <ul class="nav navbar-nav">
         <li class="active"><a href="{{ url_for('home') }}">Home</a></li>
-        <li><a href="#">Home</a></li>
+        <li><a href="{{ url_for('about') }}">About</a></li>
         <li><a href="{{ url_for('browse') }}">Bikes</a></li>
+        <li><a href="{{ url_for('account') }}">Account</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="{{ url_for('sign_up') }}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
@@ -29,6 +30,8 @@
       </ul>
     </div>
   </nav>
-  {% block content %}{% endblock %}
+    <div class="container content">
+        {% block content %}{% endblock %}
+    </div>
 </body>
 </html>

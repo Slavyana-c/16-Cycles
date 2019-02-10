@@ -6,11 +6,17 @@ from .forms import NewUserForm, LoginForm
 def home():
     return render_template("home.html")
 
+@app.route('/about')
+def about():
+    return render_template("about.html") # redirect to the about page
 
 @app.route('/browse')
 def browse():
-    return render_template("browse.html") # this is for the shop page
+    return render_template("browse.html") # redirect to the bike search page
 
+@app.route('/account')
+def account():
+    return render_template("account.html") # redirect to the account page
 
 @app.route('/sign_up', methods=['GET', 'POST'])
 def sign_up():
