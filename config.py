@@ -1,2 +1,10 @@
-WTF_CSRF_ENABLED = True
-SECRET_KEY = '87518be7986800a7aa277b2baa54b988'
+WTF_CSRF_ENABLED = False
+SECRET_KEY = '39994353502789d8701e9ff62e8f86d1'
+
+
+import os
+
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
+SQLALCHEMY_TRACK_MODIFICATIONS = True
