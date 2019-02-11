@@ -1,16 +1,9 @@
-.sort-box {
-  background-color: rgba(0,0,0,0.2);
-  margin-left: 300px;
-  padding: 10px;
-  padding-left: 50px;
-  text-transform: uppercase;
+function openNav() {
+  document.getElementById("mySidebar").style.width = "250px";
+  document.getElementById("main").style.marginLeft = "250px";
 }
 
-.left-side-box {
-  width: 250px;
-  background-color: rgba(0,0,0,0.2);
-  margin-top: -40px;
-  padding: 10px;
-  padding-left: 50px;
-  text-transform: uppercase;
+function closeNav() {
+  document.getElementById("mySidebar").style.width = "0px";
+  document.getElementById("main").style.marginLeft= "0";
 }

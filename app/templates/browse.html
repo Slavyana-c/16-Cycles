@@ -1,32 +1,28 @@
 {% extends "base.html" %}
 {% block content %}
+
 <head>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/browse.css') }}">
+    <script src="static/scripts/browse.js"></script>
 </head>
+
 <div class="container">
+
   <div class="row">
 
-    <div class="sort-box">
-      Sort By
-    </div>
+        <button class="menu-toggle openbtn"
+                data-toggle="collapse"
+                href="#collapseExample"
+                role="button"
+                aria-expanded="false"
+                aria-controls="collapseExample"
+                onclick="openNav()">
 
-    <div id="content">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
+            ☰ Filter Menu
 
-                <button type="button" id="sidebarCollapse" class="btn btn-info">
-                    <i class="fas fa-align-left"></i>
-                    <span>Toggle Sidebar</span>
-                </button>
+        </button>
 
-            </div>
-        </nav>
-    </div>
-
-    
-
-    <div class="left-side-box">
-
+        <div class="left-side-box collapse" id="collapseExample">
           <div class="wrapper">
               <!-- Sidebar -->
               <nav id="sidebar">
@@ -62,20 +58,78 @@
                                   <a href="#">-choosebrand1</a>
                               </li>
                               <li>
-                                  <a href="#">-choosetype2</a>
+                                  <a href="#">-choosebrand2</a>
                               </li>
                               <li>
-                                  <a href="#">-choosetype2</a>
+                                  <a href="#">-choosebrand3</a>
                               </li>
                           </ul>
                       </li>
                   </ul>
               </nav>
-
           </div>
+        </div>
 
-    </div>
+        <div class="sort-box">
+            <p class="sort-label"> Sort By </p>
 
+            <div class="form-group">
+              <select class="form-control" id="sel1">
+                <option>Price Ascending</option>
+                <option>Price Descending</option>
+                <option>3</option>
+                <option>4</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <select class="form-control" id="sel2">
+                <option>Biggest to Smallest</option>
+                <option>Smallest to Biggest</option>
+                <option>3</option>
+                <option>4</option>
+              </select>
+            </div>
+
+            <button class="btn custom-button" type="submit">Submit</button>
+
+        </div>
   </div>
+
 </div>
+
+
+{#<p>#}
+{#  <div class="menu-toggle"#}
+{#     data-toggle="collapse"#}
+{#     href="#collapseExample"#}
+{#     role="button"#}
+{#     aria-expanded="false"#}
+{#     aria-controls="collapseExample">#}
+{#    🝖#}
+{#  </div>#}
+{#</p>#}
+
+
+
+
+{#<div id="mySidebar" class="sidebar">#}
+{#  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>#}
+{#  <h1> Filter </h1>#}
+{#  <a href="#">About</a>#}
+{#  <a href="#">Services</a>#}
+{#  <a href="#">Clients</a>#}
+{#  <a href="#">Contact</a>#}
+{#</div>#}
+
+{#<div id="main">#}
+{#  <button class="openbtn" onclick="openNav()">☰ Toggle Sidebar</button>#}
+{#  <h2>Collapsed Sidebar</h2>#}
+{#  <p>Click on the hamburger menu/bar icon to open the sidebar, and push this content to the right.</p>#}
+{#</div>#}
+
+
+
+
+
 {% endblock %}
