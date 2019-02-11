@@ -8,8 +8,21 @@ class Users(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     contact_number = db.Column(db.String(15), nullable=False)
-    staff = db.Column(db.Boolean, default=False)
+    times_rented = db.Column(db.Integer, default=0)
+    # Relationship to Orders
+    orders = db.relationship('Orders', backref='user', lazy=True)
+
+# The Staff database model
+class Staff(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(60), nullable=False)
+    contact_number = db.Column(db.String(15), nullable=False)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    address = db.Column(db.String(100), unique=True, nullable=False)
     admin = db.Column(db.Boolean, default=False)
+    # Foreign keys
+    shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
 
 # The Bikes database model
 class Bikes(db.Model):
@@ -17,6 +30,7 @@ class Bikes(db.Model):
     days_used = db.Column(db.Integer, default=0)
     times_rented = db.Column(db.Integer, default=0)
     times_repaired = db.Column(db.Integer, default=0)
+    # If it is booked/sent for repairs
     available = db.Column(db.Boolean, default=True)
     # Foreign keys
     bike_type_id = db.Column(db.Integer, db.ForeignKey('bike_types.id'), nullable=False)
@@ -27,6 +41,8 @@ class Bikes(db.Model):
 # The Bike_Types database model
 class Bike_Types(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    gears = db.Column(db.Integer, default=0)
+    weight = db.Column(db.Float, default=0.0)
     brand = db.Column(db.String(50),nullable=False)
     model = db.Column(db.String(50),nullable=False)
     image = db.Column(db.String(20), nullable=False, default='default.jpg')
@@ -65,25 +81,25 @@ class Repairs(db.Model):
     # Relationship to Bikes
     bikes = db.relationship('Bikes', backref='shop', lazy=True)
 
-# The Bookings database model
+# The Rented_Bikes database model
 # (Bookings of a single bike)
-class Bookings(db.Model):
+class Rented_Bikes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     start_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     end_date = db.Column(db.String(500), nullable=False)
     price = db.Column(db.Float, default=0.0)
     # Foreign keys
     bike_id = db.Column(db.Integer, db.ForeignKey('bikes.id'), nullable=False)
-    rental_id = db.Column(db.Integer, db.ForeignKey('rentals.id'), nullable=False)
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
 
-# The Rentals database model
-# (May consist of several bookings)
-class Rentals(db.Model):
+# The Orders database model
+# (May consist of several Rented_Bikes)
+class Orders(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     total_price = db.Column(db.Float, default=0.0)
     #barcode = Something for the barcode here ...*
     # Foreign keys
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    # Relationship to Bookings
-    bookings = db.relationship('Bookings', backref='rental', lazy=True)
+    # Relationship to Rented_Bikes
+    rented_bikes = db.relationship('Rented_Bikes', backref='order', lazy=True)
