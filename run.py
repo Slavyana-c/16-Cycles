@@ -1,3 +1,2 @@
 from app import app
-app.run(debug=True, port="8111")
-
+app.run(port="8111", debug=True,)
