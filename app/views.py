@@ -22,3 +22,7 @@ def sign_up():
 def login():
 	form = LoginForm()
 	return render_template("login.html", form=form)
+
+@app.route('/qr', methods=['GET', 'POST'])
+def login():
+	return render_template("qr.html", form=form)
