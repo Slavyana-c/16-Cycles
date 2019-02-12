@@ -3,9 +3,10 @@
 <head>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 </head>
-<div class="container">
+<div class="container-fluid">
   <div class="row">
-    <a href="bikes"><img class="img-responsive" src="{{ url_for('static', filename='images/splash.jpg') }}" alt="16Cycles Logo" width="100%" height="100%"></a>
+    <a href="bikes" id="desktop"><img class="img-responsive" src="{{ url_for('static', filename='images/splashDesktop.jpg') }}" alt="16Cycles Logo" height="110%"></a>
+    <a href="bikes" id="mobile"><img class="img" src="{{ url_for('static', filename='images/splashMobile.jpg') }}" alt="16Cycles Logo"></a>
   </div>
 </div>
 {% endblock %}
