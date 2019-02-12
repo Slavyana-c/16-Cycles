@@ -2,6 +2,18 @@ body {
   overflow: hidden;
 }
 
-@media screen and (min-width: 1000px) {
+#mobile {
+  display: block;
+}
+#desktop {
+  display: none;
+}
 
+@media screen and (min-width: 1000px) {
+  #mobile {
+    display: none;
+  }
+  #desktop {
+    display: block;
+  }
 }
