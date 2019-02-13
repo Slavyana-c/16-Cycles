@@ -7,3 +7,8 @@ function closeNav() {
   document.getElementById("mySidebar").style.width = "0px";
   document.getElementById("main").style.marginLeft= "0";
 }
+
+function changeColour() {
+  document.getElementById("button").style.backgroundColor = "red";
+}
+

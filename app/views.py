@@ -1,6 +1,6 @@
 from flask import render_template
 from app import app
-from .forms import NewUserForm, LoginForm
+from .forms import NewUserForm, LoginForm, SelectDates
 
 @app.route('/')
 def home():
@@ -12,7 +12,8 @@ def about():
 
 @app.route('/browse')
 def browse():
-    return render_template("browse.html") # redirect to the bike search page
+    form = SelectDates();
+    return render_template("browse.html", form=form) # redirect to the bike search page
 
 @app.route('/account')
 def account():
