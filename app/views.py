@@ -39,14 +39,13 @@ def login():
 def qr():
 
     # generating the QR code
-
     url = pyqrcode.create('https://ksassets.timeincuk.net/wp/uploads/sites/55/2016/07/2015_PeepShow_Mark2_Press_111115-920x610.jpg')
-    url.png('app/qrCode.png', scale=6, module_color=[0, 0, 0, 128], background=[0xff, 0xff, 0xcc])
+    url.png('app/qrCode.png', scale=6) # nice and big
 
 
 
 
-    # sending the email
+    # setting up email things
     sendingAddress = "16.cycles.recipt@gmail.com"
     sendingPassword = "phatgitproject"
     receivingAddress = "jonathancharlesalderson@gmail.com"
@@ -58,6 +57,7 @@ def qr():
     msg['Subject'] = "Your Reciept From Today"
 
 
+    # actual body of the email
     html = """\
         <html>
         <head>
@@ -116,6 +116,7 @@ def qr():
         </body>
         </html>
     """
+
     # Add the HTML
     emailBody = MIMEText(html, 'html')
 
@@ -128,9 +129,9 @@ def qr():
     # defining image
     msgImage.add_header('Content-ID','<image1>')
     msg.attach(msgImage)
-
     msg.attach(emailBody)
 
+    # setup email sending
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
     server.login(sendingAddress, sendingPassword)
@@ -140,5 +141,5 @@ def qr():
     server.sendmail(sendingAddress,receivingAddress , msg.as_string())
     server.quit()
 
-    print("Sent email")
+    # display webpage saying it worked
     return render_template("qr.html")
