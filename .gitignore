@@ -3,3 +3,4 @@ app/*.pyc
 /flask
 *.db-journal
 /.idea
+.idea/workspace.xml
