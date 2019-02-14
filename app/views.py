@@ -66,60 +66,77 @@ def qr():
 
     # actual body of the email
     html = """\
+
         <html>
         <head>
-        	<title></title>
-        	<link href="https://svc.webspellchecker.net/spellcheck31/lf/scayt3/ckscayt/css/wsc.css" rel="stylesheet" type="text/css" />
-        	<link href="https://svc.webspellchecker.net/spellcheck31/lf/scayt3/ckscayt/css/wsc.css" rel="stylesheet" type="text/css" />
-        	<link href="https://svc.webspellchecker.net/spellcheck31/lf/scayt3/ckscayt/css/wsc.css" rel="stylesheet" type="text/css" />
+          <title>16 Cycles</title>
         </head>
-        <body aria-readonly="false" style="cursor: auto;">
-        <h3><span style="font-family:arial,helvetica,sans-serif">Thank you for renting with us today</span></h3>
-        <span style="font-family:arial,helvetica,sans-serif">Please find attached below your recipt<br />
-        <br />
-        Username : jonathanAlderson<br />
-        Checkout&nbsp; : 15/02/19<br />
-        More detail: loren&nbsp;ipsum<br />
-        dolor eptium: pera equatus<br />
-        pectar melao: perus deulium</span>
-
-        <table align="center" border="1" cellpadding="1" cellspacing="1" style="width:500px">
-        	<thead>
-        		<tr>
-        			<th scope="col"><span style="font-family:arial,helvetica,sans-serif">Bike</span></th>
-        			<th scope="col"><span style="font-family:arial,helvetica,sans-serif">Start Date</span></th>
-        			<th scope="col"><span style="font-family:arial,helvetica,sans-serif">End Date</span></th>
-        			<th scope="col"><span style="font-family:arial,helvetica,sans-serif">Price</span></th>
-        		</tr>
-        	</thead>
-        	<tbody>
-        		<tr>
-        			<td><span style="font-family:courier new,courier,monospace">Carrera&nbsp;kraken</span></td>
-        			<td><span style="font-family:courier new,courier,monospace">15/02/19</span></td>
-        			<td><span style="font-family:courier new,courier,monospace">21/02/19</span></td>
-        			<td><span style="font-family:courier new,courier,monospace">37.6</span></td>
-        		</tr>
-        		<tr>
-        			<td><span style="font-family:courier new,courier,monospace">Boardman MTB 8.9</span></td>
-        			<td><span style="font-family:courier new,courier,monospace">25/02/19</span></td>
-        			<td><span style="font-family:courier new,courier,monospace">27/02/19</span></td>
-        			<td><span style="font-family:courier new,courier,monospace">16.8</span></td>
-        		</tr>
-        		<tr>
-        			<td>&nbsp;</td>
-        			<td>&nbsp;</td>
-        			<td><span style="font-family:courier new,courier,monospace">Total</span></td>
-        			<td><span style="font-family:courier new,courier,monospace">54.4</span></td>
-        		</tr>
-        	</tbody>
+        <body aria-readonly="false" style="cursor: auto; font-family: arial,helvetica,sans-serif; background-image:url(cid:image2); background-repeat: no-repeat">
+        <br/><br/><br/>
+        <h1>Thank you for renting with us today</h1>
+        Please find attached below your recipt
+        <br/><br/><br/><br/><br/>
+        <table  align="left" border="0" cellpadding="5" cellspacing="1" style="width:800px, text-align:center, cellpadding:100px" >
+          <tr>
+            <td>UserName</td>
+            <td>jonathanAlderson</td>
+          </tr>
+          <tr>
+            <td>Date</td>
+            <td>15/02/19</td>
+          </tr>
+          <tr>
+            <td>Time</td>
+            <td>22:24.47</td>
+          </tr>
+          <tr>
+            <td>ID</td>
+            <td>5743894532</td>
+          </tr>
+          <tr>
+            <td>Price</td>
+            <td>54.4</td>
+          </tr>
         </table>
-        <br />
-        <br />
-        <span style="font-family:arial,helvetica,sans-serif">Here is your QR code to show to a member of staff for checkout</span><br />
-        <br />
-        <br />
-        <br />
-        <img src="cid:image1" alt="Your QR Code">
+
+        <br/><br/><br/><br/><br/><br/>
+        <br/><br/><br/><br/><br/><br/>
+        <br/><br/><br/><br/><br/><br/>
+
+        <table align="left" border="0" cellpadding="10" cellspacing="1" style="width:800px, text-align:center, cellpadding:100px" >
+          <thead>
+            <tr>
+              <th scope="col">Bike</span></th>
+              <th scope="col">Start Date</span></th>
+              <th scope="col">End Date</span></th>
+              <th scope="col">Price</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Carrera&nbsp;kraken</span></td>
+              <td>15/02/19</span></td>
+              <td>21/02/19</span></td>
+              <td>37.6</span></td>
+            </tr>
+            <tr>
+              <td>Boardman MTB 8.9</span></td>
+              <td>25/02/19</span></td>
+              <td>27/02/19</span></td>
+              <td>16.8</span></td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <th>Total</span></th>
+              <td  scope="col">54.4</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+        Here is your QR code to show to a member of staff for checkout<br/>
+        <br/><br/><br/>
+        <img src="cid:image1 alt="Your QR Code">
         </body>
         </html>
     """
@@ -128,14 +145,23 @@ def qr():
     emailBody = MIMEText(html, 'html')
 
 
-    # opening the image image
+    # first image
     fp = open('app/qrCode.png','rb')
     msgImage = MIMEImage(fp.read())
     fp.close()
-
-    # defining image
     msgImage.add_header('Content-ID','<image1>')
     msg.attach(msgImage)
+
+    # second image
+    #fp = open('app/emailBackground.png','rb')
+    #msgImage2 = MIMEImage(fp.read())
+    #fp.close()
+    #msgImage2.add_header('Content-ID','<image2>')
+    #msg.attach(msgImage2)
+
+
+
+
     msg.attach(emailBody)
 
     # setup email sending
