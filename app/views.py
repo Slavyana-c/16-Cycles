@@ -71,7 +71,8 @@ def qr():
         <head>
           <title>16 Cycles</title>
         </head>
-        <body aria-readonly="false" style="cursor: auto; font-family: arial,helvetica,sans-serif; background-image:url(cid:image2); background-repeat: no-repeat">
+        /*<body aria-readonly="false" style="cursor: auto; font-family: arial,helvetica,sans-serif; background-image:url(cid:image2); background-repeat: no-repeat"> */
+        <body>
         <br/><br/><br/>
         <h1>Thank you for renting with us today</h1>
         Please find attached below your recipt
