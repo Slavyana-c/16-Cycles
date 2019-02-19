@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms.fields.html5 import DateField, IntegerField
+
 
 
 
@@ -39,3 +41,12 @@ class LoginForm(FlaskForm):
 	password = PasswordField('Password',
 							validators=[DataRequired(), Length(min=5, max=25)])
 	submit = SubmitField('Sign In')
+
+
+
+
+# form in the newTask.html
+class SelectDates(FlaskForm):
+	start_date = DateField('Rent Start Date', validators=[DataRequired()])
+	end_date = DateField('Rent End Date', validators=[DataRequired()])
+	submit = SubmitField('Select Date')
