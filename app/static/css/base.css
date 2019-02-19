@@ -11,7 +11,3 @@ body {
   border-radius: 0;
   border: 0;
 }
-
-.navbar button:active {
-  text-decoration: none;
-}
