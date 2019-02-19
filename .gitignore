@@ -2,4 +2,3 @@
 app/*.pyc
 /flask
 *.db-journal
-app/__init__.py
