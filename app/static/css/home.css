@@ -2,18 +2,14 @@ body {
   overflow: hidden;
 }
 
-#mobile {
-  display: block;
-}
-#desktop {
-  display: none;
+#splashLink {
+  height: 100vh;
+  background-image: url("../images/splashMobile.jpg");
+  background-size:100%;
 }
 
-@media screen and (min-width: 1000px) {
-  #mobile {
-    display: none;
-  }
-  #desktop {
-    display: block;
+@media screen and (min-height: 815px) {
+  #splashLink {
+    background-image: url("../images/splashDesktop.jpg")
   }
 }
