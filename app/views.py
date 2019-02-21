@@ -64,6 +64,7 @@ def qr():
     msg['Subject'] = "Your Reciept From Today"
 
 
+
     # actual body of the email
     html = """\
 
@@ -71,7 +72,7 @@ def qr():
         <head>
           <title>16 Cycles</title>
         </head>
-        /*<body aria-readonly="false" style="cursor: auto; font-family: arial,helvetica,sans-serif; background-image:url(cid:image2); background-repeat: no-repeat"> */
+        <body aria-readonly="false" style="cursor: auto; font-family: arial,helvetica,sans-serif; background-image:url(cid:image1); background-repeat: no-repeat">
         <body>
         <br/><br/><br/>
         <h1>Thank you for renting with us today</h1>
@@ -103,7 +104,8 @@ def qr():
         <br/><br/><br/><br/><br/><br/>
         <br/><br/><br/><br/><br/><br/>
         <br/><br/><br/><br/><br/><br/>
-
+        <img src="cid:image2 alt="Your QR Code">
+        <img src="cid:image2 alt="Your QR Code">
         <table align="left" border="0" cellpadding="10" cellspacing="1" style="width:800px, text-align:center, cellpadding:100px" >
           <thead>
             <tr>
@@ -137,7 +139,7 @@ def qr():
         <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
         Here is your QR code to show to a member of staff for checkout<br/>
         <br/><br/><br/>
-        <img src="cid:image1 alt="Your QR Code">
+        <img src="cid:image2 alt="Your QR Code">
         </body>
         </html>
     """
@@ -146,19 +148,20 @@ def qr():
     emailBody = MIMEText(html, 'html')
 
 
-    # first image
-    fp = open('app/qrCode.png','rb')
+#     first image
+    fp = open('app/emailBackground.png','rb')
     msgImage = MIMEImage(fp.read())
     fp.close()
     msgImage.add_header('Content-ID','<image1>')
     msg.attach(msgImage)
 
     # second image
-    #fp = open('app/emailBackground.png','rb')
-    #msgImage2 = MIMEImage(fp.read())
-    #fp.close()
-    #msgImage2.add_header('Content-ID','<image2>')
-    #msg.attach(msgImage2)
+    fp = open('app/qrCode.png','rb')
+    msgImage = MIMEImage(fp.read())
+    fp.close()
+    msgImage.add_header('Content-ID','<image2>')
+    msg.attach(msgImage)
+
 
 
 
