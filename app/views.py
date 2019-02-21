@@ -1,4 +1,4 @@
-from flask import render_template, flash, url_for, redirect
+from flask import render_template, flash, url_for, redirect, request, abort
 from app import app, db, bcrypt, admin, models
 from .forms import NewUserForm, LoginForm, SelectDates
 from app.models import Users
@@ -14,6 +14,7 @@ import smtplib
 # all imports for QR Code Generation
 import pyqrcode
 from flask_admin.contrib.sqla import ModelView
+from flask_login import login_user
 
 admin.add_view(ModelView(Users, db.session))
 
@@ -56,6 +57,14 @@ def sign_up():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	form = LoginForm()
+	if form.validate_on_submit():
+		user = Users.query.filter_by(email=form.email.data).first()
+		if user and bcrypt.check_password_hash(user.password, form.password.data):
+			login_user(user, remember=form.remember.data)
+			next_page = request.args.get('next')
+			return redirect(next_page) if next_page else redirect(url_for('home'))
+		else:
+			flash('Log-in attempt unsuccessful, please check email and password', 'danger')
 	return render_template("login.html", form=form)
 
 # @app.route('/qr', methods=['GET', 'POST'])
