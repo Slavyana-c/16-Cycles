@@ -4,6 +4,7 @@ from flask_login import UserMixin
 
 # The Users database model
 class Users(db.Model, UserMixin):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
@@ -14,6 +15,7 @@ class Users(db.Model, UserMixin):
 
 # The Staff database model
 class Staff(db.Model, UserMixin):
+    __tablename__ = 'staff'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
@@ -26,6 +28,7 @@ class Staff(db.Model, UserMixin):
 
 # The Bikes database model
 class Bikes(db.Model):
+    __tablename__ = 'bikes'
     id = db.Column(db.Integer, primary_key=True)
     days_used = db.Column(db.Integer, default=0)
     times_rented = db.Column(db.Integer, default=0)
@@ -40,6 +43,7 @@ class Bikes(db.Model):
 
 # The Bike_Types database model
 class Bike_Types(db.Model):
+    __tablename__ = 'bike_types'
     id = db.Column(db.Integer, primary_key=True)
     gears = db.Column(db.Integer, default=0)
     weight = db.Column(db.Float, default=0.0)
@@ -56,6 +60,7 @@ class Bike_Types(db.Model):
 
 # The Rental_Rates database model
 class Rental_Rates(db.Model):
+    __tablename__ = 'rental_rates'
     id = db.Column(db.Integer, primary_key=True)
     daily_rate = db.Column(db.Float, default=0.0)
     weekly_rate = db.Column(db.Float, default=0.0)
@@ -65,6 +70,7 @@ class Rental_Rates(db.Model):
 
 # The Shops database model
 class Shops(db.Model):
+    __tablename__ = 'shops'
     id = db.Column(db.Integer, primary_key=True)
     location_name = db.Column(db.String(100), unique=True, nullable=False)
     address = db.Column(db.String(100), unique=True, nullable=False)
@@ -74,6 +80,7 @@ class Shops(db.Model):
 
 # The Repairs database model
 class Repairs(db.Model):
+    __tablename__ = 'repairs'
     id = db.Column(db.Integer, primary_key=True)
     date_complete = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     description = db.Column(db.String(500), nullable=False)
@@ -84,6 +91,7 @@ class Repairs(db.Model):
 # The Rented_Bikes database model
 # (Bookings of a single bike)
 class Rented_Bikes(db.Model):
+    __tablename__ = 'rented_bikes'
     id = db.Column(db.Integer, primary_key=True)
     start_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     end_date = db.Column(db.String(500), nullable=False)
@@ -95,6 +103,7 @@ class Rented_Bikes(db.Model):
 # The Orders database model
 # (May consist of several Rented_Bikes)
 class Orders(db.Model):
+    __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     total_price = db.Column(db.Float, default=0.0)
