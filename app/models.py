@@ -10,8 +10,9 @@ class Users(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     contact_number = db.Column(db.String(15), nullable=False)
     times_rented = db.Column(db.Integer, default=0)
-    # Relationship to Orders
+    # Relationship to Orders and Payment methods
     orders = db.relationship('Orders', backref='user', lazy=True)
+    payment_methods = db.relationship('Payment_Methods', backref='user', lazy=True)
 
 # The Staff database model
 class Staff(db.Model, UserMixin):
@@ -112,3 +113,19 @@ class Orders(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     # Relationship to Rented_Bikes
     rented_bikes = db.relationship('Rented_Bikes', backref='order', lazy=True)
+
+# The Payment Methods database model
+class Payment_Methods(db.Model):
+    __tablename__ = 'payment_methods'
+    id = db.Column(db.Integer, primary_key=True)
+    # Whether it was paid online or in store
+    online = db.Column(db.Boolean, default=True)
+    # Maybe add column for credit/debit cards/paypal/cash??
+    # payment_description (String)??
+    card_number = db.Column(db.String(16))
+    expiration_month = db.Column(db.Integer) # Add constraints here.
+    expiration_year = db.Column(db.Integer)
+    cvv = db.Column(db.Integer)
+    # Foreign keys
+    #User is null if payment method is not saved
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
