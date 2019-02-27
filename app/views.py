@@ -42,6 +42,22 @@ def login():
 	form = LoginForm()
 	return render_template("login.html", form=form)
 
+
+def makeHTMLTable(databaseOutput):
+    output = ""
+    for bike in databaseOutput:
+        output +=  """   <tr>
+  <td>""" + bike[0] +  """</span></td>
+  <td>""" + bike[1] + """</span></td>
+  <td>""" + bike[2] + """</span></td>
+  <td>""" + bike[3] + """</span></td>
+  <td>""" + bike[4] + """</span></td>
+</tr>
+"""
+    return output
+
+
+
 @app.route('/qr', methods=['GET', 'POST'])
 def qr():
 
@@ -49,6 +65,12 @@ def qr():
     url = pyqrcode.create('https://ksassets.timeincuk.net/wp/uploads/sites/55/2016/07/2015_PeepShow_Mark2_Press_111115-920x610.jpg')
     url.png('app/qrCode.png', scale=6) # nice and big
 
+
+    # we take this dummy database output for use in the emails
+    dummyDatabaseOutput = ["Carrera Kraken","4372812","28/02/19","02/03/19","35.6",
+                          "Boardman MTB 8.8","2841849","05/04/19","08/04/19","108.2",
+                          "Apollo Storm","7394836","08/04/19","15/04/19","57.8",
+                          "Apollo Storm","7394836","08/04/19","15/04/19","57.8",]
 
 
 
@@ -110,31 +132,15 @@ def qr():
           <thead>
             <tr>
               <th scope="col">Bike</span></th>
+              <th scope="col">Bike ID</span></th>
               <th scope="col">Start Date</span></th>
               <th scope="col">End Date</span></th>
               <th scope="col">Price</span></th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>Carrera&nbsp;kraken</span></td>
-              <td>15/02/19</span></td>
-              <td>21/02/19</span></td>
-              <td>37.6</span></td>
-            </tr>
-            <tr>
-              <td>Boardman MTB 8.9</span></td>
-              <td>25/02/19</span></td>
-              <td>27/02/19</span></td>
-              <td>16.8</span></td>
-            </tr>
-            <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <th>Total</span></th>
-              <td  scope="col">54.4</span></td>
-            </tr>
-          </tbody>
+          <tbody> """ + makeHTMLTable(dummyDatabaseOutput) +
+
+          """</tbody>
         </table>
         <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
         Here is your QR code to show to a member of staff for checkout<br/>
