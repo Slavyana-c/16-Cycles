@@ -130,10 +130,6 @@ def qr():
 
           </tbody>
         </table>
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-        Here is your QR code to show to a member of staff for checkout<br/>
         <img src="cid:image2 alt="Your QR Code">
         <br/><br/><br/>
 
