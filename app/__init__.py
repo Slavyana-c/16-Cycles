@@ -18,3 +18,8 @@ admin = Admin(app,template_mode='bootstrap3')
 migrate = Migrate(app, db)
 
 from app import views
+
+migrate = Migrate(app, db)
+
+from app import views, models
+

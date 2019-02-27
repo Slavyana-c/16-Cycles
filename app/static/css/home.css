@@ -2,6 +2,14 @@ body {
   overflow: hidden;
 }
 
-.container {
-  width: 100%;
+#splashLink {
+  height: 100vh;
+  background-image: url("../images/splashMobile.jpg");
+  background-size:100%;
+}
+
+@media screen and (min-height: 815px) {
+  #splashLink {
+    background-image: url("../images/splashDesktop.jpg")
+  }
 }
