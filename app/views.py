@@ -27,6 +27,11 @@ def browse():
     form = SelectDates();
     return render_template("browse.html", form=form) # redirect to the bike search page
 
+@app.route('/bikePage')
+def bikePage():
+    form = SelectDates();
+    return render_template("bikePage.html", form=form) # redirect to the bike search page
+
 @app.route('/account')
 def account():
     return render_template("account.html") # redirect to the account page
