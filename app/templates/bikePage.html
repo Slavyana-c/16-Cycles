@@ -9,128 +9,71 @@
 
 <div class="container">
 
-  <div class="row">
+{# /////////////////////// INDIVIDUAL BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
 
-        <button class="menu-toggle openbtn"
-                id="button"
-                data-toggle="collapse"
-                href="#collapseExample"
-                role="button"
-                aria-expanded="false"
-                aria-controls="collapseExample"
-                onclick="openNav(); changeColour();">
+    <div class="button-area">
+        <form action="/browse">
+           <input class="btn btn-details back-button" type="submit" value="Back to browsing menu" />
+        </form>
+    </div>
 
-            ☰ Filter Menu
+    <div class="individual-bike-box">
+      <div class="individual-bike-photo-section">
 
-        </button>
+          <div id="gallery-wrapper">
+            <div id="gallery">
+                {#  This will later loop through bike photos in database, now just 10 times #}
+               {% for n in range(10) %}
+                   <!--
+                    *    The following divider was made with the help of Codepen picture gallery tutorial
+                    *    Title: Pure CSS Image Gallery with Next and Previous Buttons
+                    *    Author: Tiffany Ong
+                    *    Date: 2015
+                    *    Availability: https://codepen.io/ongtiffany/pen/PPbPyB
+                    -->
 
-        {# ----------------------------  FILTER DROP DOWN MENU -------------------------- #}
-        <!--
+                    <div id="pic{{ n+1 }}">
+                      {% if loop.index is divisibleby(2) %}
+                        <a class="previous" href="#pic{{ n }}">«</a>
+                        <a class="next" href="#pic{{ n + 2 }}">»</a>
+                        <img class="individual-bike-photo"
+                             src="http://www.arrowcycles.co.uk/images/spec/187197.jpg?maxheight=1200" width="100%" alt="Image 1">
 
-        *    The following divider was made with the help of Bootstrapious collapsible HTML
-             sidebar navigation tutorial
-        *    Title: BOOTSTRAP SIDEBAR
-        *    Author: Ondrej Svestka
-        *    Date: 2015 - 2019
-        *    Availability: https://bootstrapious.com/p/bootstrap-sidebar
+                      {% else %}
+                        <a class="previous" href="#pic{{ n }}">«</a>
+                        <a class="next" href="#pic{{ n + 2 }}">»</a>
+                        <img class="individual-bike-photo"
+                             src="http://www.arrowcycles.co.uk/images/spec/91219-30_rh_expert-29_blk-acdkwi-char_hero.jpg?maxheight=1200" width="100%" alt="Image 1">
+                      {% endif %}
+                    </div>
 
-        -->
-        <div class="left-side-box collapse" id="collapseExample">
-          <div class="wrapper">
-              <!-- Sidebar -->
-              <nav id="sidebar">
-                  <div class="sidebar-header">
-                      <h3>Filter</h3>
-                  </div>
+               {% endfor %}
 
-                  <ul class="list-unstyled components">
-                      <li class="active">
-                          <a href="#homeSubmenu"
-                             data-toggle="collapse"
-                             aria-expanded="false"
-                             class="dropdown-toggle">
-                             Type
-                          </a>
-                          <ul class="collapse list-unstyled" id="homeSubmenu">
-                              <li> <a class="subtype" href="#">-choosetype1</a> </li>
-                              <li> <a class="subtype" href="#">-choosetype2</a> </li>
-                          </ul>
-                      </li>
+            </div>
 
-                      <li>
-                          <a href="#pageSubmenu"
-                             data-toggle="collapse"
-                             aria-expanded="false"
-                             class="dropdown-toggle">
-                             Brand
-                          </a>
-                          <ul class="collapse list-unstyled" id="pageSubmenu">
-                              <li> <a class="subtype" href="#">-choosebrand1</a> </li>
-                              <li> <a class="subtype" href="#">-choosebrand2</a> </li>
-                              <li> <a class="subtype" href="#">-choosebrand3</a> </li>
-                          </ul>
-                      </li>
-                  </ul>
-              </nav>
           </div>
+
+        <div class="bike-price-label">
+           PRICE/PERIOD
         </div>
-        {# ----------------------------  FILTER DROP DOWN MENU END -------------------------- #}
-
-        {# ----------------------------  SORT MENU -------------------------- #}
-        <div class="sort-box">
-
-            <div class="form-group">
-                <div class="dateselection">
-                  {{ form.start_date.label(class="form-control-label")}}
-                  {{ form.start_date(class="form-control form-control-lg")}}
-                </div>
-
-                <div class="dateselection">
-                  {{ form.end_date.label(class="form-control-label")}}
-                  {{ form.end_date(class="form-control form-control-lg")}}
-                </div>
-
-                <div class="dateselection center">
-                  {{ form.submit(class="btn btn-outline-info") }}
-		        </div>
-
-                <div></div>
-
-            </div>
-
-        </div>
-        {# --------------------------  END SORT MENU -------------------------- #}
-  </div>
-  <!-- //////////////////// END ROW DIV \\\\\\\\\\\\\\\\\\\\\\\ -->
-
-{# /////////////////////// BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
-
-      <div class="bike-grid">
-
-            <div class="individual-bike-box">
-
-              <div class="individual-bike-photo-section">
-                <img class="bike-photo"
-                src="http://www.arrowcycles.co.uk/images/spec/91219-30_rh_expert-29_blk-acdkwi-char_hero.jpg?maxheight=1200" alt="Bicycle">
-              <div class="vignette"></div>
-              <div class="bike-price-label">
-                 PRICE/PERIOD
-              </div>
-
-            </div>
-
-              <hr class="seperator">
-
-              <div class="bike-name-section">
-                BIKE TYPE AND NAME HERE
-                <button class="btn btn-details" type="submit">Details</button>
-              </div>
-
-            </div>
 
       </div>
 
-{# /////////////////////// END OF BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
+      <hr class="seperator">
+
+      <div class="bike-name-section">
+          BIKE TYPE AND NAME HERE
+          <button class="btn btn-details" type="submit">RENT</button>
+      </div>
+
+    </div>
+
+    <div class="bike-description">
+        <h2>Bicycle Description</h2>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sollicitudin tempor id eu nisl nunc mi. Integer eget aliquet nibh praesent tristique magna sit amet. Imperdiet nulla malesuada pellentesque elit eget. Ac ut consequat semper viverra nam. Gravida arcu ac tortor dignissim. Id ornare arcu odio ut sem nulla. Habitasse platea dictumst quisque sagittis purus sit amet. Urna id volutpat lacus laoreet non. Sagittis aliquam malesuada bibendum arcu vitae elementum curabitur vitae. Volutpat maecenas volutpat blandit aliquam etiam. Eu feugiat pretium nibh ipsum consequat nisl vel pretium lectus. Commodo quis imperdiet massa tincidunt. Neque laoreet suspendisse interdum consectetur libero id faucibus nisl tincidunt.
+    </div>
+
+{# /////////////////////// END OF INDIVIDUAL BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
 
 </div>
 <!-- //////////////////// END CONTAINER DIV \\\\\\\\\\\\\\\\\\\\\\\ -->
