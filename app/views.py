@@ -15,7 +15,7 @@ import smtplib
 # all imports for QR Code Generation
 import pyqrcode
 from flask_admin.contrib.sqla import ModelView
-from flask_login import login_user
+from flask_login import login_user, logout_user, current_user, login_required
 
 admin.add_view(ModelView(Users, db.session))
 
@@ -49,7 +49,7 @@ def sign_up():
 					 contact_number=form.contact_number.data.lower())
 		db.session.add(user)
 		db.session.commit()
-		# flash('Account created. You are now able to log in', 'success')
+		flash('Account created. You are now able to log in', 'success')
 		return redirect(url_for('login'))
 
 	return render_template("sign_up.html", form=form)
@@ -67,6 +67,12 @@ def login():
 		else:
 			flash('Log-in attempt unsuccessful, please check email and password', 'danger')
 	return render_template("login.html", form=form)
+
+@app.route('/logout')
+def logout():
+	logout_user()
+	flash('You have successfully logged out', 'success')
+	return redirect(url_for('home'))
 
 # @app.route('/qr', methods=['GET', 'POST'])
 # def qr():
