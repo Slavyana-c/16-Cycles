@@ -18,6 +18,9 @@ admin = Admin(app,template_mode='bootstrap3')
 migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
+@login_manager.user_loader
+def load_user(user_id):
+    return None
 login_manager.login_view='login'
 login_manager.login_message_category='info'
 

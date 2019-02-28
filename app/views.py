@@ -5,7 +5,8 @@ from app.models import Users
 
 # all imports for sending emails
 import smtplib
-# from email.MIMEMultipart import MIMEMultipart
+# WHAT IS GOING ON HERE????
+# from email.mime.multipart import MIMEMultipart
 # from email.MIMEText import MIMEText
 # from email.MIMEBase import MIMEBase
 # from email.MIMEImage import MIMEImage
