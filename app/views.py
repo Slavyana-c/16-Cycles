@@ -24,7 +24,8 @@ admin.add_view(ModelView(Users, db.session))
 
 @app.route('/')
 def home():
-    return render_template("home.html")
+	return render_template("home.html")
+
 
 @app.route('/about')
 def about():
@@ -41,6 +42,8 @@ def account():
 
 @app.route('/sign_up', methods=['GET', 'POST'])
 def sign_up():
+	if current_user.is_authenticated:
+		return redirect(url_for('home'))
 	form = NewUserForm()
 	if form.validate_on_submit():
 		pwrd_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -57,12 +60,17 @@ def sign_up():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+	if current_user.is_authenticated:
+		return redirect(url_for('home'))
 	form = LoginForm()
 	if form.validate_on_submit():
 		user = Users.query.filter_by(email=form.email.data).first()
 		if user and bcrypt.check_password_hash(user.password, form.password.data):
 			login_user(user, remember=form.remember.data)
 			next_page = request.args.get('next')
+			if current_user.is_authenticated:
+				flash('You have logged in', 'success')
+
 			return redirect(next_page) if next_page else redirect(url_for('home'))
 		else:
 			flash('Log-in attempt unsuccessful, please check email and password', 'danger')
