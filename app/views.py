@@ -1,6 +1,6 @@
 from flask import render_template
 from app import app
-from .forms import NewUserForm, LoginForm, SelectDates
+from .forms import NewUserForm, LoginForm, SelectDates, ExtendDate, PasswordChangeForm
 
 # all imports for sending emails
 import smtplib
@@ -22,6 +22,10 @@ def home():
 def about():
     return render_template("about.html") # redirect to the about page
 
+@app.route('/meetOurStaff')
+def meetOurStaff():
+    return render_template("meetOurStaff.html") # redirect to the about page
+
 @app.route('/browse')
 def browse():
     form = SelectDates();
@@ -34,7 +38,13 @@ def bikePage():
 
 @app.route('/account')
 def account():
-    return render_template("account.html") # redirect to the account page
+    form = ExtendDate();
+    return render_template("account.html", form=form) # redirect to the account page
+
+@app.route('/changePassword')
+def changePassword():
+    form = PasswordChangeForm();
+    return render_template("changePassword.html", form=form) # redirect to the change password page
 
 @app.route('/sign_up', methods=['GET', 'POST'])
 def sign_up():

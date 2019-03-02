@@ -7,36 +7,7 @@ body {
 }
 
 
-.wrap-container {
-  max-width: 800px;
-  height: 200px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.item {
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-.item1 {
-  flex: 1;
-  background-image:url("../images/logo.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-
-.item2 {
-  flex: 1;
-  background-color: blue;
-}
-
-.item3 {
-  flex: 1;
-  background-color: green;
-}
+/* ------ Image settings ------- */
 
 .logo-image
 {
@@ -48,10 +19,7 @@ body {
   margin: 5px;
 }
 
-/*.button-area*/
-/*{*/
-  /*float: right;*/
-/*}*/
+/* -------------- FLEX Header, containing images ---------------- */
 
 header {
   padding: .5vw;
@@ -81,35 +49,26 @@ header div img {
 
 }
 
+/* ------------ END of header styles ------------ */
 
-#parent {
-  max-width: 800px;
-  display: flex;
-  height: 250px;
-  flex-wrap: wrap
-}
-#narrow {
-  flex: 1;
-  width: 60%;
-  background-image: url("https://www.derbyconnected.com/wp-content/uploads/2013/06/bike-mechanic.jpg");
-  background-repeat: no-repeat;
-  background-size: contain;
-  /* Just so it's visible */
-}
-#wide {
-  flex: 1;
-  /* Grow to rest of container */
-    background-image:url("../images/logo.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-  /* Just so it's visible */
-}
-
-.about-header
+/* --------- image styles --------- */
+.staff-image-area
 {
-  width: fit-content;
-  height: 250px;
-  margin: 5%
+  width: auto;
+  height: 100%;
+
+  margin: 5px;
+  padding: 10px;
+
+  position: relative;
+}
+
+.staff-photo
+{
+  content: '';
+  position: absolute;
+  width: auto;
+  /*float: right;*/
 }
 
 .logo-area
@@ -117,67 +76,74 @@ header div img {
   background-image:url("../images/logo.png");
   background-repeat: no-repeat;
   background-size: contain;
-  /*content:url("\app\static\images");*/
-  /*background-color: rgba(255, 141, 0, 0.41);*/
+
   width: 15vw;
   height: 15vw;
   float: left;
 
-    flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
-.staff-image-area
+/* --------- END image styles ---------- */
+
+/* --------- button styling ------------ */
+
+.list-group
 {
-  float: left;
-  background-color: rgba(0,0,0,0.2);
-  /*background-image: url("https://www.derbyconnected.com/wp-content/uploads/2013/06/bike-mechanic.jpg");*/
-  /*background-repeat: no-repeat;*/
-  /*background-size: contain;*/
-
-  width: auto;
-  height: 100%;
-
-  /*overflow: auto;*/
-
-  /*margin-left: 30%;*/
-  margin: 5px;
-  /*margin-left: 0;*/
-
-  /*flex-wrap: wrap;*/
-  padding: 10px;
-
-  position: relative;
-
+  padding: 2px;
+}
+.list-group-item
+{
+  text-align: center;
+  color: black;
+  background-color: rgba(255, 127, 0, 0.8);
+  padding: 15px 32px;
+  border-radius: 0;
+  margin-left: 25%;
+  margin-right: 25%;
+  box-shadow: 0px -4px 0px rgba(0,0,0,1) inset;
+  transition: 0.5s;
+}
+.list-group-item:hover
+{
+  background-color: rgba(255, 127, 0, 1);
 }
 
-.staff-photo
-{
-  width: auto;
-  /*float: right;*/
-}
+/* --------- END button styling ------------ */
 
-.bike-description
+.vignette {
+  width: 320px;
+  height: 202px;
+  position: absolute;
+
+  box-shadow: 0 0 50px rgba(0,0,0,0.5) inset;
+  transition: 0.5s; /* smooth transition when mouse is hovered*/
+}
+.vignette:hover {box-shadow: 0 0 100px rgba(0,0,0,1) inset;}
+
+/* staff description div */
+.description
 {
+  color: lightgrey;
   clear: left;
-    background-color: rgba(0,0,0,0.2);
+  background-color: rgba(34,34,34,1);
   float:unset;
   padding: 20px;
   margin-top: 20px;
 }
 
+a:hover
+{
+    text-decoration: none;
+}
+
+
 @media screen and (max-width: 500px), screen and (max-device-width: 500px)
 {
-
-  .staff-image-area
-  {
-
-  }
-
   .logo-area
   {
     position: relative;
     left: 40%;
     margin: 10px;
   }
-
 }

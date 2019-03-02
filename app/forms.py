@@ -43,6 +43,15 @@ class LoginForm(FlaskForm):
 	submit = SubmitField('Sign In')
 
 
+class PasswordChangeForm(FlaskForm):
+
+	email = StringField('Email',
+						validators=[DataRequired(), Email()])
+	password = PasswordField('Password',
+							validators=[DataRequired(), Length(min=5, max=25)])
+	repeatPassword = PasswordField('Repeat Password',
+							validators=[DataRequired(), Length(min=5, max=25)])
+	submit = SubmitField('Submit')
 
 
 # form in the newTask.html
@@ -50,3 +59,7 @@ class SelectDates(FlaskForm):
 	start_date = DateField('Rent Start Date', validators=[DataRequired()])
 	end_date = DateField('Rent End Date', validators=[DataRequired()])
 	submit = SubmitField('Select Date')
+
+class ExtendDate(FlaskForm):
+	new_end_date = DateField('Extend Date', validators=[DataRequired()])
+	submit = SubmitField('Update Date')

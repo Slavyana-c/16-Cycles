@@ -20,7 +20,8 @@
 }
 
 .row{
-  background-color: rgba(0,0,0,0.2);
+  color: lightgrey;
+  background-color: rgba(34,34,34,1);
   width: auto;
 }
 
@@ -32,6 +33,24 @@
 .form-group{
   float: left;
   padding-right: 25px;
+}
+
+.btn-outline-info
+{
+  background-color: #ff7f00; /* orange button */
+
+  border: none;
+  color: white; /* TEXT colour */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  border-radius: 0 !important;
+}
+
+a:hover
+{
+    text-decoration: none;
 }
 
 .center{
