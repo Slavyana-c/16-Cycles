@@ -4,10 +4,10 @@ from .forms import NewUserForm, LoginForm, SelectDates, ExtendDate, PasswordChan
 
 # all imports for sending emails
 import smtplib
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEText import MIMEText
-from email.MIMEBase import MIMEBase
-from email.MIMEImage import MIMEImage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email.mime.image import MIMEImage
 from email import encoders
 
 # all imports for QR Code Generation
