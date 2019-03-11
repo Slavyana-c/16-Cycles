@@ -1,13 +1,14 @@
 from flask import render_template, flash, url_for, redirect, request, abort
 from app import app, db, bcrypt, admin, models
+from app.models import Users
 from .forms import NewUserForm, LoginForm, SelectDates, ExtendDate, PasswordChangeForm
 
 # all imports for sending emails
 import smtplib
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEText import MIMEText
-from email.MIMEBase import MIMEBase
-from email.MIMEImage import MIMEImage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email.mime.image import MIMEImage
 from email import encoders
 
 # all imports for QR Code Generation
