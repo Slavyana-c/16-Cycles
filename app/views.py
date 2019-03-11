@@ -1,44 +1,52 @@
 from flask import render_template, flash, url_for, redirect, request, abort
 from app import app, db, bcrypt, admin, models
-from .forms import NewUserForm, LoginForm, SelectDates
-from app.models import Users
+from .forms import NewUserForm, LoginForm, SelectDates, ExtendDate, PasswordChangeForm
 
 # all imports for sending emails
 import smtplib
-# WHAT IS GOING ON HERE????
-# from email.mime.multipart import MIMEMultipart
-# from email.MIMEText import MIMEText
-# from email.MIMEBase import MIMEBase
-# from email.MIMEImage import MIMEImage
-# from email import encoders
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
+from email.MIMEBase import MIMEBase
+from email.MIMEImage import MIMEImage
+from email import encoders
 
 # all imports for QR Code Generation
 import pyqrcode
 from flask_admin.contrib.sqla import ModelView
 from flask_login import login_user, logout_user, current_user, login_required
-
 admin.add_view(ModelView(Users, db.session))
-
-
-
 
 @app.route('/')
 def home():
-	return render_template("home.html")
-
+    return render_template("home.html")
 
 @app.route('/about')
 def about():
     return render_template("about.html") # redirect to the about page
+
+@app.route('/meetOurStaff')
+def meetOurStaff():
+    return render_template("meetOurStaff.html") # redirect to the about page
 
 @app.route('/browse')
 def browse():
     form = SelectDates();
     return render_template("browse.html", form=form) # redirect to the bike search page
 
+@app.route('/bikePage')
+def bikePage():
+    form = SelectDates();
+    return render_template("bikePage.html", form=form) # redirect to the bike search page
+
 @app.route('/account')
 def account():
-    return render_template("account.html") # redirect to the account page
+    form = ExtendDate();
+    return render_template("account.html", form=form) # redirect to the account page
+
+@app.route('/changePassword')
+def changePassword():
+    form = PasswordChangeForm();
+    return render_template("changePassword.html", form=form) # redirect to the change password page
 
 @app.route('/sign_up', methods=['GET', 'POST'])
 def sign_up():
@@ -82,111 +90,134 @@ def logout():
 	flash('You have successfully logged out', 'success')
 	return redirect(url_for('home'))
 
-# @app.route('/qr', methods=['GET', 'POST'])
-# def qr():
-#
-#     # generating the QR code
-#     url = pyqrcode.create('https://ksassets.timeincuk.net/wp/uploads/sites/55/2016/07/2015_PeepShow_Mark2_Press_111115-920x610.jpg')
-#     url.png('app/qrCode.png', scale=6) # nice and big
-#
-#
-#
-#
-#     # setting up email things
-#     sendingAddress = "16.cycles.recipt@gmail.com"
-#     sendingPassword = "phatgitproject"
-#     receivingAddress = "jonathancharlesalderson@gmail.com"
-#
-#     msg = MIMEMultipart()
-#
-#     msg['From'] = "16 Cycles Rentals"
-#     msg['To'] = receivingAddress
-#     msg['Subject'] = "Your Reciept From Today"
-#
-#
-#     # actual body of the email
-#     html = """\
-#         <html>
-#         <head>
-#         	<title></title>
-#         	<link href="https://svc.webspellchecker.net/spellcheck31/lf/scayt3/ckscayt/css/wsc.css" rel="stylesheet" type="text/css" />
-#         	<link href="https://svc.webspellchecker.net/spellcheck31/lf/scayt3/ckscayt/css/wsc.css" rel="stylesheet" type="text/css" />
-#         	<link href="https://svc.webspellchecker.net/spellcheck31/lf/scayt3/ckscayt/css/wsc.css" rel="stylesheet" type="text/css" />
-#         </head>
-#         <body aria-readonly="false" style="cursor: auto;">
-#         <h3><span style="font-family:arial,helvetica,sans-serif">Thank you for renting with us today</span></h3>
-#         <span style="font-family:arial,helvetica,sans-serif">Please find attached below your recipt<br />
-#         <br />
-#         Username : jonathanAlderson<br />
-#         Checkout&nbsp; : 15/02/19<br />
-#         More detail: loren&nbsp;ipsum<br />
-#         dolor eptium: pera equatus<br />
-#         pectar melao: perus deulium</span>
-#
-#         <table align="center" border="1" cellpadding="1" cellspacing="1" style="width:500px">
-#         	<thead>
-#         		<tr>
-#         			<th scope="col"><span style="font-family:arial,helvetica,sans-serif">Bike</span></th>
-#         			<th scope="col"><span style="font-family:arial,helvetica,sans-serif">Start Date</span></th>
-#         			<th scope="col"><span style="font-family:arial,helvetica,sans-serif">End Date</span></th>
-#         			<th scope="col"><span style="font-family:arial,helvetica,sans-serif">Price</span></th>
-#         		</tr>
-#         	</thead>
-#         	<tbody>
-#         		<tr>
-#         			<td><span style="font-family:courier new,courier,monospace">Carrera&nbsp;kraken</span></td>
-#         			<td><span style="font-family:courier new,courier,monospace">15/02/19</span></td>
-#         			<td><span style="font-family:courier new,courier,monospace">21/02/19</span></td>
-#         			<td><span style="font-family:courier new,courier,monospace">37.6</span></td>
-#         		</tr>
-#         		<tr>
-#         			<td><span style="font-family:courier new,courier,monospace">Boardman MTB 8.9</span></td>
-#         			<td><span style="font-family:courier new,courier,monospace">25/02/19</span></td>
-#         			<td><span style="font-family:courier new,courier,monospace">27/02/19</span></td>
-#         			<td><span style="font-family:courier new,courier,monospace">16.8</span></td>
-#         		</tr>
-#         		<tr>
-#         			<td>&nbsp;</td>
-#         			<td>&nbsp;</td>
-#         			<td><span style="font-family:courier new,courier,monospace">Total</span></td>
-#         			<td><span style="font-family:courier new,courier,monospace">54.4</span></td>
-#         		</tr>
-#         	</tbody>
-#         </table>
-#         <br />
-#         <br />
-#         <span style="font-family:arial,helvetica,sans-serif">Here is your QR code to show to a member of staff for checkout</span><br />
-#         <br />
-#         <br />
-#         <br />
-#         <img src="cid:image1" alt="Your QR Code">
-#         </body>
-#         </html>
-#     """
-#
-#     # Add the HTML
-#     emailBody = MIMEText(html, 'html')
-#
-#
-#     # opening the image image
-#     fp = open('app/qrCode.png','rb')
-#     msgImage = MIMEImage(fp.read())
-#     fp.close()
-#
-#     # defining image
-#     msgImage.add_header('Content-ID','<image1>')
-#     msg.attach(msgImage)
-#     msg.attach(emailBody)
-#
-#     # setup email sending
-#     server = smtplib.SMTP('smtp.gmail.com', 587)
-#     server.starttls()
-#     server.login(sendingAddress, sendingPassword)
-#     text = msg.as_string()
-#
-#     # commented out to stop spamming
-#     server.sendmail(sendingAddress,receivingAddress , msg.as_string())
-#     server.quit()
-#
-#     # display webpage saying it worked
-#     return render_template("qr.html")
+
+def makeBikeRentalsTable(databaseOutput):
+    output = ""
+    for bike in databaseOutput:
+        output +=  """   <tr>
+  <td>""" + bike[0] +  """</span></td>
+  <td>""" + bike[1] + """</span></td>
+  <td>""" + bike[2] + """</span></td>
+  <td>""" + bike[3] + """</span></td>
+  <td>""" + bike[4] + """</span></td>
+</tr>
+"""
+    return output
+
+def makeCheckoutTable(databaseOutput):
+    output = ""
+    titles = ["UserName","Date","Time","User ID","Total Price"]
+    for i in range(len(titles)):
+        output += """  <tr>
+    <th>""" + titles[i] + """</th>
+    <td>""" + databaseOutput[i] + """</td>
+  </tr> """
+
+    return output
+
+
+
+@app.route('/qr', methods=['GET', 'POST'])
+def qr():
+
+    # generating the QR code
+    url = pyqrcode.create('https://ksassets.timeincuk.net/wp/uploads/sites/55/2016/07/2015_PeepShow_Mark2_Press_111115-920x610.jpg')
+    url.png('app/qrCode.png', scale=2) # nice and big
+
+
+    # we take this dummy database output for use in the emails
+    dummyDatabaseOutput = [["Carrera Kraken","4372812","28/02/19","02/03/19","35.6"],
+                          ["Boardman MTB 8.8","2841849","05/04/19","08/04/19","108.2"],
+                          ["Apollo Storm","7394836","08/04/19","15/04/19","57.8"],
+                          ["Apollo Storm","7394836","08/04/19","15/04/19","57.8"]]
+
+    dummyRecieptOutput = ["Jonathan Alderson", "27/02/19","15:36:23","5437289","76.8"]
+
+
+    # setting up email things
+    sendingAddress = "16.cycles.recipt@gmail.com"
+    sendingPassword = "phatgitproject"
+    receivingAddress = "jonathancharlesalderson@gmail.com"
+
+    msg = MIMEMultipart()
+
+    msg['From'] = "16 Cycles Rentals"
+    msg['To'] = receivingAddress
+    msg['Subject'] = "Your Reciept From Today"
+
+
+
+    # actual body of the email
+    html = """\
+        <html>
+        <head>
+          <title>16 Cycles</title>
+        </head>
+        <body aria-readonly="false" style="cursor: auto; font-family: arial,helvetica,sans-serif;  background-image:url(cid:image1); background-repeat: no-repeat">
+        <body>
+        <br/><br/><br/>
+        <h1>Thank you for renting with us today</h1>
+        Please find attached below your recipt
+        <br/><br/><br/><br/><br/>
+        <table  align="left" border="0" cellpadding="5" cellspacing="1" style="width:800px, text-align:center, cellpadding:100px" >
+        """ + makeCheckoutTable(dummyRecieptOutput) + """
+        </table>
+        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+        <table align="left" border="0" cellpadding="10" cellspacing="1" style="width:800px, text-align:center, cellpadding:100px" >
+          <thead>
+            <tr>
+              <th scope="col">Bike</span></th>
+              <th scope="col">Bike ID</span></th>
+              <th scope="col">Start Date</span></th>
+              <th scope="col">End Date</span></th>
+              <th scope="col">Price</span></th>
+            </tr>
+          </thead>
+          <tbody> """ + makeBikeRentalsTable(dummyDatabaseOutput) + """
+
+          </tbody>
+        </table>
+        <img src="cid:image2 alt="Your QR Code">
+        <br/><br/><br/>
+
+        </body>
+        </html>
+    """
+
+    # Add the HTML
+    emailBody = MIMEText(html, 'html')
+
+
+
+    # adds the qr image
+    fp = open('app/qrCode.png','rb')
+    msgImage = MIMEImage(fp.read())
+    fp.close()
+    msgImage.add_header('Content-ID','<image2>')
+    msg.attach(msgImage)
+
+    # adds the background image
+    fp = open('app/emailBackground.png','rb')
+    msgImage = MIMEImage(fp.read())
+    fp.close()
+    msgImage.add_header('Content-ID','<image1>')
+    msg.attach(msgImage)
+
+
+
+
+    msg.attach(emailBody)
+
+    # setup email sending
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(sendingAddress, sendingPassword)
+    text = msg.as_string()
+
+    # commented out to stop spamming
+    server.sendmail(sendingAddress,receivingAddress , msg.as_string())
+    server.quit()
+
+    # display webpage saying it worked
+    return render_template("qr.html")
