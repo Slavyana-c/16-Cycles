@@ -27,7 +27,8 @@ bikeData = bikeData[9:-1]
 #for i in range(0,len(bikeData),9):
 i = 0
 print(bikeData[i],bikeData[i+1],bikeData[i+2],bikeData[i+3],bikeData[i+4],bikeData[i+5],bikeData[i+6],bikeData[i+7],bikeData[i+8])
-newBike = models.Bike_Types(gears=bikeData[i],weight=bikeData[i+1],brand=bikeData[i+2],model=bikeData[i+3],image=bikeData[i+4],colour=bikeData[i+5],user_type=bikeData[i+6],use_type=bikeData[i+7],times_rented=0)
-db.session.add(models.Bike_Types(newBike))
+#newBike = models.Bike_Types(id=4,gears=bikeData[i],weight=bikeData[i+1],brand=bikeData[i+2],model=bikeData[i+3],image=bikeData[i+4],colour=bikeData[i+5],user_type=bikeData[i+6],use_type=bikeData[i+7],times_rented=0)
+newBike = models.Bike_Types(id=5,gears=16,weight=11.2,brand="Carrera",model="Kraken",image="default.jpg",colour="Blue",user_type="Adult",use_type="Road",times_rented=0)
+db.session.add(newBike)
 
 db.session.commit()
