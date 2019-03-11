@@ -1,6 +1,6 @@
 from flask import render_template
 from app import app
-from .forms import NewUserForm, LoginForm, SelectDates, ExtendDate, PasswordChangeForm
+from .forms import NewUserForm, LoginForm, SelectDates, ExtendDate, PasswordChangeForm, paymentForm
 
 # all imports for sending emails
 import smtplib
@@ -82,7 +82,12 @@ def makeCheckoutTable(databaseOutput):
 
     return output
 
-
+@app.route('/payment', methods=['GET', 'POST'])
+def payForm():
+    form = paymentForm()
+    if form.validate_on_submit():
+        flash("Yay")
+    return render_template("payment.html", form=form)
 
 @app.route('/qr', methods=['GET', 'POST'])
 def qr():

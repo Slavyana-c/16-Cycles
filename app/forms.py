@@ -1,12 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp, NumberRange
 from wtforms.fields.html5 import DateField, IntegerField
-
-
-
-
-
 
 class NewUserForm(FlaskForm):
 	username = StringField('Username',
@@ -63,3 +58,9 @@ class SelectDates(FlaskForm):
 class ExtendDate(FlaskForm):
 	new_end_date = DateField('Extend Date', validators=[DataRequired()])
 	submit = SubmitField('Update Date')
+
+class paymentForm(FlaskForm):
+	cardNumber = StringField('Card Number', validators=[DataRequired(), Regexp("\d+", flags=0, message=""), Length(min=8, max=16, message="Field must be between 8 and 16 digits. Please try again")])
+	cvv = StringField('CVV', validators=[DataRequired(), Regexp("\d{3}", flags=0, message="Field must be 3 characters long. Please try again"), Length(max=3, message="Field must be 3 characters long. Please try again")])
+	expDate = StringField('Expiry Date', validators=[DataRequired(), Regexp("\d\d\/\d\d", flags=0, message="Date needs to be of the form mm/yy")])
+	submit = SubmitField('Submit')
