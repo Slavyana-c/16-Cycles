@@ -106,16 +106,16 @@
 {# /////////////////////// BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
 
       <div class="bike-grid">
-         {% for n in range(10) %}
+         {% for bike in data %}
 
             <div class="bike-box">
 
               <div class="bike-photo-section">
                 <img class="bike-photo"
-                src="http://www.arrowcycles.co.uk/images/spec/91219-30_rh_expert-29_blk-acdkwi-char_hero.jpg?maxheight=1200" alt="Bicycle">
+                src={{bike.image}} alt="Bicyle">
               <div class="vignette"></div>
               <div class="bike-price-label">
-                 PRICE/PERIOD
+                 15/Day
               </div>
 
             </div>
@@ -123,7 +123,7 @@
               <hr class="seperator">
 
               <div class="bike-name-section">
-                BIKE TYPE AND NAME HERE
+                {{ bike.brand  + " " + bike.model}}
                 <button class="btn btn-details" type="submit">Details</button>
               </div>
 

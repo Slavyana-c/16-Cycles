@@ -32,7 +32,11 @@ def meetOurStaff():
 @app.route('/browse')
 def browse():
     form = SelectDates();
-    return render_template("browse.html", form=form) # redirect to the bike search page
+
+    data = Bike_Types.query.all()#(brand='Voodoo')
+
+
+    return render_template("browse.html", form=form,data=data) # redirect to the bike search page, giving all the data
 
 @app.route('/bikePage')
 def bikePage():
