@@ -3,7 +3,7 @@
 
 <head>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/browse.css') }}">
-    <script src="../css/scripts/browse.js"> </script>
+    <script src="../css/scripts/browse.js"></script>
     {#<script rel="script" href="{{ url_for('static', filename='scripts/browse.js') }}"></script>#}
 </head>
 
@@ -124,11 +124,7 @@
 
               <div class="bike-name-section">
                 BIKE TYPE AND NAME HERE
-                  <form action="/bikePage">
-                      <input class="btn btn-details" type="submit" value="Details" />
-{#                      <button class="btn btn-details" type="button">Details</button>#}
-                  </form>
-{#                <button class="btn btn-details" type="button" href="/bikePage">Details</button>#}
+                <button class="btn btn-details" type="submit">Details</button>
               </div>
 
             </div>
@@ -144,4 +140,3 @@
 
 
 {% endblock %}
-
