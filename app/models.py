@@ -1,6 +1,11 @@
-from app import db, app
+from app import db, app, login_manager
 from datetime import datetime
 from flask_login import UserMixin
+
+
+@login_manager.user_loader
+def load_user(user_id):
+	return Users.query.get(int(user_id))
 
 # The Users database model
 class Users(db.Model, UserMixin):
@@ -39,8 +44,9 @@ class Bikes(db.Model):
     # Foreign keys
     bike_type_id = db.Column(db.Integer, db.ForeignKey('bike_types.id'), nullable=False)
     shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
-    # Relationship to Bookings
-    bookings = db.relationship('Bookings', backref='bike', lazy=True)
+    # Relationship to Bookings and repairs
+    #bookings = db.relationship('Bookings', backref='bike', lazy=True)
+    repairs = db.relationship('Repairs', backref='bike', lazy=True)
 
 # The Bike_Types database model
 class Bike_Types(db.Model):
@@ -86,8 +92,8 @@ class Repairs(db.Model):
     date_complete = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     description = db.Column(db.String(500), nullable=False)
     cost = db.Column(db.Float, default=0.0)
-    # Relationship to Bikes
-    bikes = db.relationship('Bikes', backref='shop', lazy=True)
+    # Foreign key
+    bike_id = db.Column(db.Integer, db.ForeignKey('bikes.id'), nullable=False)
 
 # The Rented_Bikes database model
 # (Bookings of a single bike)

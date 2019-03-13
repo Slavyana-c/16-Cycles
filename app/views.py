@@ -1,5 +1,6 @@
-from flask import render_template
-from app import app
+from flask import render_template, flash, url_for, redirect, request, abort
+from app import app, db, bcrypt, admin, models
+from app.models import Users,Bike_Types
 from .forms import NewUserForm, LoginForm, SelectDates, ExtendDate, PasswordChangeForm
 
 # all imports for sending emails
@@ -12,8 +13,10 @@ from email import encoders
 
 # all imports for QR Code Generation
 import pyqrcode
-
-
+from flask_admin.contrib.sqla import ModelView
+from flask_login import login_user, logout_user, current_user, login_required
+admin.add_view(ModelView(Users, db.session))
+admin.add_view(ModelView(Bike_Types, db.session))
 @app.route('/')
 def home():
     return render_template("home.html")
@@ -29,7 +32,11 @@ def meetOurStaff():
 @app.route('/browse')
 def browse():
     form = SelectDates();
-    return render_template("browse.html", form=form) # redirect to the bike search page
+
+    data = Bike_Types.query.all()#(brand='Voodoo')
+
+
+    return render_template("browse.html", form=form,data=data) # redirect to the bike search page, giving all the data
 
 @app.route('/bikePage')
 def bikePage():
@@ -48,14 +55,45 @@ def changePassword():
 
 @app.route('/sign_up', methods=['GET', 'POST'])
 def sign_up():
+	if current_user.is_authenticated:
+		return redirect(url_for('home'))
 	form = NewUserForm()
+	if form.validate_on_submit():
+		pwrd_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+		user = Users(email=form.email.data.lower(),
+		 			 password=pwrd_hash,
+					 contact_number=form.contact_number.data.lower())
+		db.session.add(user)
+		db.session.commit()
+		flash('Account created. You are now able to log in', 'success')
+		return redirect(url_for('login'))
+
 	return render_template("sign_up.html", form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+	if current_user.is_authenticated:
+		return redirect(url_for('home'))
 	form = LoginForm()
+	if form.validate_on_submit():
+		user = Users.query.filter_by(email=form.email.data).first()
+		if user and bcrypt.check_password_hash(user.password, form.password.data):
+			login_user(user, remember=form.remember.data)
+			next_page = request.args.get('next')
+			if current_user.is_authenticated:
+				flash('You have logged in', 'success')
+
+			return redirect(next_page) if next_page else redirect(url_for('home'))
+		else:
+			flash('Log-in attempt unsuccessful, please check email and password', 'danger')
 	return render_template("login.html", form=form)
+
+@app.route('/logout')
+def logout():
+	logout_user()
+	flash('You have successfully logged out', 'success')
+	return redirect(url_for('home'))
 
 
 def makeBikeRentalsTable(databaseOutput):
