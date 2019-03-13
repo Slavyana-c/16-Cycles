@@ -115,7 +115,7 @@
                 src={{bike.image}} alt="Bicyle">
               <div class="vignette"></div>
               <div class="bike-price-label">
-                 15/Day
+                 {{bike.rental_rates}}/Day
               </div>
 
             </div>
@@ -124,7 +124,10 @@
 
               <div class="bike-name-section">
                 {{ bike.brand  + " " + bike.model}}
-                <button class="btn btn-details" type="submit">Details</button>
+
+                <form action="{{ url_for('bikePage', brand=bike.brand, model = bike.model, bike_id = bike.id) }}" method="post">
+                    <input class="btn btn-details" type="submit" value="Details" />
+                </form>
               </div>
 
             </div>

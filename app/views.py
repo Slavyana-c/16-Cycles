@@ -1,7 +1,8 @@
 from flask import render_template, flash, url_for, redirect, request, abort
 from app import app, db, bcrypt, admin, models
-from app.models import Users,Bike_Types
+from app.models import Users,Bike_Types, Rental_Rates
 from .forms import NewUserForm, LoginForm, SelectDates, ExtendDate, PasswordChangeForm
+from sqlalchemy import and_, or_
 
 # all imports for sending emails
 import smtplib
@@ -17,6 +18,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_login import login_user, logout_user, current_user, login_required
 admin.add_view(ModelView(Users, db.session))
 admin.add_view(ModelView(Bike_Types, db.session))
+admin.add_view(ModelView(Rental_Rates,db.session))
 @app.route('/')
 def home():
     return render_template("home.html")
@@ -34,14 +36,31 @@ def browse():
     form = SelectDates();
 
     data = Bike_Types.query.all()#(brand='Voodoo')
+    rental_rates = Rental_Rates.query.all()
 
 
-    return render_template("browse.html", form=form,data=data) # redirect to the bike search page, giving all the data
+    return render_template("browse.html", form=form,data=data, rental_rates=rental_rates) # redirect to the bike search page, giving all the data
 
-@app.route('/bikePage')
+@app.route('/bikePage/',methods=['GET', 'POST'])
+# @app.route('/bikePage/?brand=<brand>&model=<model>')
+# def bikePage(brand, model):
 def bikePage():
+    brand = request.args.get('brand', default = 'BRAND', type = str)
+    model = request.args.get('model', default = 'MODEL', type = str)
+    id = request.args.get('id', default = 'ID', type = str)
+
+
+    print(brand + " BRAND received and MODEL: " + model)
+
     form = SelectDates();
-    return render_template("bikePage.html", form=form) # redirect to the bike search page
+    # data = Bike_Types.query.all()#(brand='Voodoo')
+    data = Bike_Types.query.filter(and_(Bike_Types.brand == brand, Bike_Types.model == model)).first()
+    image = data.image
+
+    # redirectToIndividualBikePageURL = "bikePage?brand=" + brand + "&model=" + model
+    # return redirect(url_for(redirectToIndividualBikePageURL))
+
+    return render_template("bikePage.html", data=data,image=image, form=form, brand=brand, model=model) # redirect to the bike search page
 
 @app.route('/account')
 def account():
