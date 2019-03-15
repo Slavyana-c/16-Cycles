@@ -12,6 +12,12 @@ TARGET = 16Cycles
 TEMPLATE = app
 
 
+    addFiles.sources = employees.db
+    addFiles.path = .
+    DEPLOYMENT += addFiles
+
+
+
 SOURCES += main.cpp\
         mainwindow.cpp \
     homedialog.cpp

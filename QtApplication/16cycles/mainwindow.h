@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSqlDatabase>
 
 #include "homedialog.h"
 
@@ -25,6 +26,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     HomeDialog *homeDialog;
+    QSqlDatabase db;
 };
 
 #endif // MAINWINDOW_H

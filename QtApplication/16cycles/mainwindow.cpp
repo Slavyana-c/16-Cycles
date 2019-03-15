@@ -5,6 +5,7 @@
 #include <QPixmap>
 #include <QtSql>
 #include <QSqlDatabase>
+#include <QDesktopWidget>
 #include <QSqlError>
 #include <QSqlDriver>
 #include <QDebug>
@@ -15,7 +16,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+    QDesktopWidget desktop;
 
+    this-> setFixedSize(QDesktopWidget().availableGeometry(this).size());
+    //resize(QDesktopWidget().availableGeometry(this).size());
     // Logo
     QPixmap logo(":/resourcefile/images/app_static_images_logo.png");
     int width = ui-> labelLogo-> width();
@@ -27,29 +32,14 @@ MainWindow::MainWindow(QWidget *parent) :
     const QString DRIVER("QSQLITE");
     if(QSqlDatabase::isDriverAvailable(DRIVER))
     {
-        QSqlDatabase db = QSqlDatabase::addDatabase(DRIVER);
-        db.setDatabaseName(":/resourcefile/database/app.db");
+        db = QSqlDatabase::addDatabase(DRIVER);
+        //db.setDatabaseName("/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16cycles/employees.db");
+        db.setDatabaseName("employees.db");
         if(!db.open())
         {
             qWarning() << "ERROR: " << db.lastError();
-            ui-> labelDb-> setText("noooooope");
-        }
-        else
-        {
-            ui-> labelDb-> setText("Database connected");
         }
     }
-    //    db.setDatabaseName(":/resourcefile/database/app.db");
-
-//    if(!db.open())
-//    {
-//        ui-> labelDb-> setText("noooooope");
-//        qDebug()<<QSqlDatabase::lastError(db);
-//    }
-//    else
-//    {
-//        ui-> labelDb-> setText("Database connected");
-//    }
 }
 
 MainWindow::~MainWindow()
@@ -64,26 +54,33 @@ void MainWindow::on_pushButtonClose_clicked()
 
     if(reply == QMessageBox::Yes)
     {
+        db.close();
         QApplication::quit();
     }
 }
 
 void MainWindow::on_pushButtonLogin_clicked()
 {
-    QString username = ui-> lineEditUsername-> text(); //
+    QString username = ui-> lineEditUsername-> text();
     QString password = ui-> lineEditPassword-> text();
 
-    // fixed username password
-    if(username == "dummy" && password == "123")
+    if(!db.isOpen())
     {
-        QMessageBox::information(this,"Login","Username and Password is correct.");
+        qDebug() << "FAILED TO OPEN THE DATABASE";
+        return;
+    }
+
+    QSqlQuery query;
+    query.exec("SELECT * FROM employees WHERE Username='" + username + "' AND Password='" + password + "'");
+    if(query.next())
+    {
+        QMessageBox::information(this,"Login Success","Username and Password correct");
         hide();
         homeDialog = new HomeDialog(this);
         homeDialog->show();
     }
-
     else
     {
-        QMessageBox::warning(this,"Login","Username and Password are not correct.");
+        QMessageBox::critical(this,"Login Failed","Username and Password incorrect");
     }
 }

@@ -33,7 +33,7 @@ class Ui_MainWindow
 public:
     QWidget *centralWidget;
     QGroupBox *groupBox;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QVBoxLayout *verticalLayout_2;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout;
@@ -46,7 +46,6 @@ public:
     QPushButton *pushButtonClose;
     QPushButton *pushButtonLogin;
     QLabel *labelLogo;
-    QLabel *labelDb;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -61,10 +60,15 @@ public:
         groupBox = new QGroupBox(centralWidget);
         groupBox->setObjectName(QStringLiteral("groupBox"));
         groupBox->setGeometry(QRect(390, 20, 391, 181));
-        widget = new QWidget(groupBox);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(10, 30, 215, 130));
-        verticalLayout_2 = new QVBoxLayout(widget);
+        QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(groupBox->sizePolicy().hasHeightForWidth());
+        groupBox->setSizePolicy(sizePolicy);
+        layoutWidget = new QWidget(groupBox);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        layoutWidget->setGeometry(QRect(10, 30, 215, 130));
+        verticalLayout_2 = new QVBoxLayout(layoutWidget);
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setContentsMargins(11, 11, 11, 11);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
@@ -75,12 +79,12 @@ public:
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        labelUsername = new QLabel(widget);
+        labelUsername = new QLabel(layoutWidget);
         labelUsername->setObjectName(QStringLiteral("labelUsername"));
 
         horizontalLayout->addWidget(labelUsername);
 
-        lineEditUsername = new QLineEdit(widget);
+        lineEditUsername = new QLineEdit(layoutWidget);
         lineEditUsername->setObjectName(QStringLiteral("lineEditUsername"));
 
         horizontalLayout->addWidget(lineEditUsername);
@@ -91,12 +95,12 @@ public:
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        labelPassword = new QLabel(widget);
+        labelPassword = new QLabel(layoutWidget);
         labelPassword->setObjectName(QStringLiteral("labelPassword"));
 
         horizontalLayout_2->addWidget(labelPassword);
 
-        lineEditPassword = new QLineEdit(widget);
+        lineEditPassword = new QLineEdit(layoutWidget);
         lineEditPassword->setObjectName(QStringLiteral("lineEditPassword"));
         lineEditPassword->setEchoMode(QLineEdit::Password);
 
@@ -111,12 +115,12 @@ public:
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setSpacing(6);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        pushButtonClose = new QPushButton(widget);
+        pushButtonClose = new QPushButton(layoutWidget);
         pushButtonClose->setObjectName(QStringLiteral("pushButtonClose"));
 
         horizontalLayout_3->addWidget(pushButtonClose);
 
-        pushButtonLogin = new QPushButton(widget);
+        pushButtonLogin = new QPushButton(layoutWidget);
         pushButtonLogin->setObjectName(QStringLiteral("pushButtonLogin"));
 
         horizontalLayout_3->addWidget(pushButtonLogin);
@@ -127,9 +131,6 @@ public:
         labelLogo = new QLabel(centralWidget);
         labelLogo->setObjectName(QStringLiteral("labelLogo"));
         labelLogo->setGeometry(QRect(200, 10, 191, 171));
-        labelDb = new QLabel(centralWidget);
-        labelDb->setObjectName(QStringLiteral("labelDb"));
-        labelDb->setGeometry(QRect(200, 210, 411, 16));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -156,7 +157,6 @@ public:
         pushButtonClose->setText(QApplication::translate("MainWindow", "Quit", Q_NULLPTR));
         pushButtonLogin->setText(QApplication::translate("MainWindow", "Log In", Q_NULLPTR));
         labelLogo->setText(QString());
-        labelDb->setText(QString());
     } // retranslateUi
 
 };

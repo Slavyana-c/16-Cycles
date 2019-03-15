@@ -360,8 +360,7 @@ qrc_resourcefile.cpp: ../../16cycles/resourcefile.qrc \
 		/usr/lib64/qt5/bin/rcc \
 		../../16cycles/images/app_static_images_logo.png \
 		../../16cycles/images/employees.db \
-		../../16cycles/database/employees.sqlite \
-		../../16cycles/database/app.db
+		../../16cycles/database/employees.sqlite
 	/usr/lib64/qt5/bin/rcc -name resourcefile ../../16cycles/resourcefile.qrc -o qrc_resourcefile.cpp
 
 compiler_moc_predefs_make_all: moc_predefs.h
