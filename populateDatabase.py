@@ -61,6 +61,22 @@ def addIndividualBikes():
 
     db.session.commit()
 
-addBikeTypes()
-addShops()
-addIndividualBikes()
+def addRentalRates():
+    # for every bike, we can see how much it costs to rent it
+
+    # rental Rental_Rates (percentage of bike price)
+    #
+    # day 2%
+    # week 8%
+    # month 20%
+    bikeIDs = []
+    bikePrices = []
+    allBikes = models.Bike_Types.query.all()
+    for bike in allBikes:
+        bikeIDs.append(bike.id)
+        bikePrices.append(bike.price)
+
+
+#addBikeTypes()
+#addShops()
+#addIndividualBikes()
