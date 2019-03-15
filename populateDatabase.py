@@ -3,6 +3,25 @@ from app import db, models
 import os.path
 import random
 
+
+
+def readFromCSV():
+    bikeData = open("bikeSpreadsheet.csv").read()  # read from the database
+    bikeData = bikeData.split(",") # split by commas
+
+    # since the last column ends with a \n, remove these newlines, which
+    # is a litle bit difficult since ["price\n14"] -> ["price","14"]
+    # which will cause some indexing errors, so we have to be careful.
+    i = 0
+    while(i<len(bikeData)):
+        if("\n" in bikeData[i]):
+            bikeData = bikeData[:i] + [bikeData[i].split("\n")[0]] + [bikeData[i].split("\n")[1]] + bikeData[i+1:]
+        i+=1
+    # remove the header and the last item which is just ''
+    bikeData = bikeData[9:-1]
+
+    return bikeData
+
 def addBikeTypes():
     bikeData = open("bikeSpreadsheet.csv").read()  # read from the database
     bikeData = bikeData.split(",") # split by commas
@@ -12,11 +31,9 @@ def addBikeTypes():
     # which will cause some indexing errors, so we have to be careful.
     i = 0
     while(i<len(bikeData)):
-
         if("\n" in bikeData[i]):
             bikeData = bikeData[:i] + [bikeData[i].split("\n")[0]] + [bikeData[i].split("\n")[1]] + bikeData[i+1:]
         i+=1
-
     # remove the header and the last item which is just ''
     bikeData = bikeData[9:-1]
 
@@ -63,20 +80,30 @@ def addIndividualBikes():
 
 def addRentalRates():
     # for every bike, we can see how much it costs to rent it
-    # doing
     # rental Rental_Rates (percentage of bike price)
     #
     # day 2%
     # week 8%
     # month 20%
+    dayPercent = 0.02
+    weekPercent = 0.08
+    monthPercent = 0.2
     bikeIDs = []
-    bikePrices = []
+    allBikeData = readFromCSV()
     allBikes = models.Bike_Types.query.all()
     for bike in allBikes:
         bikeIDs.append(bike.id)
-        bikePrices.append(bike.price)
+    for i in range(0,len(allBikeData),9):
+        bikePrice = int(allBikeData[i+8])
+        newRentalRate = models.Rental_Rates(daily_rate=round(bikePrice*dayPercent),
+                                            weekly_rate=round(bikePrice*weekPercent),
+                                            monthly_rate=round(bikePrice*monthPercent),
+                                            bike_type_id=bikeIDs[i//9]
+                                            )
+        db.session.add(newRentalRate)
+    db.session.commit()
 
-
-#addBikeTypes()
-#addShops()
-#addIndividualBikes()
+addShops()
+addBikeTypes()
+addIndividualBikes()
+addRentalRates()

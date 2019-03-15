@@ -1,6 +1,6 @@
 from flask import render_template, flash, url_for, redirect, request, abort
 from app import app, db, bcrypt, admin, models
-from app.models import Users,Bike_Types,Bikes,Shops
+from app.models import Users,Bike_Types,Bikes,Shops,Rental_Rates
 from .forms import NewUserForm, LoginForm, SelectDates, ExtendDate, PasswordChangeForm
 
 # all imports for sending emails
@@ -19,6 +19,7 @@ admin.add_view(ModelView(Users, db.session))
 admin.add_view(ModelView(Bike_Types, db.session))
 admin.add_view(ModelView(Bikes, db.session))
 admin.add_view(ModelView(Shops, db.session))
+admin.add_view(ModelView(Rental_Rates, db.session))
 @app.route('/')
 def home():
     return render_template("home.html")
