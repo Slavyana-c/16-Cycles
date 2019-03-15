@@ -104,7 +104,6 @@
   <!-- //////////////////// END ROW DIV \\\\\\\\\\\\\\\\\\\\\\\ -->
 
 {# /////////////////////// BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
-
       <div class="bike-grid">
          {% for bike in data %}
 
@@ -115,7 +114,9 @@
                 src={{bike.image}} alt="Bicyle">
               <div class="vignette"></div>
               <div class="bike-price-label">
+
                  {{bike.rental_rates}}/Day
+                 {# {{rental_rates.query.get(1).daily_rate}}/Day #}
               </div>
 
             </div>
