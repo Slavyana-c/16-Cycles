@@ -18,7 +18,9 @@ from flask_admin.contrib.sqla import ModelView
 from flask_login import login_user, logout_user, current_user, login_required
 admin.add_view(ModelView(Users, db.session))
 admin.add_view(ModelView(Bike_Types, db.session))
-admin.add_view(ModelView(Rental_Rates,db.session))
+admin.add_view(ModelView(Bikes, db.session))
+admin.add_view(ModelView(Shops, db.session))
+admin.add_view(ModelView(Rental_Rates, db.session))
 @app.route('/')
 def home():
     return render_template("home.html")
@@ -34,7 +36,6 @@ def meetOurStaff():
 @app.route('/browse')
 def browse():
     form = SelectDates();
-
     data = Bike_Types.query.all()#(brand='Voodoo')
     rental_rates = Rental_Rates.query.all()
 
