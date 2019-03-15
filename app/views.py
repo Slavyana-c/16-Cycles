@@ -18,8 +18,8 @@ from flask_admin.contrib.sqla import ModelView
 from flask_login import login_user, logout_user, current_user, login_required
 admin.add_view(ModelView(Users, db.session))
 admin.add_view(ModelView(Bike_Types, db.session))
-admin.add_view(ModelView(Bikes, db.session))
-admin.add_view(ModelView(Shops, db.session))
+#admin.add_view(ModelView(Bikes, db.session))
+#admin.add_view(ModelView(Shops, db.session))
 admin.add_view(ModelView(Rental_Rates, db.session))
 @app.route('/')
 def home():
