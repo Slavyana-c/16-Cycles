@@ -105,7 +105,9 @@
 
 {# /////////////////////// BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
       <div class="bike-grid">
+
          {% for bike in data %}
+            {% set bikeDailyPrice = Rental_Rates.query.filter_by(bike_type_id=bike.id).first() %}
 
             <div class="bike-box">
 
@@ -115,7 +117,7 @@
               <div class="vignette"></div>
               <div class="bike-price-label">
 
-                 {{bike.rental_rates}}/Day
+                 {{bikeDailyPrice.daily_rate}}/Day
                  {# {{rental_rates.query.get(1).daily_rate}}/Day #}
               </div>
 

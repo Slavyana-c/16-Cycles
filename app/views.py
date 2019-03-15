@@ -39,7 +39,7 @@ def browse():
     rental_rates = Rental_Rates.query.all()
 
 
-    return render_template("browse.html", form=form,data=data, rental_rates=rental_rates) # redirect to the bike search page, giving all the data
+    return render_template("browse.html", Bike_Types=Bike_Types, Rental_Rates=Rental_Rates, form=form,data=data, rental_rates=rental_rates) # redirect to the bike search page, giving all the data
 
 @app.route('/bikePage/',methods=['GET', 'POST'])
 # @app.route('/bikePage/?brand=<brand>&model=<model>')
