@@ -63,7 +63,7 @@ def addIndividualBikes():
 
 def addRentalRates():
     # for every bike, we can see how much it costs to rent it
-
+    # doing
     # rental Rental_Rates (percentage of bike price)
     #
     # day 2%
