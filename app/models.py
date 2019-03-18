@@ -1,4 +1,3 @@
-
 from app import db, app, login_manager
 from datetime import datetime
 from flask_login import UserMixin
@@ -46,6 +45,7 @@ class Bikes(db.Model):
     bike_type_id = db.Column(db.Integer, db.ForeignKey('bike_types.id'), nullable=False)
     shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
     # Relationship to Bookings and repairs
+
     rented_bikes = db.relationship('Rented_Bikes', backref='bike', lazy=True)
     repairs = db.relationship('Repairs', backref='bike', lazy=True)
 

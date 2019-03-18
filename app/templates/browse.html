@@ -52,8 +52,10 @@
                              Type
                           </a>
                           <ul class="collapse list-unstyled" id="homeSubmenu">
-                              <li> <a class="subtype" href="#">-choosetype1</a> </li>
-                              <li> <a class="subtype" href="#">-choosetype2</a> </li>
+                              <li> <a class="subtype" href="#">-Road</a> </li>
+                              <li> <a class="subtype" href="#">-Mountain</a> </li>
+                              <li> <a class="subtype" href="#">-Hybrid</a> </li>
+                              <li> <a class="subtype" href="#">-Electric</a> </li>
                           </ul>
                       </li>
 
@@ -62,12 +64,29 @@
                              data-toggle="collapse"
                              aria-expanded="false"
                              class="dropdown-toggle">
-                             Brand
+                             Age
                           </a>
                           <ul class="collapse list-unstyled" id="pageSubmenu">
-                              <li> <a class="subtype" href="#">-choosebrand1</a> </li>
-                              <li> <a class="subtype" href="#">-choosebrand2</a> </li>
-                              <li> <a class="subtype" href="#">-choosebrand3</a> </li>
+                              <li> <a class="subtype" href="#">-Adult</a> </li>
+                              <li> <a class="subtype" href="#">-Child</a> </li>
+                          </ul>
+                      </li>
+
+                      <li>
+                          <a href="#otherSubmenu"
+                             data-toggle="collapse"
+                             aria-expanded="false"
+                             class="dropdown-toggle">
+                             Colour
+                          </a>
+                          <ul class="collapse list-unstyled" id="otherSubmenu">
+                              <li> <a class="subtype" href="#">-Blue</a> </li>
+                              <li> <a class="subtype" href="#">-Red</a> </li>
+                              <li> <a class="subtype" href="#">-Grey</a> </li>
+                              <li> <a class="subtype" href="#">-Black</a> </li>
+                              <li> <a class="subtype" href="#">-White</a> </li>
+                              <li> <a class="subtype" href="#">-Brown</a> </li>
+                              <li> <a class="subtype" href="#">-Red</a> </li>
                           </ul>
                       </li>
                   </ul>
@@ -104,18 +123,21 @@
   <!-- //////////////////// END ROW DIV \\\\\\\\\\\\\\\\\\\\\\\ -->
 
 {# /////////////////////// BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
-
       <div class="bike-grid">
-         {% for n in range(10) %}
+
+         {% for bike in data %}
+            {% set bikeDailyPrice = Rental_Rates.query.filter_by(bike_type_id=bike.id).first() %}
 
             <div class="bike-box">
 
               <div class="bike-photo-section">
                 <img class="bike-photo"
-                src="http://www.arrowcycles.co.uk/images/spec/91219-30_rh_expert-29_blk-acdkwi-char_hero.jpg?maxheight=1200" alt="Bicycle">
+                src={{bike.image}} alt="Bicyle">
               <div class="vignette"></div>
               <div class="bike-price-label">
-                 PRICE/PERIOD
+
+                 {{bikeDailyPrice.daily_rate}}/Day
+                 {# {{rental_rates.query.get(1).daily_rate}}/Day #}
               </div>
 
             </div>
@@ -123,8 +145,11 @@
               <hr class="seperator">
 
               <div class="bike-name-section">
-                BIKE TYPE AND NAME HERE
-                <button class="btn btn-details" type="submit">Details</button>
+                {{ bike.brand  + " " + bike.model}}
+
+                <form action="{{ url_for('bikePage', brand=bike.brand, model = bike.model, bike_id = bike.id) }}" method="post">
+                    <input class="btn btn-details" type="submit" value="Details" />
+                </form>
               </div>
 
             </div>
