@@ -41,7 +41,52 @@
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sollicitudin tempor id eu nisl nunc mi. Integer eget aliquet nibh praesent tristique magna sit amet. Imperdiet nulla malesuada pellentesque elit eget. Ac ut consequat semper viverra nam. Gravida arcu ac tortor dignissim. Id ornare arcu odio ut sem nulla. Habitasse platea dictumst quisque sagittis purus sit amet. Urna id volutpat lacus laoreet non. Sagittis aliquam malesuada bibendum arcu vitae elementum curabitur vitae. Volutpat maecenas volutpat blandit aliquam etiam. Eu feugiat pretium nibh ipsum consequat nisl vel pretium lectus. Commodo quis imperdiet massa tincidunt. Neque laoreet suspendisse interdum consectetur libero id faucibus nisl tincidunt.
 </div>
 
+<script>
+  function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 15
+    });
+    var geocoder = new google.maps.Geocoder();
+    var address = "Leeds"
 
+    var infowindow = new google.maps.InfoWindow({
+        content: "<h4>Store name</h4>" +
+                  "<b>Address:</b> some address here</br>" +
+                  "<b>Phone:</b> 123456789</br>" +
+                  "<b>Bikes in store:</b> 20</br>"
+    });
+
+
+    geocoder.geocode({'address': address}, function(results, status) {
+      if (status === 'OK') {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location,
+          title: "16 Cycles"
+        });
+        marker.addListener('click', function() {
+        infowindow.open(map, marker);
+        });
+
+
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+
+
+
+    // document.getElementById('submit').addEventListener('click', function() {
+    //   geocodeAddress(geocoder, map);
+    }
+</script>
+
+
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCY36qrgn3bctMLfK9BUiOBm7nP2rSPygo&callback=initMap">
+</script>
 
 </div>
 {% endblock %}
