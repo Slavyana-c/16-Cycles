@@ -1,6 +1,6 @@
 from flask import render_template, flash, url_for, redirect, request, abort
 from app import app, db, bcrypt, admin, models
-from app.models import Users,Bike_Types,Bikes,Shops,Rental_Rates
+from app.models import Users,Bike_Types,Bikes,Shops,Rental_Rates,Orders,Rented_Bikes
 from .forms import NewUserForm, LoginForm, SelectDates, ExtendDate, PasswordChangeForm
 
 # all imports for sending emails
@@ -11,6 +11,10 @@ from email.mime.base import MIMEBase
 from email.mime.image import MIMEImage
 from email import encoders
 
+# datetime things
+import datetime,time
+from datetime import timedelta
+
 # all imports for QR Code Generation
 import pyqrcode
 from flask_admin.contrib.sqla import ModelView
@@ -20,6 +24,9 @@ admin.add_view(ModelView(Bike_Types, db.session))
 admin.add_view(ModelView(Bikes, db.session))
 admin.add_view(ModelView(Shops, db.session))
 admin.add_view(ModelView(Rental_Rates, db.session))
+admin.add_view(ModelView(Orders, db.session))
+admin.add_view(ModelView(Rented_Bikes, db.session))
+
 @app.route('/')
 def home():
     return render_template("home.html")
@@ -33,17 +40,36 @@ def meetOurStaff():
     return render_template("meetOurStaff.html") # redirect to the about page
 
 @app.route('/browse')
-def browse():
+
+# lots of default arguments given here
+def browse(startWindow=datetime.datetime.now(),
+           endWindow=datetime.datetime.now()+timedelta(days=1),
+           shopID = 1):
     form = SelectDates();
-    #data = Bike_Types.query.all()#(brand='Voodoo')
-
     bikeTypes = Bike_Types.query.all()
-    bikes = Bikes.query.filter_by(shop_id="1")
+    bikes = Bikes.query.filter_by(shop_id=shopID).all()
     rentalRates = Rental_Rates.query.all()
-    print("\nGot some data")
+    orders = Orders.query.all()
+    rentedBikes = Rented_Bikes.query.all()
+    bikesToRemove = [] # stores the ID's of bikes we need to remove
+    i = 0
+    while(i < len(rentedBikes)):
+        # checks to see if the bike is available within the given dates
+        if(rentedBikes[i].start_date <= startWindow and rentedBikes[i].end_date >= startWindow or
+           rentedBikes[i].start_date >= startWindow and rentedBikes[i].start_date <= endWindow):
+            bikesToRemove.append(rentedBikes[i].bike_id)
+        i += 1
 
-    for bike in bikes:
-        print("Bike: ",bike.bike_type_id,bikeTypes[bike.bike_type_id].brand,bikeTypes[bike.bike_type_id].model,rentalRates[bike.bike_type_id].daily_rate)
+    # remove the bikes that will be rented in the given time
+    i = 0
+    while(i < len(bikes)):
+        if(bikes[i].bike_type_id in bikesToRemove):
+            bikes = bikes[:i] + bikes[i+1:]
+        else:
+            i+=1
+
+    # now the only bikes shown to the user are the ones they can actually rent
+
     return render_template("browse.html", form=form,data=[bikes,bikeTypes,rentalRates]) # redirect to the bike search page, giving all the data
 
 @app.route('/bikePage')

@@ -57,6 +57,8 @@ class SelectDates(FlaskForm):
 	start_date = DateField('Rent Start Date', validators=[DataRequired()])
 	end_date = DateField('Rent End Date', validators=[DataRequired()])
 	submit = SubmitField('Select Date')
+	print("here")
+
 
 class ExtendDate(FlaskForm):
 	new_end_date = DateField('Extend Date', validators=[DataRequired()])
