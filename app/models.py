@@ -102,7 +102,7 @@ class Rented_Bikes(db.Model):
     __tablename__ = 'rented_bikes'
     id = db.Column(db.Integer, primary_key=True)
     start_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    end_date = db.Column(db.String(500), nullable=False)
+    end_date = db.Column(db.DateTime, nullable=False)
     price = db.Column(db.Float, default=0.0)
     # Foreign keys
     bike_id = db.Column(db.Integer, db.ForeignKey('bikes.id'), nullable=False)
