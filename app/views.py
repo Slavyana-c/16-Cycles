@@ -35,8 +35,16 @@ def meetOurStaff():
 @app.route('/browse')
 def browse():
     form = SelectDates();
-    data = Bike_Types.query.all()#(brand='Voodoo')
-    return render_template("browse.html", form=form,data=data) # redirect to the bike search page, giving all the data
+    #data = Bike_Types.query.all()#(brand='Voodoo')
+
+    bikeTypes = Bike_Types.query.all()
+    bikes = Bikes.query.filter_by(shop_id="1")
+    rentalRates = Rental_Rates.query.all()
+    print("\nGot some data")
+
+    for bike in bikes:
+        print("Bike: ",bike.bike_type_id,bikeTypes[bike.bike_type_id].brand,bikeTypes[bike.bike_type_id].model,rentalRates[bike.bike_type_id].daily_rate)
+    return render_template("browse.html", form=form,data=[bikes,bikeTypes,rentalRates]) # redirect to the bike search page, giving all the data
 
 @app.route('/bikePage')
 def bikePage():

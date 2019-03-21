@@ -125,16 +125,16 @@
 {# /////////////////////// BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
 
       <div class="bike-grid">
-         {% for bike in data %}
+         {% for bike in data[0] %}
 
             <div class="bike-box">
 
               <div class="bike-photo-section">
                 <img class="bike-photo"
-                src={{bike.image}} alt="Bicyle">
+                src={{data[1][bike.bike_type_id].image}} alt="Bicyle">
               <div class="vignette"></div>
               <div class="bike-price-label">
-                 15/Day
+                 {{ data[2][bike.bike_type_id].daily_rate }}
               </div>
 
             </div>
@@ -142,7 +142,7 @@
               <hr class="seperator">
 
               <div class="bike-name-section">
-                {{ bike.brand  + " " + bike.model}}
+                {{ data[1][bike.bike_type_id].brand  + " " + data[1][bike.bike_type_id].model}}
                 <button class="btn btn-details" type="submit">Details</button>
               </div>
 

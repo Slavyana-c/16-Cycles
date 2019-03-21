@@ -103,7 +103,7 @@ def addRentalRates():
         db.session.add(newRentalRate)
     db.session.commit()
 
-addShops()
-addBikeTypes()
-addIndividualBikes()
-addRentalRates()
+#addShops()
+#addBikeTypes()
+#addIndividualBikes()
+#addRentalRates()
