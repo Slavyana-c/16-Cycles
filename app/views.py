@@ -46,6 +46,8 @@ def browse(startWindow=datetime.datetime.now(),
            endWindow=datetime.datetime.now()+timedelta(days=1),
            shopID = 1):
     form = SelectDates();
+    if form.validate_on_submit():
+        print("Button pressed or somethign")
     bikeTypes = Bike_Types.query.all()
     bikes = Bikes.query.filter_by(shop_id=shopID).all()
     rentalRates = Rental_Rates.query.all()

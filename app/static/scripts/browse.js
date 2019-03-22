@@ -12,3 +12,8 @@ function changeColour() {
   document.getElementById("button").style.backgroundColor = "red";
 }
 
+function refreshBrowse() {
+  document.getElementById("startDate")
+  document.getElementById("endDate")
+  console.log("Test")
+}
