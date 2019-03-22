@@ -44,49 +44,83 @@
                   </div>
 
                   <ul class="list-unstyled components">
+
+                    <li>
+                        <a href="#shopSubmenu"
+                           data-toggle="collapse"
+                           aria-expanded="false"
+                           class="dropdown-toggle">
+                           <b>Shop</b>
+                        </a>
+                        <ul class="collapse list-unstyled" id="shopSubmenu">
+                            <div class="shopRadio"><input type="radio" name="shop" checked> University     </div>
+                            <div class="shopRadio"><input type="radio" name="shop"        > Town     </div>
+                            <div class="shopRadio"><input type="radio" name="shop"        > Headingley     </div>
+                        </ul>
+                    </li>
+
                       <li class="active">
-                          <a href="#homeSubmenu"
+                          <a href="#bikeTypeSubmenu"
                              data-toggle="collapse"
                              aria-expanded="false"
                              class="dropdown-toggle">
-                             Type
+                             <b>Type</b>
                           </a>
-                          <ul class="collapse list-unstyled" id="homeSubmenu">
-                              <li> <a class="subtype" href="#">-Road</a> </li>
-                              <li> <a class="subtype" href="#">-Mountain</a> </li>
-                              <li> <a class="subtype" href="#">-Hybrid</a> </li>
-                              <li> <a class="subtype" href="#">-Electric</a> </li>
+                          <ul class="collapse list-unstyled" id="bikeTypeSubmenu">
+                              <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Road     </div>
+                              <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Mountain </div>
+                              <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Hybrid   </div>
+                              <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Electric </div>
                           </ul>
                       </li>
 
                       <li>
-                          <a href="#pageSubmenu"
+                          <a href="#userTypeSubmenu"
                              data-toggle="collapse"
                              aria-expanded="false"
                              class="dropdown-toggle">
-                             Age
+                             <b>Age</b>
                           </a>
-                          <ul class="collapse list-unstyled" id="pageSubmenu">
-                              <li> <a class="subtype" href="#">-Adult</a> </li>
-                              <li> <a class="subtype" href="#">-Child</a> </li>
+                          <ul class="collapse list-unstyled" id="userTypeSubmenu">
+                              <div class="userTypeRadio"><input type="radio" name="userType"        > Adult     </div>
+                              <div class="userTypeRadio"><input type="radio" name="userType"        > Child     </div>
                           </ul>
                       </li>
 
                       <li>
-                          <a href="#otherSubmenu"
+                          <a href="#colourSubmenu"
                              data-toggle="collapse"
                              aria-expanded="false"
                              class="dropdown-toggle">
-                             Colour
+                             <b>Colour</b>
                           </a>
-                          <ul class="collapse list-unstyled" id="otherSubmenu">
-                              <li> <a class="subtype" href="#">-Blue</a> </li>
-                              <li> <a class="subtype" href="#">-Red</a> </li>
-                              <li> <a class="subtype" href="#">-Grey</a> </li>
-                              <li> <a class="subtype" href="#">-Black</a> </li>
-                              <li> <a class="subtype" href="#">-White</a> </li>
-                              <li> <a class="subtype" href="#">-Brown</a> </li>
-                              <li> <a class="subtype" href="#">-Red</a> </li>
+                          <ul class="collapse list-unstyled" id="colourSubmenu">
+                              <div class="colourRadio"><input type="radio" name="colour"        > Blue     </div>
+                              <div class="colourRadio"><input type="radio" name="colour"        > Red     </div>
+                              <div class="colourRadio"><input type="radio" name="colour"        > Grey     </div>
+                              <div class="colourRadio"><input type="radio" name="colour"        > Black     </div>
+                              <div class="colourRadio"><input type="radio" name="colour"        > White     </div>
+                              <div class="colourRadio"><input type="radio" name="colour"        > Brown     </div>
+                              <div class="colourRadio"><input type="radio" name="colour"        > Red     </div>
+                          </ul>
+                      </li>
+
+                      <li>
+                          <a href="#brandSubmenu"
+                             data-toggle="collapse"
+                             aria-expanded="false"
+                             class="dropdown-toggle">
+                             <b>Brand</b>
+                          </a>
+                          <ul class="collapse list-unstyled" id="brandSubmenu">
+                              <div class="brandRadio"><input type="radio" name="brand"        > Apollo      </div>
+                              <div class="brandRadio"><input type="radio" name="brand"        > Boardman    </div>
+                              <div class="brandRadio"><input type="radio" name="brand"        > Carrera     </div>
+                              <div class="brandRadio"><input type="radio" name="brand"        > Elswick     </div>
+                              <div class="brandRadio"><input type="radio" name="brand"        > Gtech       </div>
+                              <div class="brandRadio"><input type="radio" name="brand"        > Pendleton   </div>
+                              <div class="brandRadio"><input type="radio" name="brand"        > Raleigh     </div>
+                              <div class="brandRadio"><input type="radio" name="brand"        > Voodoo      </div>
                           </ul>
                       </li>
                   </ul>
@@ -120,6 +154,7 @@
 
         </div>
         {# --------------------------  END SORT MENU -------------------------- #}
+
   </div>
   <!-- //////////////////// END ROW DIV \\\\\\\\\\\\\\\\\\\\\\\ -->
 
