@@ -3,7 +3,7 @@
 
 <head>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/browse.css') }}">
-    <script src="../css/scripts/browse.js"> </script>
+    <script src="../css/scripts/browse.js"></script>
     {#<script rel="script" href="{{ url_for('static', filename='scripts/browse.js') }}"></script>#}
 </head>
 
@@ -52,8 +52,10 @@
                              Type
                           </a>
                           <ul class="collapse list-unstyled" id="homeSubmenu">
-                              <li> <a class="subtype" href="#">-choosetype1</a> </li>
-                              <li> <a class="subtype" href="#">-choosetype2</a> </li>
+                              <li> <a class="subtype" href="#">-Road</a> </li>
+                              <li> <a class="subtype" href="#">-Mountain</a> </li>
+                              <li> <a class="subtype" href="#">-Hybrid</a> </li>
+                              <li> <a class="subtype" href="#">-Electric</a> </li>
                           </ul>
                       </li>
 
@@ -62,12 +64,29 @@
                              data-toggle="collapse"
                              aria-expanded="false"
                              class="dropdown-toggle">
-                             Brand
+                             Age
                           </a>
                           <ul class="collapse list-unstyled" id="pageSubmenu">
-                              <li> <a class="subtype" href="#">-choosebrand1</a> </li>
-                              <li> <a class="subtype" href="#">-choosebrand2</a> </li>
-                              <li> <a class="subtype" href="#">-choosebrand3</a> </li>
+                              <li> <a class="subtype" href="#">-Adult</a> </li>
+                              <li> <a class="subtype" href="#">-Child</a> </li>
+                          </ul>
+                      </li>
+
+                      <li>
+                          <a href="#otherSubmenu"
+                             data-toggle="collapse"
+                             aria-expanded="false"
+                             class="dropdown-toggle">
+                             Colour
+                          </a>
+                          <ul class="collapse list-unstyled" id="otherSubmenu">
+                              <li> <a class="subtype" href="#">-Blue</a> </li>
+                              <li> <a class="subtype" href="#">-Red</a> </li>
+                              <li> <a class="subtype" href="#">-Grey</a> </li>
+                              <li> <a class="subtype" href="#">-Black</a> </li>
+                              <li> <a class="subtype" href="#">-White</a> </li>
+                              <li> <a class="subtype" href="#">-Brown</a> </li>
+                              <li> <a class="subtype" href="#">-Red</a> </li>
                           </ul>
                       </li>
                   </ul>
@@ -106,31 +125,25 @@
 {# /////////////////////// BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
 
       <div class="bike-grid">
-         {% for n in range(10) %}
+         {% for bike in data[0] %}
 
             <div class="bike-box">
 
               <div class="bike-photo-section">
                 <img class="bike-photo"
-                src="http://www.arrowcycles.co.uk/images/spec/91219-30_rh_expert-29_blk-acdkwi-char_hero.jpg?maxheight=1200" alt="Bicycle">
-
-                <div class="vignette"></div>
-
-                <div class="bike-price-label">
-                   PRICE/PERIOD
-                </div>
-
+                src={{data[1][bike.bike_type_id].image}} alt="Bicyle">
+              <div class="vignette"></div>
+              <div class="bike-price-label">
+                 {{ data[2][bike.bike_type_id].daily_rate }} / day
               </div>
+
+            </div>
 
               <hr class="seperator">
 
               <div class="bike-name-section">
-                BIKE TYPE AND NAME HERE
-                  <form action="/bikePage">
-                      <input class="btn btn-details" type="submit" value="Details" />
-{#                      <button class="btn btn-details" type="button">Details</button>#}
-                  </form>
-{#                <button class="btn btn-details" type="button" href="/bikePage">Details</button>#}
+                {{ data[1][bike.bike_type_id].brand  + " " + data[1][bike.bike_type_id].model}}
+                <button class="btn btn-details" type="submit">Details</button>
               </div>
 
             </div>
