@@ -2,4 +2,8 @@
 app/*.pyc
 /flask
 *.db-journal
-app/__init__.py
+<<<<<<< HEAD
+/.idea
+.idea/workspace.xml
+=======
+>>>>>>> 054f1a4fac7356c3c51241470f1b211e8173fb51
