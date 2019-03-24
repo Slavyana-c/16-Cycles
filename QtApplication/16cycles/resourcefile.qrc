@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/resourcefile">
-        <file>images/app_static_images_logo.png</file>
-        <file>database/employees.sqlite</file>
-        <file>images/employees.db</file>
-        <file>database/app.db</file>
-    </qresource>
-</RCC>

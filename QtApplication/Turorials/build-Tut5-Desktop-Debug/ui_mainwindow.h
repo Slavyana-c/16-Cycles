@@ -46,6 +46,7 @@ public:
     QPushButton *pushButtonClose;
     QPushButton *pushButtonLogin;
     QLabel *labelLogo;
+    QLabel *labeldb;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -131,6 +132,9 @@ public:
         labelLogo = new QLabel(centralWidget);
         labelLogo->setObjectName(QStringLiteral("labelLogo"));
         labelLogo->setGeometry(QRect(200, 10, 191, 171));
+        labeldb = new QLabel(centralWidget);
+        labeldb->setObjectName(QStringLiteral("labeldb"));
+        labeldb->setGeometry(QRect(192, 209, 691, 41));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -157,6 +161,7 @@ public:
         pushButtonClose->setText(QApplication::translate("MainWindow", "Quit", Q_NULLPTR));
         pushButtonLogin->setText(QApplication::translate("MainWindow", "Log In", Q_NULLPTR));
         labelLogo->setText(QString());
+        labeldb->setText(QApplication::translate("MainWindow", "None", Q_NULLPTR));
     } // retranslateUi
 
 };
