@@ -3,8 +3,8 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from wtforms.fields.html5 import DateField, IntegerField
 from app.models import Users
-
-
+import datetime
+from datetime import timedelta
 
 
 
@@ -54,9 +54,10 @@ class PasswordChangeForm(FlaskForm):
 
 # form in the newTask.html
 class SelectDates(FlaskForm):
-	start_date = DateField('Rent Start Date', validators=[DataRequired()])
-	end_date = DateField('Rent End Date', validators=[DataRequired()])
-	submit = SubmitField('Select Date')
+	start_date = DateField('Rent Start Date', validators=[DataRequired()], default=datetime.datetime.now())
+	end_date = DateField('Rent End Date', validators=[DataRequired()], default=datetime.datetime.now()+timedelta(days=1))
+	submit = SubmitField('Search')
+
 
 class ExtendDate(FlaskForm):
 	new_end_date = DateField('Extend Date', validators=[DataRequired()])

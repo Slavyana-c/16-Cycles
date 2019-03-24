@@ -65,7 +65,6 @@
   width: 250px;
   background-color: rgb(48, 48, 48);
   padding-left: 50px;
-  text-transform: uppercase;
   float: left;
   position: absolute;
   top: 130px;
@@ -82,7 +81,6 @@
   margin-left: 0;
   padding: 10px;
   padding-left: 50px;
-  text-transform: uppercase;
   outline:none;
   transition: 0.5s;
 }
@@ -167,7 +165,6 @@
   font-family: "Roboto", sans-serif;
   font-weight: 700;
   font-size: 18px;
-  text-transform: uppercase;
   text-shadow: 0 0 10px #ffffff;
 }
 
@@ -257,7 +254,6 @@ body {
   /*margin-top: 40px;*/
   padding: 10px;
   padding-left: 50px;
-  text-transform: uppercase;
   /*float: right;*/
 }
 
@@ -360,7 +356,6 @@ a:hover
   width: 250px;
   background-color: rgb(48, 48, 48);
   padding-left: 50px;
-  text-transform: uppercase;
   float: left;
   position: absolute;
   top: 130px;
@@ -377,7 +372,6 @@ a:hover
   margin-left: 0;
   padding: 10px;
   padding-left: 50px;
-  text-transform: uppercase;
   outline:none;
   transition: 0.5s;
 }
@@ -462,7 +456,6 @@ a:hover
   font-family: "Roboto", sans-serif;
   font-weight: 700;
   font-size: 18px;
-  text-transform: uppercase;
   text-shadow: 0 0 10px #ffffff;
 }
 
@@ -552,7 +545,6 @@ body {
   /*margin-top: 40px;*/
   padding: 10px;
   padding-left: 50px;
-  text-transform: uppercase;
   /*float: right;*/
 }
 
