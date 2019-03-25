@@ -45,8 +45,8 @@ def meetOurStaff():
 # def browse(startWindow=datetime.datetime.now(),
 #            endWindow=datetime.datetime.now()+timedelta(days=1),
 #            shopID = 1):
-def browse(startWindow=datetime.datetime.now(),
-           endWindow=datetime.datetime.now()+timedelta(days=1),
+def browse(startWindow=datetime.datetime.today(),
+           endWindow=datetime.datetime.today()+timedelta(days=1),
            shopID = 1):
     form = SelectDates()
     if form.validate_on_submit():
@@ -102,7 +102,6 @@ def browse(startWindow=datetime.datetime.now(),
     # be shown to the user
     if(startWindow > endWindow):
         bikes = []
-        print("Bikes have been removed")
 
     # remove the bikes that will be rented in the given time
     i = 0
@@ -113,8 +112,7 @@ def browse(startWindow=datetime.datetime.now(),
             i+=1
 
     # now the only bikes shown to the user are the ones they can actually rent
-
-    return render_template("browse.html", filterForm=filterForm,form=form,data=[bikes,bikeTypes,rentalRates]) # redirect to the bike search page, giving all the data
+    return render_template("browse.html", filterForm=filterForm,form=form,data=[bikes,bikeTypes,rentalRates,startWindow,endWindow]) # redirect to the bike search page, giving all the data
 
 # OLD version of bikePage
 # @app.route('/bikePage')
@@ -127,20 +125,39 @@ def browse(startWindow=datetime.datetime.now(),
 def bikePage():
     brand = request.args.get('brand', default = 'BRAND', type = str)
     model = request.args.get('model', default = 'MODEL', type = str)
-    id = request.args.get('id', default = 'ID', type = str)
+    rentStart = request.args.get('rentStartDate',default='START',type = None)
+    rentEnd   = request.args.get('rentEndDate', default='END',type = None)
+    bikeId = request.args.get('bike_id', default = 'bike_id', type = str)
+
+    # doing string formatting
+    print(rentStart)
+    print(rentEnd)
+    rentStartDate = datetime.date(int(rentStart.split("-")[0]),int(rentStart.split("-")[1]),int(rentStart.split("-")[2][:2]))
+    rentEndDate = datetime.date(int(rentEnd.split("-")[0]),int(rentEnd.split("-")[1]),int(rentEnd.split("-")[2][:2]))
+    #rentEndDate   = [rentEnd.split("-")[0],rentEnd.split("-")[1],rentEnd.split("-")[2][:2]]
 
 
     print("BRAND: " + brand + " and MODEL: " + model)
-
+    print("START: ")
+    print(rentStartDate)
+    print(" and END: ")
+    print(rentEndDate)
+    print("bike id")
+    print(bikeId)
+    thisRentalRate = Rental_Rates.query.filter(Rental_Rates.bike_type_id == bikeId).first()
     form = SelectDates();
-    # data = Bike_Types.query.all()#(brand='Voodoo')
     data = Bike_Types.query.filter(and_(Bike_Types.brand == brand, Bike_Types.model == model)).first()
     image = data.image
 
+    print("This rental rate is ")
+    print(thisRentalRate)
+    bikeRentPrice = calculateRentPrice(rentStartDate,rentEndDate,thisRentalRate)
+    print("\nThe bike rent price  ")
+    print(bikeRentPrice)
     # redirectToIndividualBikePageURL = "bikePage?brand=" + brand + "&model=" + model
     # return redirect(url_for(redirectToIndividualBikePageURL))
 
-    return render_template("bikePage.html", data=data,image=image, form=form, brand=brand, model=model) # redirect to the bike search page
+    return render_template("bikePage.html", data=data,image=image, form=form, brand=brand, model=model,rentStart=rentStartDate,rentEnd=rentEndDate,rentPrice=bikeRentPrice) # redirect to the bike search page
 
 
 @app.route('/account')
@@ -194,6 +211,39 @@ def logout():
 	logout_user()
 	flash('You have successfully logged out', 'success')
 	return redirect(url_for('home'))
+
+
+def calculateRentPrice(startDate,endDate,rentalRates):
+    # we have a start date
+    # and an end date
+    # so we can find out the number of days
+    # we have a a daily rate, weekly rate and monthly rate
+
+    # we round the rental rate to the nearest 10p
+    # so it isn't as bad for the user
+
+    numberOfDays = (endDate-startDate).days
+
+    print("\nRental Rate")
+    print(numberOfDays)
+    print(rentalRates.daily_rate,rentalRates.weekly_rate,rentalRates.monthly_rate)
+
+    # less than a week case
+    if(numberOfDays < 7):
+        # return the number of days * the weekly raet
+        return rentalRates.daily_rate * numberOfDays
+
+    # less than a month case
+    if(numberOfDays < 28):
+        # we divide the weekly rate by seven and multiply my number of days
+        return round((rentalRates.weekly_rate/7) * numberOfDays,1)
+
+    # more than a month
+    # so we take the monthly rate / 28 and multiply by number of days
+    return round((rentalRates.monthly_rate/28) * numberOfDays,1)
+
+
+
 
 
 def makeBikeRentalsTable(databaseOutput):
