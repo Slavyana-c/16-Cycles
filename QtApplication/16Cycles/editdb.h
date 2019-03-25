@@ -15,6 +15,10 @@ public:
     explicit EditDb(QWidget *parent = 0);
     ~EditDb();
 
+private slots:
+
+    void on_homeButton_clicked();
+
 private:
     Ui::EditDb *ui;
 };
