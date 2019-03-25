@@ -45,8 +45,7 @@ class Bikes(db.Model):
     bike_type_id = db.Column(db.Integer, db.ForeignKey('bike_types.id'), nullable=False)
     shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
     # Relationship to Bookings and repairs
-
-    rented_bikes = db.relationship('Rented_Bikes', backref='bike', lazy=True)
+    #bookings = db.relationship('Bookings', backref='bike', lazy=True)
     repairs = db.relationship('Repairs', backref='bike', lazy=True)
 
 # The Bike_Types database model
@@ -81,9 +80,9 @@ class Shops(db.Model):
     __tablename__ = 'shops'
     id = db.Column(db.Integer, primary_key=True)
     location_name = db.Column(db.String(100), unique=True, nullable=False)
-    address = db.Column(db.String(100), unique=True, nullable=False)
 	latitude = db.Column(db.Float, default=0.0)
 	longitude = db.Column(db.Float, default=0.0)
+    address = db.Column(db.String(100), unique=True, nullable=False)
     contact_number = db.Column(db.String(15), nullable=False)
     # Relationship to Bikes
     bikes = db.relationship('Bikes', backref='shop', lazy=True)
@@ -104,7 +103,7 @@ class Rented_Bikes(db.Model):
     __tablename__ = 'rented_bikes'
     id = db.Column(db.Integer, primary_key=True)
     start_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    end_date = db.Column(db.String(500), nullable=False)
+    end_date = db.Column(db.DateTime, nullable=False)
     price = db.Column(db.Float, default=0.0)
     # Foreign keys
     bike_id = db.Column(db.Integer, db.ForeignKey('bikes.id'), nullable=False)

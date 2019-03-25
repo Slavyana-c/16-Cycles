@@ -3,8 +3,8 @@
 
 <head>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/browse.css') }}">
-    <script src="../css/scripts/browse.js"></script>
-    {#<script rel="script" href="{{ url_for('static', filename='scripts/browse.js') }}"></script>#}
+    <!-- <script src="../css/scripts/browse.js"></script> -->
+    <script rel="script" href="{{ url_for('static', filename='scripts/browse.js') }}"></script>
 </head>
 
 <div class="container">
@@ -44,49 +44,92 @@
                   </div>
 
                   <ul class="list-unstyled components">
+
+                    <li>
+                        <a href="#shopSubmenu"
+                           data-toggle="collapse"
+                           aria-expanded="false"
+                           class="dropdown-toggle">
+                           <b>Shop</b>
+                        </a>
+                        <ul class="collapse list-unstyled" id="shopSubmenu">
+                          <form method="POST" action="">
+                            <div class="shopRadio">
+                              <input type="radio" name="shop" checked id="option1" value=1> University  </input>
+                            </div>
+                            <div class="shopRadio">
+                              <input type="radio" name="shop" id="option2" value=2> Town </input>
+                            </div>
+                            <div class="shopRadio">
+                              <input type="radio" name="shop" id="option3" value=3> Headingley  </input>
+                            </div>
+
+                          </form>
+                        </ul>
+                    </li>
+
                       <li class="active">
-                          <a href="#homeSubmenu"
+                          <a href="#bikeTypeSubmenu"
                              data-toggle="collapse"
                              aria-expanded="false"
                              class="dropdown-toggle">
-                             Type
+                             <b>Type</b>
                           </a>
-                          <ul class="collapse list-unstyled" id="homeSubmenu">
-                              <li> <a class="subtype" href="#">-Road</a> </li>
-                              <li> <a class="subtype" href="#">-Mountain</a> </li>
-                              <li> <a class="subtype" href="#">-Hybrid</a> </li>
-                              <li> <a class="subtype" href="#">-Electric</a> </li>
+                          <ul class="collapse list-unstyled" id="bikeTypeSubmenu">
+                              <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Road     </div>
+                              <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Mountain </div>
+                              <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Hybrid   </div>
+                              <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Electric </div>
                           </ul>
                       </li>
 
                       <li>
-                          <a href="#pageSubmenu"
+                          <a href="#userTypeSubmenu"
                              data-toggle="collapse"
                              aria-expanded="false"
                              class="dropdown-toggle">
-                             Age
+                             <b>Age</b>
                           </a>
-                          <ul class="collapse list-unstyled" id="pageSubmenu">
-                              <li> <a class="subtype" href="#">-Adult</a> </li>
-                              <li> <a class="subtype" href="#">-Child</a> </li>
+                          <ul class="collapse list-unstyled" id="userTypeSubmenu">
+                              <div class="userTypeRadio"><input type="radio" name="userType"        > Adult     </div>
+                              <div class="userTypeRadio"><input type="radio" name="userType"        > Child     </div>
                           </ul>
                       </li>
 
                       <li>
-                          <a href="#otherSubmenu"
+                          <a href="#colourSubmenu"
                              data-toggle="collapse"
                              aria-expanded="false"
                              class="dropdown-toggle">
-                             Colour
+                             <b>Colour</b>
                           </a>
-                          <ul class="collapse list-unstyled" id="otherSubmenu">
-                              <li> <a class="subtype" href="#">-Blue</a> </li>
-                              <li> <a class="subtype" href="#">-Red</a> </li>
-                              <li> <a class="subtype" href="#">-Grey</a> </li>
-                              <li> <a class="subtype" href="#">-Black</a> </li>
-                              <li> <a class="subtype" href="#">-White</a> </li>
-                              <li> <a class="subtype" href="#">-Brown</a> </li>
-                              <li> <a class="subtype" href="#">-Red</a> </li>
+                          <ul class="collapse list-unstyled" id="colourSubmenu">
+                              <div class="colourRadio"><input type="radio" name="colour"        > Blue     </div>
+                              <div class="colourRadio"><input type="radio" name="colour"        > Red     </div>
+                              <div class="colourRadio"><input type="radio" name="colour"        > Grey     </div>
+                              <div class="colourRadio"><input type="radio" name="colour"        > Black     </div>
+                              <div class="colourRadio"><input type="radio" name="colour"        > White     </div>
+                              <div class="colourRadio"><input type="radio" name="colour"        > Brown     </div>
+                              <div class="colourRadio"><input type="radio" name="colour"        > Red     </div>
+                          </ul>
+                      </li>
+
+                      <li>
+                          <a href="#brandSubmenu"
+                             data-toggle="collapse"
+                             aria-expanded="false"
+                             class="dropdown-toggle">
+                             <b>Brand</b>
+                          </a>
+                          <ul class="collapse list-unstyled" id="brandSubmenu">
+                              <div class="brandRadio"><input type="radio" name="brand"        > Apollo      </div>
+                              <div class="brandRadio"><input type="radio" name="brand"        > Boardman    </div>
+                              <div class="brandRadio"><input type="radio" name="brand"        > Carrera     </div>
+                              <div class="brandRadio"><input type="radio" name="brand"        > Elswick     </div>
+                              <div class="brandRadio"><input type="radio" name="brand"        > Gtech       </div>
+                              <div class="brandRadio"><input type="radio" name="brand"        > Pendleton   </div>
+                              <div class="brandRadio"><input type="radio" name="brand"        > Raleigh     </div>
+                              <div class="brandRadio"><input type="radio" name="brand"        > Voodoo      </div>
                           </ul>
                       </li>
                   </ul>
@@ -98,46 +141,53 @@
         {# ----------------------------  SORT MENU -------------------------- #}
         <div class="sort-box">
 
+          {# <form method="POST" action="{{ url_for('browse', start=data[1][bike.bike_type_id].brand, end=data[1][bike.bike_type_id].model,id = bike.id) }}"> #}
+          <form method="POST" action="">
+                  {{ form.hidden_tag() }}
             <div class="form-group">
                 <div class="dateselection">
-                  {{ form.start_date.label(class="form-control-label")}}
+                  {{ form.start_date.label(class="form-control-label",id="startDate")}}
                   {{ form.start_date(class="form-control form-control-lg")}}
                 </div>
 
                 <div class="dateselection">
-                  {{ form.end_date.label(class="form-control-label")}}
+                  {{ form.end_date.label(class="form-control-label",id="endDate")}}
                   {{ form.end_date(class="form-control form-control-lg")}}
                 </div>
 
                 <div class="dateselection center">
-                  {{ form.submit(class="btn btn-outline-info") }}
-		        </div>
+                  <!-- <button type="button" onclick="refreshBrowse();" name="search" id="bikeSearchButton">Search</button> -->
+                  {{ form.submit(class="btn btn-outline-info", id="bikeSearchButton") }}
+		            </div>
+
+                <!-- <div class="form-group">
+                {{ form.submit(class="btn btn-outline-light")}}
+                </div> -->
 
                 <div></div>
 
             </div>
+          </form>
 
         </div>
         {# --------------------------  END SORT MENU -------------------------- #}
+
   </div>
   <!-- //////////////////// END ROW DIV \\\\\\\\\\\\\\\\\\\\\\\ -->
 
 {# /////////////////////// BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
-      <div class="bike-grid">
 
-         {% for bike in data %}
-            {% set bikeDailyPrice = Rental_Rates.query.filter_by(bike_type_id=bike.id).first() %}
+      <div class="bike-grid">
+         {% for bike in data[0] %}
 
             <div class="bike-box">
 
               <div class="bike-photo-section">
                 <img class="bike-photo"
-                src={{bike.image}} alt="Bicyle">
+                src={{data[1][bike.bike_type_id].image}} alt="Bicyle">
               <div class="vignette"></div>
               <div class="bike-price-label">
-
-                 {{bikeDailyPrice.daily_rate}}/Day
-                 {# {{rental_rates.query.get(1).daily_rate}}/Day #}
+                 {{ data[2][bike.bike_type_id].daily_rate }} / day
               </div>
 
             </div>
@@ -145,11 +195,12 @@
               <hr class="seperator">
 
               <div class="bike-name-section">
-                {{ bike.brand  + " " + bike.model}}
-
-                <form action="{{ url_for('bikePage', brand=bike.brand, model = bike.model, bike_id = bike.id) }}" method="post">
-                    <input class="btn btn-details" type="submit" value="Details" />
+                {{ data[1][bike.bike_type_id].brand  + " " + data[1][bike.bike_type_id].model}}
+                <!-- <button class="btn btn-details" type="submit">Details</button> -->
+                <form action="{{ url_for('bikePage', brand=data[1][bike.bike_type_id].brand, model = data[1][bike.bike_type_id].model, bike_id = bike.id) }}" method="post">
+                      <input class="btn btn-details" type="submit" value="Details" />
                 </form>
+
               </div>
 
             </div>

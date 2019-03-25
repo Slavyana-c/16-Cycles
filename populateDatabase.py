@@ -2,6 +2,7 @@ from config import SQLALCHEMY_DATABASE_URI
 from app import db, models
 import os.path
 import random
+import datetime
 
 
 
@@ -103,7 +104,37 @@ def addRentalRates():
         db.session.add(newRentalRate)
     db.session.commit()
 
-addShops()
-addBikeTypes()
-addIndividualBikes()
-addRentalRates()
+def addRentedBikes():
+
+    # first of all add a user
+    #newUser = models.Users(email="jonathancharlesalderson@gmail.com",
+    #                       password="pass",
+    #                       contact_number="99",
+    #                       times_rented=0)
+    #db.session.add(newUser)
+    #db.session.commit()
+    #newRental = models.Rented_Bikes(start_date)
+
+
+    # then give the user an order
+    #newOrder = models.Orders(date=datetime.datetime.now(),
+    #                         total_price=50,
+    #                         user_id=1,
+    #                        )
+    #db.session.add(newOrder)
+    #db.session.commit()
+
+
+    print(datetime.datetime.now())
+    start = datetime.datetime(2019,3,26,1,1,1,1)
+    end = datetime.datetime(2019,3,29,1,1,1,1)
+
+    newRental = models.Rented_Bikes(start_date = start, end_date= end,price = 45,bike_id=4,order_id=1)
+    db.session.add(newRental)
+    db.session.commit()
+
+#addShops()
+#addBikeTypes()
+#addIndividualBikes()
+#addRentalRates()
+#addRentedBikes()
