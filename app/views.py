@@ -78,12 +78,12 @@ def browse(startWindow=datetime.datetime.now(),
     bikesToRemove = [] # stores the ID's of bikes we need to remove
     i = 0
     while(i < len(rentedBikes)):
-        print("startWindow", end='| ')
-        print(     startWindow,end=' ')
-        print(type(startWindow))
-        print("rentedBikes[i].start_date.date()", end='| ')
-        print(     rentedBikes[i].start_date.date(), end=' ')
-        print(type(rentedBikes[i].start_date.date()))
+        # print("startWindow", end='| ')
+        # print(     startWindow,end=' ')
+        # print(type(startWindow))
+        # print("rentedBikes[i].start_date.date()", end='| ')
+        # print(     rentedBikes[i].start_date.date(), end=' ')
+        # print(type(rentedBikes[i].start_date.date()))
 
         # print(type(startWindow))
         # print(type(rentedBikes[i].start_date))
@@ -97,6 +97,12 @@ def browse(startWindow=datetime.datetime.now(),
                rentedBikes[i].start_date >= startWindow and rentedBikes[i].start_date <= endWindow):
                 bikesToRemove.append(rentedBikes[i].bike_id)
         i += 1
+
+    # if the start date is bigger than the end date, then no bikes should
+    # be shown to the user
+    if(startWindow > endWindow):
+        bikes = []
+        print("Bikes have been removed")
 
     # remove the bikes that will be rented in the given time
     i = 0
