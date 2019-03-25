@@ -1,75 +1,82 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Geocoding Service</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-        width: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      #floating-panel {
-        position: absolute;
-        top: 10px;
-        left: 25%;
-        z-index: 5;
-        background-color: #fff;
-        padding: 5px;
-        border: 1px solid #999;
-        text-align: center;
-        font-family: 'Roboto','sans-serif';
-        line-height: 30px;
-        padding-left: 10px;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="floating-panel">
-      <input id="address" type="textbox" value="Sydney, NSW">
-      <input id="submit" type="button" value="Geocode">
-    </div>
-    <div id="map"></div>
+{% extends "about.html" %}
+{% block content %}
 
-    <script>
-    function initMap() {
+<div id="map"></div>
 
-  var myLatLng = {lat: -25.363, lng: 131.044};
-  var myLatLng2 = {lat: -33.890542, lng: 151.274856};
-
+<script>
+function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 4,
-    center: myLatLng
+    zoom: 15
+  });
+  var geocoder = new google.maps.Geocoder();
+  var address = "Leeds Headingley"
+
+  var infowindow = new google.maps.InfoWindow({
+      content: "<h4>Store name</h4>" +
+                "<b>Address:</b> some address here</br>" +
+                "<b>Phone:</b> 123456789</br>" +
+                "<b>Bikes in store:</b> 20</br>"
   });
 
+  geocoder.geocode({'address': address}, function(results, status) {
+    if (status === 'OK') {
+      map.setCenter(results[0].geometry.location);
+      var marker = new google.maps.Marker({
+        map: map,
+        position: results[0].geometry.location,
+        title: "16 Cycles"
+      });
+      marker.addListener('click', function() {
+      infowindow.open(map, marker);
+      });
+
+
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
+    }
+  });
+
+
+  var myLatLng = {lat: 53.806631, lng: -1.555035};
   var marker = new google.maps.Marker({
-    position: myLatLng,
-    map: map,
-    title: 'Hello World!'
-  });
+      position: myLatLng,
+      map: map,
+      title: 'Hello World!'
+    });
 
 
+  google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+      return function() {
+          infowindow.setContent(content);
+          infowindow.open(map,marker);
+      };
+  })(marker,content,infowindow));
+
+  myLatLng = {lat: 53.810829, lng: -1.538412};
   marker = new google.maps.Marker({
-    position: myLatLng2,
-    map: map,
-    title: 'Hello World!'
-  });
-
-}
-    </script>
+        position: myLatLng,
+        infowindow: infowindow,
+        map: map,
+        title: 'Hello World!'
+      });
 
 
+        google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+            return function() {
+                infowindow.setContent(content);
+                infowindow.open(map,marker);
+            };
+        })(marker,content,infowindow));
 
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCY36qrgn3bctMLfK9BUiOBm7nP2rSPygo&callback=initMap">
-    </script>
-  </body>
-</html>
+
+  }
+
+</script>
+
+
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCY36qrgn3bctMLfK9BUiOBm7nP2rSPygo&callback=initMap">
+</script>
+
+{% endblock %}
