@@ -53,9 +53,18 @@
                            <b>Shop</b>
                         </a>
                         <ul class="collapse list-unstyled" id="shopSubmenu">
-                            <div class="shopRadio"><input type="radio" name="shop" checked> University     </div>
-                            <div class="shopRadio"><input type="radio" name="shop"        > Town     </div>
-                            <div class="shopRadio"><input type="radio" name="shop"        > Headingley     </div>
+                          <form method="POST" action="">
+                            <div class="shopRadio">
+                              <input type="radio" name="shop" checked id="option1" value=1> University  </input>
+                            </div>
+                            <div class="shopRadio">
+                              <input type="radio" name="shop" id="option2" value=2> Town </input>
+                            </div>
+                            <div class="shopRadio">
+                              <input type="radio" name="shop" id="option3" value=3> Headingley  </input>
+                            </div>
+
+                          </form>
                         </ul>
                     </li>
 
@@ -132,6 +141,9 @@
         {# ----------------------------  SORT MENU -------------------------- #}
         <div class="sort-box">
 
+          {# <form method="POST" action="{{ url_for('browse', start=data[1][bike.bike_type_id].brand, end=data[1][bike.bike_type_id].model,id = bike.id) }}"> #}
+          <form method="POST" action="">
+                  {{ form.hidden_tag() }}
             <div class="form-group">
                 <div class="dateselection">
                   {{ form.start_date.label(class="form-control-label",id="startDate")}}
@@ -144,13 +156,18 @@
                 </div>
 
                 <div class="dateselection center">
-                  <button type="button" onclick="refreshBrowse();" name="search" id="bikeSearchButton">Search</button>
+                  <!-- <button type="button" onclick="refreshBrowse();" name="search" id="bikeSearchButton">Search</button> -->
                   {{ form.submit(class="btn btn-outline-info", id="bikeSearchButton") }}
-		        </div>
+		            </div>
+
+                <!-- <div class="form-group">
+                {{ form.submit(class="btn btn-outline-light")}}
+                </div> -->
 
                 <div></div>
 
             </div>
+          </form>
 
         </div>
         {# --------------------------  END SORT MENU -------------------------- #}
@@ -179,7 +196,11 @@
 
               <div class="bike-name-section">
                 {{ data[1][bike.bike_type_id].brand  + " " + data[1][bike.bike_type_id].model}}
-                <button class="btn btn-details" type="submit">Details</button>
+                <!-- <button class="btn btn-details" type="submit">Details</button> -->
+                <form action="{{ url_for('bikePage', brand=data[1][bike.bike_type_id].brand, model = data[1][bike.bike_type_id].model, bike_id = bike.id) }}" method="post">
+                      <input class="btn btn-details" type="submit" value="Details" />
+                </form>
+
               </div>
 
             </div>

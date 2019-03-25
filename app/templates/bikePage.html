@@ -43,7 +43,7 @@
                         <a class="previous" href="#pic{{ n }}">«</a>
                         <a class="next" href="#pic{{ n + 2 }}">»</a>
                         <img class="individual-bike-photo"
-                             src="http://www.arrowcycles.co.uk/images/spec/91219-30_rh_expert-29_blk-acdkwi-char_hero.jpg?maxheight=1200" width="100%" alt="Image 1">
+                             src="{{image}}" width="100%" alt="Image 1">
                       {% endif %}
                     </div>
 
@@ -62,7 +62,7 @@
       <hr class="seperator">
 
       <div class="bike-name-section">
-          BIKE TYPE AND NAME HERE
+          {{brand + " " + model + " "}}
           <button class="btn btn-details" type="submit">RENT</button>
       </div>
 
