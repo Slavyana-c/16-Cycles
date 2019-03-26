@@ -1,13 +1,10 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, RadioField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp, NumberRange
 from wtforms.fields.html5 import DateField, IntegerField
 from app.models import Users
 import datetime
 from datetime import timedelta
-
-
-
 
 class NewUserForm(FlaskForm):
 
@@ -54,6 +51,7 @@ class PasswordChangeForm(FlaskForm):
 
 # form in the newTask.html
 class SelectDates(FlaskForm):
+<<<<<<< HEAD
 	start_date = DateField('Rent Start Date', validators=[DataRequired()], default=datetime.datetime.now())
 	end_date = DateField('Rent End Date', validators=[DataRequired()], default=datetime.datetime.now()+timedelta(days=1))
 	submit = SubmitField('Search')
@@ -66,7 +64,20 @@ class AppliedFilters(FlaskForm):
 	# shopChoice = RadioField('Extend Date', validators=[DataRequired()])
 	shopChoice = RadioField('Shop', choices=[('University'),('Town'),('Headingley')])
 	submit = SubmitField('Update Date')
+=======
+	start_date = DateField('Rent Start Date', validators=[DataRequired()])
+	end_date = DateField('Rent End Date', validators=[DataRequired()])
+	submit = SubmitField('Select Date')
+	print("here")
+>>>>>>> sc17cjb
 
 class ExtendDate(FlaskForm):
 	new_end_date = DateField('Extend Date', validators=[DataRequired()])
 	submit = SubmitField('Update Date')
+
+class PaymentForm(FlaskForm):
+	cardNumber = StringField('Card Number', validators=[DataRequired(), Regexp("\d+", flags=0, message=""), Length(min=8, max=16, message="Field must be between 8 and 16 digits. Please try again")])
+	cvv = StringField('CVV', validators=[DataRequired(), Regexp("\d{3}", flags=0, message="Field must be 3 characters long. Please try again"), Length(max=3, message="Field must be 3 characters long. Please try again")])
+	expDate = StringField('Expiry Date', validators=[DataRequired(), Regexp("\d\d\/\d\d", flags=0, message="Date needs to be of the form mm/yy")])
+	email = StringField('Email Address', validators=[DataRequired()])
+	submit = SubmitField('Submit')
