@@ -544,8 +544,7 @@ addstaff.o: ../16Cycles/addstaff.cpp ../16Cycles/addstaff.h \
 		../16Cycles/mainwindow.h \
 		../16Cycles/home.h \
 		../16Cycles/simplecrypt.h \
-		../16Cycles/adminhome.h \
-		../16Cycles/staff.h
+		../16Cycles/adminhome.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o addstaff.o ../16Cycles/addstaff.cpp
 
 simplecrypt.o: ../16Cycles/simplecrypt.cpp ../16Cycles/simplecrypt.h

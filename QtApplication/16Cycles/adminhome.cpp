@@ -19,7 +19,8 @@ AdminHome::~AdminHome()
 
 void AdminHome::setGroupBoxName(QString name)
 {
-    ui-> welcomeGroupBox-> setTitle(name);
+    QString boxName = "Welcome " + name;
+    ui-> welcomeGroupBox-> setTitle(boxName);
 }
 
 void AdminHome::on_adminLogOutButton_clicked()

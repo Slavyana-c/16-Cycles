@@ -1,7 +1,6 @@
 #include "addstaff.h"
 #include "ui_addstaff.h"
 #include "mainwindow.h"
-#include "staff.h"
 
 AddStaff::AddStaff(QWidget *parent) :
     QDialog(parent),
@@ -21,32 +20,7 @@ AddStaff::~AddStaff()
 
 void AddStaff::on_cancelButton_clicked()
 {
-    // Display question to check user wants to cancel
-    QMessageBox::StandardButton reply = QMessageBox::question(this,"16Cycles","Are you sure you want to cancel?",
-                                                              QMessageBox::Yes | QMessageBox::No);
-
-    // Close window if yes clicked, else do nothing
-    if(reply == QMessageBox::Yes)
-    {
-        // Close current window and display new window
-        this-> close();
-        Staff staffPage;
-        staffPage.setModal(true);
-
-        // Set window size
-        QDesktopWidget desktop;
-        QRect mainScreenSize = desktop.availableGeometry(desktop.primaryScreen());
-        staffPage.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
-
-        // Remove title bar
-        staffPage.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-
-        // Set window title
-        staffPage.setWindowTitle("16CyclesStaff");
-
-        // Show window
-        staffPage.exec();
-    }
+    this->close();
 }
 
 void AddStaff::on_addStaffButton_clicked()

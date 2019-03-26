@@ -73,7 +73,7 @@ void MainWindow::on_signInButton_clicked()
 
     // Prepare query to find username and password in database
     QSqlQuery query;
-    query.prepare("SELECT password FROM staff WHERE email = '" + username + "'");
+    query.prepare("SELECT password,name,admin FROM staff WHERE email = '" + username + "'");
 
     // Execute query
     query.exec();
@@ -104,8 +104,10 @@ void MainWindow::on_signInButton_clicked()
             lineEdit->clear();
         }
 
+        // Create new window
         AdminHome adminHome;
         adminHome.setModal(true);
+        adminHome.setGroupBoxName(query.value(1).toString());
         QDesktopWidget desktop;
         QRect mainScreenSize = desktop.availableGeometry(desktop.primaryScreen());
         adminHome.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
@@ -118,25 +120,6 @@ void MainWindow::on_signInButton_clicked()
 
         // Show window
         adminHome.exec();
-
-
-//        // Display new window
-//        home homePage;
-//        homePage.setModal(true);
-
-//        // Set window size
-//        QDesktopWidget desktop;
-//        QRect mainScreenSize = desktop.availableGeometry(desktop.primaryScreen());
-//        homePage.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
-
-//        // Remove title bar
-//        homePage.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-
-//        // Set window title
-//        homePage.setWindowTitle("16CyclesHome");
-
-//        // Show window
-//        homePage.exec();
     }
 
     // If query has no values, username and password incorrect, display error to user
