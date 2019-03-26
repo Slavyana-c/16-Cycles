@@ -30,7 +30,7 @@
    <property name="title">
     <string>Add Staff Form</string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -93,7 +93,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="passwordLineEdit"/>
+        <widget class="QLineEdit" name="passwordLineEdit">
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -112,7 +116,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="confirmPasswordLineEdit"/>
+        <widget class="QLineEdit" name="confirmPasswordLineEdit">
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>

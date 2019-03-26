@@ -4,6 +4,7 @@
 #include "addstaff.h"
 #include "removestaff.h"
 #include "updatestaff.h"
+#include "resetpassword.h"
 
 AdminHome::AdminHome(QWidget *parent) :
     QDialog(parent),
@@ -21,6 +22,12 @@ void AdminHome::setGroupBoxName(QString name)
 {
     QString boxName = "Welcome " + name;
     ui-> welcomeGroupBox-> setTitle(boxName);
+    userName = name;
+}
+
+void AdminHome::setUserEmail(QString email)
+{
+    userEmail = email;
 }
 
 void AdminHome::on_adminLogOutButton_clicked()
@@ -125,4 +132,26 @@ void AdminHome::on_staffUpdateButton_clicked()
 
     // Show window
     updateStaffPage.exec();
+}
+
+void AdminHome::on_resetPasswordButton_clicked()
+{
+    // Display new window
+    ResetPassword resetPasswordPage;
+    resetPasswordPage.setModal(true);
+    resetPasswordPage.setEmail(userEmail);
+
+    // Set window size
+    QDesktopWidget desktop;
+    QRect mainScreenSize = desktop.availableGeometry(desktop.primaryScreen());
+    resetPasswordPage.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
+
+    // Remove title bar
+    resetPasswordPage.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+
+    // Set window title
+    resetPasswordPage.setWindowTitle("16CyclesResetPassword");
+
+    // Show window
+    resetPasswordPage.exec();
 }
