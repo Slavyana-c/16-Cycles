@@ -122,5 +122,10 @@ void ResetPassword::on_confirmButton_clicked()
         }
         // Close the database connection
         mainWindow.closeConnection();
+
+        // Clear line edits
+        ui-> newPasswordLineEdit-> clear();
+        ui-> oldPasswordLineEdit-> clear();
+        ui-> ConfirmNewPasswordLineEdit-> clear();
     }
 }

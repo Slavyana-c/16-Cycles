@@ -69,6 +69,8 @@ void AdminHome::on_staffViewButton_clicked()
     model-> setQuery(*query);
 
     ui-> tableView-> setModel(model);
+    ui-> tableView-> resizeColumnsToContents();
+    ui-> tableView-> resizeRowsToContents();
 }
 
 void AdminHome::on_staffAddButton_clicked()
@@ -154,4 +156,62 @@ void AdminHome::on_resetPasswordButton_clicked()
 
     // Show window
     resetPasswordPage.exec();
+}
+
+void AdminHome::on_bikesViewButton_clicked()
+{
+    MainWindow mainWindow;
+    if(!mainWindow.openConnection())
+    {
+        this->close();
+        qDebug()<<("Failed open db bikes");
+    }
+
+    QSqlQueryModel *model = new QSqlQueryModel();
+    QSqlQuery *query = new QSqlQuery(mainWindow.db);
+
+    query-> prepare("SELECT * FROM bikes");
+    query-> exec();
+    if(!query-> next())
+    {
+        this-> close();
+        qDebug()<<("error bikes");
+    }
+
+    mainWindow.close();
+
+    model-> setQuery(*query);
+
+    ui-> tableView-> setModel(model);
+    ui-> tableView-> resizeColumnsToContents();
+    ui-> tableView-> resizeRowsToContents();
+}
+
+void AdminHome::on_ordersViewButton_clicked()
+{
+    MainWindow mainWindow;
+    if(!mainWindow.openConnection())
+    {
+        this->close();
+        qDebug()<<("Failed open db bikes");
+    }
+
+    QSqlQueryModel *model = new QSqlQueryModel();
+    QSqlQuery *query = new QSqlQuery(mainWindow.db);
+
+    query-> prepare("SELECT * FROM orders");
+    query-> exec();
+    if(!query-> next())
+    {
+        this-> close();
+        qDebug()<<("error bikes");
+    }
+
+    mainWindow.close();
+
+    model-> setQuery(*query);
+
+    ui-> tableView-> setModel(model);
+    ui-> tableView-> resizeColumnsToContents();
+    ui-> tableView-> resizeRowsToContents();
 }

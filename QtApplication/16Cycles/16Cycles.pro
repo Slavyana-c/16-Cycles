@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     adminhome.cpp \
     updatestaff.cpp \
     removestaff.cpp \
-    resetpassword.cpp
+    resetpassword.cpp \
+    profits.cpp \
+    createorder.cpp
 
 HEADERS  += mainwindow.h \
     home.h \
@@ -33,7 +35,9 @@ HEADERS  += mainwindow.h \
     adminhome.h \
     updatestaff.h \
     removestaff.h \
-    resetpassword.h
+    resetpassword.h \
+    profits.h \
+    createorder.h
 
 FORMS    += mainwindow.ui \
     home.ui \
@@ -43,7 +47,9 @@ FORMS    += mainwindow.ui \
     adminhome.ui \
     updatestaff.ui \
     removestaff.ui \
-    resetpassword.ui
+    resetpassword.ui \
+    profits.ui \
+    createorder.ui
     
 RESOURCES += \
     resources.qrc

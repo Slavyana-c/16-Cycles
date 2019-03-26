@@ -30,6 +30,10 @@ private slots:
 
     void on_resetPasswordButton_clicked();
 
+    void on_bikesViewButton_clicked();
+
+    void on_ordersViewButton_clicked();
+
 private:
     Ui::AdminHome *ui;
     QString userName;

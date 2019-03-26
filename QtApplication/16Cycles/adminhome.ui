@@ -24,7 +24,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>24</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="title">
@@ -43,221 +43,8 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>12</x>
-      <y>52</y>
-      <width>481</width>
-      <height>441</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QGroupBox" name="staffGroupBox">
-       <property name="title">
-        <string>Staff</string>
-       </property>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>40</y>
-          <width>441</width>
-          <height>59</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QPushButton" name="staffUpdateButton">
-           <property name="text">
-            <string>Update</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="staffAddButton">
-           <property name="text">
-            <string>Add</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="staffRemoveButton">
-           <property name="text">
-            <string>Remove</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="staffViewButton">
-           <property name="text">
-            <string>View</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="bikesGroupBox">
-       <property name="title">
-        <string>Bikes</string>
-       </property>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>441</width>
-          <height>59</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QPushButton" name="bikesUpdateButton">
-           <property name="text">
-            <string>Update</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="bikesAddButton">
-           <property name="text">
-            <string>Add</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="BikesRemoveButton">
-           <property name="text">
-            <string>Remove</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="bikesViewButton">
-           <property name="text">
-            <string>View</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="ordersGroupBox">
-       <property name="title">
-        <string>Orders</string>
-       </property>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>461</width>
-          <height>59</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QPushButton" name="ordersUpdateButton">
-           <property name="text">
-            <string>Update</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="ordersCreateButton">
-           <property name="text">
-            <string>Create</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="ordersRemoveButton">
-           <property name="text">
-            <string>Remove</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="ordersViewButton">
-           <property name="text">
-            <string>View</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="earningsGroupBox">
-       <property name="title">
-        <string>Earnings</string>
-       </property>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>368</width>
-          <height>59</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <item>
-          <widget class="QPushButton" name="earningsViewButton">
-           <property name="text">
-            <string>View</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="comboBox">
-           <item>
-            <property name="text">
-             <string>Last Week</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Last Month</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Last 6 Months</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Last Year</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Last 2 Years</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>All TIme</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>500</y>
+      <x>0</x>
+      <y>390</y>
       <width>376</width>
       <height>59</height>
      </rect>
@@ -278,6 +65,240 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>220</y>
+      <width>461</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Statistics</string>
+    </property>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>20</y>
+       <width>184</width>
+       <height>39</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Profits</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>Bikes</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="staffGroupBox">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>479</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Staff</string>
+    </property>
+    <widget class="QPushButton" name="staffUpdateButton">
+     <property name="geometry">
+      <rect>
+       <x>1</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Update</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="staffAddButton">
+     <property name="geometry">
+      <rect>
+       <x>112</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="staffRemoveButton">
+     <property name="geometry">
+      <rect>
+       <x>224</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Remove</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="staffViewButton">
+     <property name="geometry">
+      <rect>
+       <x>335</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>View</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="bikesGroupBox">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>90</y>
+      <width>479</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Bikes</string>
+    </property>
+    <widget class="QPushButton" name="bikesUpdateButton">
+     <property name="geometry">
+      <rect>
+       <x>1</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Update</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="bikesAddButton">
+     <property name="geometry">
+      <rect>
+       <x>112</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="BikesRemoveButton">
+     <property name="geometry">
+      <rect>
+       <x>224</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Remove</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="bikesViewButton">
+     <property name="geometry">
+      <rect>
+       <x>335</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>View</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="ordersGroupBox">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>160</y>
+      <width>479</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Orders</string>
+    </property>
+    <widget class="QPushButton" name="ordersUpdateButton">
+     <property name="geometry">
+      <rect>
+       <x>1</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Update</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="ordersCreateButton">
+     <property name="geometry">
+      <rect>
+       <x>117</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Create</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="ordersRemoveButton">
+     <property name="geometry">
+      <rect>
+       <x>234</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Remove</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="ordersViewButton">
+     <property name="geometry">
+      <rect>
+       <x>350</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>View</string>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

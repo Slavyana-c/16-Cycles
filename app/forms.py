@@ -51,7 +51,6 @@ class PasswordChangeForm(FlaskForm):
 
 # form in the newTask.html
 class SelectDates(FlaskForm):
-<<<<<<< HEAD
 	start_date = DateField('Rent Start Date', validators=[DataRequired()], default=datetime.datetime.now())
 	end_date = DateField('Rent End Date', validators=[DataRequired()], default=datetime.datetime.now()+timedelta(days=1))
 	submit = SubmitField('Search')
@@ -63,13 +62,9 @@ class SelectDates(FlaskForm):
 class AppliedFilters(FlaskForm):
 	# shopChoice = RadioField('Extend Date', validators=[DataRequired()])
 	shopChoice = RadioField('Shop', choices=[('University'),('Town'),('Headingley')])
+	typeChoice = RadioField('Type', choices=[('Road','Road'),('Mountain','Mountain'),('Hybrid','Hybrid'),('Electric','Electric')])
 	submit = SubmitField('Update Date')
-=======
-	start_date = DateField('Rent Start Date', validators=[DataRequired()])
-	end_date = DateField('Rent End Date', validators=[DataRequired()])
-	submit = SubmitField('Select Date')
-	print("here")
->>>>>>> sc17cjb
+
 
 class ExtendDate(FlaskForm):
 	new_end_date = DateField('Extend Date', validators=[DataRequired()])
