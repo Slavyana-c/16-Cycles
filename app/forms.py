@@ -65,6 +65,7 @@ class SelectDates(FlaskForm):
 class AppliedFilters(FlaskForm):
 	# shopChoice = RadioField('Extend Date', validators=[DataRequired()])
 	shopChoice = RadioField('Shop', choices=[(1,'University'),(2,'Town'),(3,'Headingley')])
+	typeChoice = RadioField('Type', choices=[('Road','Road'),('Mountain','Mountain'),('Hybrid','Hybrid'),('Electric','Electric')])
 	submit = SubmitField('Apply Filters')
 
 class ExtendDate(FlaskForm):

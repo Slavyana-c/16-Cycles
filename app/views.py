@@ -53,12 +53,28 @@ def browse(startWindow=datetime.datetime.today(),
     form_b = AppliedFilters(prefix='b')
     # filterForm = AppliedFilters(prefix="form_b")
 
+    bikeTypes = Bike_Types.query.all()
+    bikes = Bikes.query.all() # if no shop was chosen, we display all bikes
+    rentalRates = Rental_Rates.query.all()
+    orders = Orders.query.all()
+    rentedBikes = Rented_Bikes.query.all()
+    bikesToRemove = [] # stores the ID's of bikes we need to remove
+
     if form_b.submit.data:
         # shopID = request.filterForm['shop']
         shopID = form_b.shopChoice.data
+        typeChosen = form_b.typeChoice.data
         # shopID = request.form.getlist("users")
+        bikeTypes = Bike_Types.query.all()
+        if typeChosen == "None":
+            print('no type chosen')
+            bikes = Bikes.query.filter_by(shop_id=shopID).all()
+        rentalRates = Rental_Rates.query.all()
+        orders = Orders.query.all()
+        rentedBikes = Rented_Bikes.query.all()
         print("Filters applied")
         print(shopID)
+        print(typeChosen)
 
 
     if form_a.validate_on_submit():
@@ -81,12 +97,7 @@ def browse(startWindow=datetime.datetime.today(),
     # if form.validate_on_submit():
     #     shopID = request.filterForm['shop']
     #     print("Button pressed or somethign")
-    bikeTypes = Bike_Types.query.all()
-    bikes = Bikes.query.filter_by(shop_id=shopID).all()
-    rentalRates = Rental_Rates.query.all()
-    orders = Orders.query.all()
-    rentedBikes = Rented_Bikes.query.all()
-    bikesToRemove = [] # stores the ID's of bikes we need to remove
+
     i = 0
     while(i < len(rentedBikes)):
         # checks to see if the bike is available within the given dates
