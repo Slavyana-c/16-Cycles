@@ -21,6 +21,8 @@ private slots:
 
     void on_logOutButton_clicked();
 
+    void on_staffButton_clicked();
+
 private:
     Ui::home *ui;
 };

@@ -2,6 +2,7 @@
 #include "ui_home.h"
 #include "mainwindow.h"
 #include "editdb.h"
+#include "staff.h"
 
 home::home(QWidget *parent) :
     QDialog(parent),
@@ -17,8 +18,8 @@ home::~home()
 
 void home::on_editDBButton_clicked()
 {
-    // Hide current window and display new window
-    this-> hide();
+    // Close current window and display new window
+    this-> close();
     EditDb editDbPage;
     editDbPage.setModal(true);
 
@@ -31,7 +32,7 @@ void home::on_editDBButton_clicked()
     editDbPage.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 
     // Set window title
-    editDbPage.setWindowTitle("16CyclesHome");
+    editDbPage.setWindowTitle("16CyclesEditDB");
 
     // Show window
     editDbPage.exec();
@@ -47,6 +48,28 @@ void home::on_logOutButton_clicked()
     if(reply == QMessageBox::Yes)
     {
         // Hide current window and display log in window(MainWindow)
-        this-> hide();
+        this-> close();
     }
+}
+
+void home::on_staffButton_clicked()
+{
+    // Close current window and display new window
+    this-> close();
+    Staff staffPage;
+    staffPage.setModal(true);
+
+    // Set window size
+    QDesktopWidget desktop;
+    QRect mainScreenSize = desktop.availableGeometry(desktop.primaryScreen());
+    staffPage.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
+
+    // Remove title bar
+    staffPage.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+
+    // Set window title
+    staffPage.setWindowTitle("16CyclesStaff");
+
+    // Show window
+    staffPage.exec();
 }

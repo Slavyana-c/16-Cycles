@@ -15,15 +15,23 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     home.cpp \
-    editdb.cpp
+    editdb.cpp \
+    staff.cpp \
+    addstaff.cpp \
+    simplecrypt.cpp
 
 HEADERS  += mainwindow.h \
     home.h \
-    editdb.h
+    editdb.h \
+    staff.h \
+    addstaff.h \
+    simplecrypt.h
 
 FORMS    += mainwindow.ui \
     home.ui \
-    editdb.ui
+    editdb.ui \
+    staff.ui \
+    addstaff.ui
 
 RESOURCES += \
     resources.qrc
