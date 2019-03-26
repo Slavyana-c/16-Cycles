@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AdminHome</class>
+ <widget class="QDialog" name="AdminHome">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1575</width>
+    <height>579</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QGroupBox" name="welcomeGroupBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>1541</width>
+     <height>561</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="title">
+    <string>Welcome</string>
+   </property>
+   <widget class="QTableView" name="tableView">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>50</y>
+      <width>991</width>
+      <height>441</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>390</y>
+      <width>376</width>
+      <height>59</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QPushButton" name="adminLogOutButton">
+       <property name="text">
+        <string>Log Out</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="resetPasswordButton">
+       <property name="text">
+        <string>Reset Password</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>220</y>
+      <width>461</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Statistics</string>
+    </property>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>20</y>
+       <width>184</width>
+       <height>39</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Profits</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>Bikes</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="staffGroupBox">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>479</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Staff</string>
+    </property>
+    <widget class="QPushButton" name="staffUpdateButton">
+     <property name="geometry">
+      <rect>
+       <x>1</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Update</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="staffAddButton">
+     <property name="geometry">
+      <rect>
+       <x>112</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="staffRemoveButton">
+     <property name="geometry">
+      <rect>
+       <x>224</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Remove</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="staffViewButton">
+     <property name="geometry">
+      <rect>
+       <x>335</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>View</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="bikesGroupBox">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>90</y>
+      <width>479</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Bikes</string>
+    </property>
+    <widget class="QPushButton" name="bikesUpdateButton">
+     <property name="geometry">
+      <rect>
+       <x>1</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Update</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="bikesAddButton">
+     <property name="geometry">
+      <rect>
+       <x>112</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="BikesRemoveButton">
+     <property name="geometry">
+      <rect>
+       <x>224</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Remove</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="bikesViewButton">
+     <property name="geometry">
+      <rect>
+       <x>335</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>View</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="ordersGroupBox">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>160</y>
+      <width>479</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Orders</string>
+    </property>
+    <widget class="QPushButton" name="ordersUpdateButton">
+     <property name="geometry">
+      <rect>
+       <x>1</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Update</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="ordersCreateButton">
+     <property name="geometry">
+      <rect>
+       <x>117</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Create</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="ordersRemoveButton">
+     <property name="geometry">
+      <rect>
+       <x>234</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Remove</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="ordersViewButton">
+     <property name="geometry">
+      <rect>
+       <x>350</x>
+       <y>21</y>
+       <width>88</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>View</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
