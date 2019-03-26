@@ -1,7 +1,6 @@
 from flask import render_template, flash, url_for, redirect, request, abort
 from app import app, db, bcrypt, admin, models
 from app.models import Users,Bike_Types,Bikes,Shops,Rental_Rates,Orders,Rented_Bikes
-<<<<<<< HEAD
 from .forms import NewUserForm, LoginForm, SelectDates, AppliedFilters, ExtendDate, PasswordChangeForm, PaymentForm
 from sqlalchemy import and_, or_
 
@@ -122,7 +121,7 @@ def browse(startWindow=datetime.datetime.today(),
 #     data = Bike_Types.query.all()[0]#(brand='Voodoo')
 #     return render_template("bikePage.html", form=form) # redirect to the bike search page
 
-<<<<<<< HEAD
+
 @app.route('/bikePage/',methods=['GET', 'POST'])
 def bikePage():
     brand = request.args.get('brand', default = 'BRAND', type = str)
@@ -144,16 +143,6 @@ def bikePage():
     bikeRentPrice = calculateRentPrice(numberOfDays,thisRentalRate)
 
     return render_template("bikePage.html", data=data, form=form,rentStart=rentStartDate,rentEnd=rentEndDate,rentInfo=[bikeRentPrice,thisRentalRate,numberOfDays]) # redirect to the bike search page
-
-=======
-@app.route('/bikePage')
-def bikePage(success):
-    form = SelectDates();
-    data = Bike_Types.query.all()[0]#(brand='Voodoo')
-    form.validate_on_submit():
-        payForm(bike)
-    return render_template("bikePage.html", form=form, success=success) # redirect to the bike search page
->>>>>>> sc17cjb
 
 @app.route('/account')
 def account():
