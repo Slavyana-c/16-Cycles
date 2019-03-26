@@ -130,34 +130,18 @@ def bikePage():
     bikeId = request.args.get('bike_id', default = 'bike_id', type = str)
 
     # doing string formatting
-    print(rentStart)
-    print(rentEnd)
     rentStartDate = datetime.date(int(rentStart.split("-")[0]),int(rentStart.split("-")[1]),int(rentStart.split("-")[2][:2]))
     rentEndDate = datetime.date(int(rentEnd.split("-")[0]),int(rentEnd.split("-")[1]),int(rentEnd.split("-")[2][:2]))
-    #rentEndDate   = [rentEnd.split("-")[0],rentEnd.split("-")[1],rentEnd.split("-")[2][:2]]
 
-
-    print("BRAND: " + brand + " and MODEL: " + model)
-    print("START: ")
-    print(rentStartDate)
-    print(" and END: ")
-    print(rentEndDate)
-    print("bike id")
-    print(bikeId)
     thisRentalRate = Rental_Rates.query.filter(Rental_Rates.bike_type_id == bikeId).first()
     form = SelectDates();
     data = Bike_Types.query.filter(and_(Bike_Types.brand == brand, Bike_Types.model == model)).first()
     image = data.image
 
-    print("This rental rate is ")
-    print(thisRentalRate)
-    bikeRentPrice = calculateRentPrice(rentStartDate,rentEndDate,thisRentalRate)
-    print("\nThe bike rent price  ")
-    print(bikeRentPrice)
-    # redirectToIndividualBikePageURL = "bikePage?brand=" + brand + "&model=" + model
-    # return redirect(url_for(redirectToIndividualBikePageURL))
+    numberOfDays = (rentEndDate-rentStartDate).days
+    bikeRentPrice = calculateRentPrice(numberOfDays,thisRentalRate)
 
-    return render_template("bikePage.html", data=data,image=image, form=form, brand=brand, model=model,rentStart=rentStartDate,rentEnd=rentEndDate,rentPrice=bikeRentPrice) # redirect to the bike search page
+    return render_template("bikePage.html", data=data, form=form,rentStart=rentStartDate,rentEnd=rentEndDate,rentInfo=[bikeRentPrice,thisRentalRate,numberOfDays]) # redirect to the bike search page
 
 
 @app.route('/account')
@@ -213,7 +197,7 @@ def logout():
 	return redirect(url_for('home'))
 
 
-def calculateRentPrice(startDate,endDate,rentalRates):
+def calculateRentPrice(numberOfDays,rentalRates):
     # we have a start date
     # and an end date
     # so we can find out the number of days
@@ -222,7 +206,7 @@ def calculateRentPrice(startDate,endDate,rentalRates):
     # we round the rental rate to the nearest 10p
     # so it isn't as bad for the user
 
-    numberOfDays = (endDate-startDate).days
+
 
     print("\nRental Rate")
     print(numberOfDays)
