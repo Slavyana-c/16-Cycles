@@ -1,7 +1,7 @@
 from flask import render_template, flash, url_for, redirect, request, abort
 from app import app, db, bcrypt, admin, models
 from app.models import Users,Bike_Types,Bikes,Shops,Rental_Rates,Orders,Rented_Bikes
-from .forms import NewUserForm, LoginForm, SelectDates, AppliedFilters, ExtendDate, PasswordChangeForm
+from .forms import NewUserForm, LoginForm, SelectDates, AppliedFilters, ExtendDate, PasswordChangeForm, PaymentForm
 from sqlalchemy import and_, or_
 
 # all imports for sending emails
@@ -44,6 +44,13 @@ def meetOurStaff():
 # lots of default arguments given here
 # def browse(startWindow=datetime.datetime.now(),
 #            endWindow=datetime.datetime.now()+timedelta(days=1),
+#            shopID = 1):]\
+
+# New browse
+@app.route('/browse',methods=['GET','POST'])
+# lots of default arguments given here
+# def browse(startWindow=datetime.datetime.now(),
+#            endWindow=datetime.datetime.now()+timedelta(days=1),
 #            shopID = 1):
 def browse(startWindow=datetime.datetime.today(),
            endWindow=datetime.datetime.today()+timedelta(days=1),
@@ -60,6 +67,8 @@ def browse(startWindow=datetime.datetime.today(),
     rentedBikes = Rented_Bikes.query.all()
     bikesToRemove = [] # stores the ID's of bikes we need to remove
 
+
+
     if form_b.submit.data:
         # shopID = request.filterForm['shop']
         shopID = form_b.shopChoice.data
@@ -68,7 +77,22 @@ def browse(startWindow=datetime.datetime.today(),
         bikeTypes = Bike_Types.query.all()
         if typeChosen == "None":
             print('no type chosen')
+            # just get the bikes from the shop
             bikes = Bikes.query.filter_by(shop_id=shopID).all()
+        else:
+            print('type ' + typeChosen + ' chosen')
+            # bike_types = Bike_Types.query.filter_by(use_type=typeChosen)
+            # bikes = Bike_Types.query.filter_by(use_type=typeChosen).all()
+            # bikes = Bike_Types.query.filter_by(use_type=typeChosen).all()
+            joinedTables = Bikes.query.join(Bike_Types)
+            print(joinedTables)
+            # print(joinedTables.use_type)
+            bikes = Bikes.query.join(Bike_Types).filter(Bikes.bike_type_id == Bike_Types.id).all()
+            bikes
+            for bike in bikes:
+                print (bike)
+            # bikes = Bike_Types.query.filter_by(Bike_Types.bike_type_id==Bike_Types.id).all()
+            # bikes = Bike_Types.query.join(Bikes).join(Bikes.bike_type).filter(Bike_Types.id==Bikes.bike_type_id).all()
         rentalRates = Rental_Rates.query.all()
         orders = Orders.query.all()
         rentedBikes = Rented_Bikes.query.all()
@@ -85,21 +109,17 @@ def browse(startWindow=datetime.datetime.today(),
         print(type(endWindow))
         # endWindow = endWindow.date()
 
-    # task = models.Tasks(title=form.title.data,
-    #                     description=form.description.data,
-    #                     completion_date=form.completion_date.data,
-    #                     user=current_user.id)
-    # startWindow = request.args.get('start', default = datetime.datetime.now(), type = datetime)
-    # endWindow = request.args.get('end',default = datetime.datetime.now()+timedelta(days=1), type = datetime)
-    # shopID = request.args.get('id', default = 1, type = int)
-
-    # form = SelectDates();
-    # if form.validate_on_submit():
-    #     shopID = request.filterForm['shop']
-    #     print("Button pressed or somethign")
-
     i = 0
     while(i < len(rentedBikes)):
+        # print("startWindow", end='| ')
+        # print(     startWindow,end=' ')
+        # print(type(startWindow))
+        # print("rentedBikes[i].start_date.date()", end='| ')
+        # print(     rentedBikes[i].start_date.date(), end=' ')
+        # print(type(rentedBikes[i].start_date.date()))
+
+        # print(type(startWindow))
+        # print(type(rentedBikes[i].start_date))
         # checks to see if the bike is available within the given dates
         try:
             if(rentedBikes[i].start_date.date() <= startWindow and rentedBikes[i].end_date.date() >= startWindow or
@@ -127,13 +147,122 @@ def browse(startWindow=datetime.datetime.today(),
     # now the only bikes shown to the user are the ones they can actually rent
     return render_template("browse.html", filterForm=form_b,form=form_a,data=[bikes,bikeTypes,rentalRates,startWindow,endWindow]) # redirect to the bike search page, giving all the data
 
+
+
+
+
+# OLD BROWSE
+# def browse(startWindow=datetime.datetime.today(),
+#            endWindow=datetime.datetime.today()+timedelta(days=1),
+#            shopID = 1):
+#     form_a = SelectDates(prefix='a')
+#     # filterForm = AppliedFilters()
+#     form_b = AppliedFilters(prefix='b')
+#     # filterForm = AppliedFilters(prefix="form_b")
+#
+#     bikeTypes = Bike_Types.query.all()
+#     bikes = Bikes.query.all() # if no shop was chosen, we display all bikes
+#     rentalRates = Rental_Rates.query.all()
+#     orders = Orders.query.all()
+#     rentedBikes = Rented_Bikes.query.all()
+#     bikesToRemove = [] # stores the ID's of bikes we need to remove
+#
+#
+#
+#     if form_b.submit.data:
+#         # shopID = request.filterForm['shop']
+#         shopID = form_b.shopChoice.data
+#         typeChosen = form_b.typeChoice.data
+#         # shopID = request.form.getlist("users")
+#         bikeTypes = Bike_Types.query.all()
+#         if typeChosen == "None":
+#             print('no type chosen')
+#             # just get the bikes from the shop
+#             bikes = Bikes.query.filter_by(shop_id=shopID).all()
+#         else:
+#             print('type ' + typeChosen + ' chosen')
+#             # bike_types = Bike_Types.query.filter_by(use_type=typeChosen)
+#             # bikes = Bike_Types.query.filter_by(use_type=typeChosen).all()
+#             # bikes = Bike_Types.query.filter_by(use_type=typeChosen).all()
+#             joinedTables = Bikes.query.join(Bike_Types)
+#             print(joinedTables)
+#             # print(joinedTables.use_type)
+#             bikes = Bikes.query.join(Bike_Types).filter(Bikes.bike_type_id == Bike_Types.id).all()
+#             bikes
+#             for bike in bikes:
+#                 print (bike)
+#             # bikes = Bike_Types.query.filter_by(Bike_Types.bike_type_id==Bike_Types.id).all()
+#             # bikes = Bike_Types.query.join(Bikes).join(Bikes.bike_type).filter(Bike_Types.id==Bikes.bike_type_id).all()
+#         rentalRates = Rental_Rates.query.all()
+#         orders = Orders.query.all()
+#         rentedBikes = Rented_Bikes.query.all()
+#         print("Filters applied")
+#         print(shopID)
+#         print(typeChosen)
+#
+#
+#     if form_a.validate_on_submit():
+#         startWindow = form_a.start_date.data
+#         print(type(startWindow))
+#         # startWindow = startWindow.date()
+#         endWindow = form_a.end_date.data
+#         print(type(endWindow))
+#         # endWindow = endWindow.date()
+#
+#     # task = models.Tasks(title=form.title.data,
+#     #                     description=form.description.data,
+#     #                     completion_date=form.completion_date.data,
+#     #                     user=current_user.id)
+#     # startWindow = request.args.get('start', default = datetime.datetime.now(), type = datetime)
+#     # endWindow = request.args.get('end',default = datetime.datetime.now()+timedelta(days=1), type = datetime)
+#     # shopID = request.args.get('id', default = 1, type = int)
+#
+#     # form = SelectDates();
+#     # if form.validate_on_submit():
+#     #     shopID = request.filterForm['shop']
+#     #     print("Button pressed or somethign")
+#
+#     i = 0
+#     while(i < len(rentedBikes)):
+#         # checks to see if the bike is available within the given dates
+#         try:
+#             if(rentedBikes[i].start_date.date() <= startWindow and rentedBikes[i].end_date.date() >= startWindow or
+#                rentedBikes[i].start_date.date() >= startWindow and rentedBikes[i].start_date.date() <= endWindow):
+#                 bikesToRemove.append(rentedBikes[i].bike_id)
+#         except: # catch the exception when the start and end windows are datetime already (catches TypeError)
+#             if(rentedBikes[i].start_date <= startWindow and rentedBikes[i].end_date >= startWindow or
+#                rentedBikes[i].start_date >= startWindow and rentedBikes[i].start_date <= endWindow):
+#                 bikesToRemove.append(rentedBikes[i].bike_id)
+#         i += 1
+#
+#     # if the start date is bigger than the end date, then no bikes should
+#     # be shown to the user
+#     if(startWindow > endWindow):
+#         bikes = []
+#
+#     # remove the bikes that will be rented in the given time
+#     i = 0
+#     while(i < len(bikes)):
+#         if(bikes[i].bike_type_id in bikesToRemove):
+#             bikes = bikes[:i] + bikes[i+1:]
+#         else:
+#             i+=1
+#
+#     # now the only bikes shown to the user are the ones they can actually rent
+#     return render_template("browse.html", filterForm=form_b,form=form_a,data=[bikes,bikeTypes,rentalRates,startWindow,endWindow]) # redirect to the bike search page, giving all the data
+
+
+
+
+
+
+
 # OLD version of bikePage
 # @app.route('/bikePage')
 # def bikePage():
 #     form = SelectDates();
 #     data = Bike_Types.query.all()[0]#(brand='Voodoo')
 #     return render_template("bikePage.html", form=form) # redirect to the bike search page
-
 @app.route('/bikePage/',methods=['GET', 'POST'])
 def bikePage():
     brand = request.args.get('brand', default = 'BRAND', type = str)
@@ -143,34 +272,18 @@ def bikePage():
     bikeId = request.args.get('bike_id', default = 'bike_id', type = str)
 
     # doing string formatting
-    print(rentStart)
-    print(rentEnd)
     rentStartDate = datetime.date(int(rentStart.split("-")[0]),int(rentStart.split("-")[1]),int(rentStart.split("-")[2][:2]))
     rentEndDate = datetime.date(int(rentEnd.split("-")[0]),int(rentEnd.split("-")[1]),int(rentEnd.split("-")[2][:2]))
-    #rentEndDate   = [rentEnd.split("-")[0],rentEnd.split("-")[1],rentEnd.split("-")[2][:2]]
 
-
-    print("BRAND: " + brand + " and MODEL: " + model)
-    print("START: ")
-    print(rentStartDate)
-    print(" and END: ")
-    print(rentEndDate)
-    print("bike id")
-    print(bikeId)
     thisRentalRate = Rental_Rates.query.filter(Rental_Rates.bike_type_id == bikeId).first()
     form = SelectDates();
     data = Bike_Types.query.filter(and_(Bike_Types.brand == brand, Bike_Types.model == model)).first()
     image = data.image
 
-    print("This rental rate is ")
-    print(thisRentalRate)
-    bikeRentPrice = calculateRentPrice(rentStartDate,rentEndDate,thisRentalRate)
-    print("\nThe bike rent price  ")
-    print(bikeRentPrice)
-    # redirectToIndividualBikePageURL = "bikePage?brand=" + brand + "&model=" + model
-    # return redirect(url_for(redirectToIndividualBikePageURL))
+    numberOfDays = (rentEndDate-rentStartDate).days
+    bikeRentPrice = calculateRentPrice(numberOfDays,thisRentalRate)
 
-    return render_template("bikePage.html", data=data,image=image, form=form, brand=brand, model=model,rentStart=rentStartDate,rentEnd=rentEndDate,rentPrice=bikeRentPrice) # redirect to the bike search page
+    return render_template("bikePage.html", data=data, form=form,rentStart=rentStartDate,rentEnd=rentEndDate,rentInfo=[bikeRentPrice,thisRentalRate,numberOfDays])
 
 
 @app.route('/account')
@@ -256,6 +369,34 @@ def calculateRentPrice(startDate,endDate,rentalRates):
     return round((rentalRates.monthly_rate/28) * numberOfDays,1)
 
 
+def calculateRentPrice(numberOfDays,rentalRates):
+    # we have a start date
+    # and an end date
+    # so we can find out the number of days
+    # we have a a daily rate, weekly rate and monthly rate
+
+    # we round the rental rate to the nearest 10p
+    # so it isn't as bad for the user
+
+
+
+    print("\nRental Rate")
+    print(numberOfDays)
+    print(rentalRates.daily_rate,rentalRates.weekly_rate,rentalRates.monthly_rate)
+
+    # less than a week case
+    if(numberOfDays < 7):
+        # return the number of days * the weekly raet
+        return rentalRates.daily_rate * numberOfDays
+
+    # less than a month case
+    if(numberOfDays < 28):
+        # we divide the weekly rate by seven and multiply my number of days
+        return round((rentalRates.weekly_rate/7) * numberOfDays,1)
+
+    # more than a month
+    # so we take the monthly rate / 28 and multiply by number of days
+    return round((rentalRates.monthly_rate/28) * numberOfDays,1)
 
 
 
@@ -283,6 +424,12 @@ def makeCheckoutTable(databaseOutput):
 
     return output
 
+def payForm(bikesRenting):
+    form = PaymentForm()
+    if form.validate_on_submit():
+        qr(form.email.data, bikesRenting)
+        bikePage(1)
+    return render_template("payment.html", form=form)
 
 
 @app.route('/qr', methods=['GET', 'POST'])

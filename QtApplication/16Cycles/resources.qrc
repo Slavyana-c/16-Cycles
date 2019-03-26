@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/resources">
-        <file>images/app_static_images_logo.png</file>
-    </qresource>
-</RCC>
