@@ -1,7 +1,6 @@
 from flask import render_template, flash, url_for, redirect, request, abort
 from app import app, db, bcrypt, admin, models
 from app.models import Users,Bike_Types,Bikes,Shops,Rental_Rates,Orders,Rented_Bikes
-<<<<<<< HEAD
 from .forms import NewUserForm, LoginForm, SelectDates, AppliedFilters, ExtendDate, PasswordChangeForm, PaymentForm
 from sqlalchemy import and_, or_
 
@@ -122,7 +121,6 @@ def browse(startWindow=datetime.datetime.today(),
 #     data = Bike_Types.query.all()[0]#(brand='Voodoo')
 #     return render_template("bikePage.html", form=form) # redirect to the bike search page
 
-<<<<<<< HEAD
 @app.route('/bikePage/',methods=['GET', 'POST'])
 def bikePage():
     brand = request.args.get('brand', default = 'BRAND', type = str)
@@ -132,28 +130,35 @@ def bikePage():
     bikeId = request.args.get('bike_id', default = 'bike_id', type = str)
 
     # doing string formatting
+    print(rentStart)
+    print(rentEnd)
     rentStartDate = datetime.date(int(rentStart.split("-")[0]),int(rentStart.split("-")[1]),int(rentStart.split("-")[2][:2]))
     rentEndDate = datetime.date(int(rentEnd.split("-")[0]),int(rentEnd.split("-")[1]),int(rentEnd.split("-")[2][:2]))
+    #rentEndDate   = [rentEnd.split("-")[0],rentEnd.split("-")[1],rentEnd.split("-")[2][:2]]
 
+
+    print("BRAND: " + brand + " and MODEL: " + model)
+    print("START: ")
+    print(rentStartDate)
+    print(" and END: ")
+    print(rentEndDate)
+    print("bike id")
+    print(bikeId)
     thisRentalRate = Rental_Rates.query.filter(Rental_Rates.bike_type_id == bikeId).first()
     form = SelectDates();
     data = Bike_Types.query.filter(and_(Bike_Types.brand == brand, Bike_Types.model == model)).first()
     image = data.image
 
-    numberOfDays = (rentEndDate-rentStartDate).days
-    bikeRentPrice = calculateRentPrice(numberOfDays,thisRentalRate)
+    print("This rental rate is ")
+    print(thisRentalRate)
+    bikeRentPrice = calculateRentPrice(rentStartDate,rentEndDate,thisRentalRate)
+    print("\nThe bike rent price  ")
+    print(bikeRentPrice)
+    # redirectToIndividualBikePageURL = "bikePage?brand=" + brand + "&model=" + model
+    # return redirect(url_for(redirectToIndividualBikePageURL))
 
-    return render_template("bikePage.html", data=data, form=form,rentStart=rentStartDate,rentEnd=rentEndDate,rentInfo=[bikeRentPrice,thisRentalRate,numberOfDays]) # redirect to the bike search page
+    return render_template("bikePage.html", data=data,image=image, form=form, brand=brand, model=model,rentStart=rentStartDate,rentEnd=rentEndDate,rentPrice=bikeRentPrice) # redirect to the bike search page
 
-=======
-@app.route('/bikePage')
-def bikePage(success):
-    form = SelectDates();
-    data = Bike_Types.query.all()[0]#(brand='Voodoo')
-    form.validate_on_submit():
-        payForm(bike)
-    return render_template("bikePage.html", form=form, success=success) # redirect to the bike search page
->>>>>>> sc17cjb
 
 @app.route('/account')
 def account():
