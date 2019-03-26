@@ -1,7 +1,7 @@
 from flask import render_template, flash, url_for, redirect, request, abort
 from app import app, db, bcrypt, admin, models
 from app.models import Users,Bike_Types,Bikes,Shops,Rental_Rates,Orders,Rented_Bikes
-from .forms import NewUserForm, LoginForm, SelectDates, ExtendDate, PasswordChangeForm
+from forms import NewUserForm, LoginForm, SelectDates, ExtendDate, PasswordChangeForm, PaymentForm
 
 # all imports for sending emails
 import smtplib
@@ -73,10 +73,12 @@ def browse(startWindow=datetime.datetime.now(),
     return render_template("browse.html", form=form,data=[bikes,bikeTypes,rentalRates]) # redirect to the bike search page, giving all the data
 
 @app.route('/bikePage')
-def bikePage():
+def bikePage(success):
     form = SelectDates();
     data = Bike_Types.query.all()[0]#(brand='Voodoo')
-    return render_template("bikePage.html", form=form) # redirect to the bike search page
+    form.validate_on_submit():
+        payForm(bike)
+    return render_template("bikePage.html", form=form, success=success) # redirect to the bike search page
 
 @app.route('/account')
 def account():
@@ -152,18 +154,17 @@ def makeCheckoutTable(databaseOutput):
     <th>""" + titles[i] + """</th>
     <td>""" + databaseOutput[i] + """</td>
   </tr> """
-
     return output
 
-@app.route('/payment', methods=['GET', 'POST'])
-def payForm():
-    form = paymentForm()
+def payForm(bikesRenting):
+    form = PaymentForm()
     if form.validate_on_submit():
-        flash("Yay")
+        qr(form.email.data, bikesRenting)
+        bikePage(1)
     return render_template("payment.html", form=form)
 
 @app.route('/qr', methods=['GET', 'POST'])
-def qr():
+def qr(receivingAddress, bikesRented):
 
     # generating the QR code
     url = pyqrcode.create('https://ksassets.timeincuk.net/wp/uploads/sites/55/2016/07/2015_PeepShow_Mark2_Press_111115-920x610.jpg')
@@ -182,7 +183,6 @@ def qr():
     # setting up email things
     sendingAddress = "16.cycles.recipt@gmail.com"
     sendingPassword = "phatgitproject"
-    receivingAddress = "jonathancharlesalderson@gmail.com"
 
     msg = MIMEMultipart()
 
