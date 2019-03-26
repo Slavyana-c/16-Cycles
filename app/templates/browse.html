@@ -53,8 +53,11 @@
                            <b>Shop</b>
                         </a>
                         <ul class="collapse list-unstyled" id="shopSubmenu">
+
                           <form method="POST" action="">
-                            <div class="shopRadio">
+                            {{ filterForm.hidden_tag() }}
+                                {{ filterForm.shopChoice }}
+                            <!-- <div class="shopRadio">
                               <input type="radio" name="shop" checked id="option1" value=1> University  </input>
                             </div>
                             <div class="shopRadio">
@@ -62,6 +65,11 @@
                             </div>
                             <div class="shopRadio">
                               <input type="radio" name="shop" id="option3" value=3> Headingley  </input>
+                            </div> -->
+
+                            <div class="dateselection center">
+                              <!-- <button type="button" onclick="refreshBrowse();" name="search" id="bikeSearchButton">Search</button> -->
+                              {{ filterForm.submit(class="btn btn-outline-info", id="bikeSearchButton") }}
                             </div>
 
                           </form>

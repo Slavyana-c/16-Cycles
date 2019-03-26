@@ -48,12 +48,24 @@ def meetOurStaff():
 def browse(startWindow=datetime.datetime.today(),
            endWindow=datetime.datetime.today()+timedelta(days=1),
            shopID = 1):
-    form = SelectDates()
-    if form.validate_on_submit():
-        startWindow = form.start_date.data
+    form_a = SelectDates(prefix='a')
+    # filterForm = AppliedFilters()
+    form_b = AppliedFilters(prefix='b')
+    # filterForm = AppliedFilters(prefix="form_b")
+
+    if form_b.submit.data:
+        # shopID = request.filterForm['shop']
+        shopID = form_b.shopChoice.data
+        # shopID = request.form.getlist("users")
+        print("Filters applied")
+        print(shopID)
+
+
+    if form_a.validate_on_submit():
+        startWindow = form_a.start_date.data
         print(type(startWindow))
         # startWindow = startWindow.date()
-        endWindow = form.end_date.data
+        endWindow = form_a.end_date.data
         print(type(endWindow))
         # endWindow = endWindow.date()
 
@@ -64,12 +76,11 @@ def browse(startWindow=datetime.datetime.today(),
     # startWindow = request.args.get('start', default = datetime.datetime.now(), type = datetime)
     # endWindow = request.args.get('end',default = datetime.datetime.now()+timedelta(days=1), type = datetime)
     # shopID = request.args.get('id', default = 1, type = int)
-    filterForm = AppliedFilters()
-    # if filterForm.validate_on_submit():
+
+    # form = SelectDates();
+    # if form.validate_on_submit():
     #     shopID = request.filterForm['shop']
-    form = SelectDates();
-    if form.validate_on_submit():
-        print("Button pressed or somethign")
+    #     print("Button pressed or somethign")
     bikeTypes = Bike_Types.query.all()
     bikes = Bikes.query.filter_by(shop_id=shopID).all()
     rentalRates = Rental_Rates.query.all()
@@ -78,15 +89,6 @@ def browse(startWindow=datetime.datetime.today(),
     bikesToRemove = [] # stores the ID's of bikes we need to remove
     i = 0
     while(i < len(rentedBikes)):
-        # print("startWindow", end='| ')
-        # print(     startWindow,end=' ')
-        # print(type(startWindow))
-        # print("rentedBikes[i].start_date.date()", end='| ')
-        # print(     rentedBikes[i].start_date.date(), end=' ')
-        # print(type(rentedBikes[i].start_date.date()))
-
-        # print(type(startWindow))
-        # print(type(rentedBikes[i].start_date))
         # checks to see if the bike is available within the given dates
         try:
             if(rentedBikes[i].start_date.date() <= startWindow and rentedBikes[i].end_date.date() >= startWindow or
@@ -112,7 +114,7 @@ def browse(startWindow=datetime.datetime.today(),
             i+=1
 
     # now the only bikes shown to the user are the ones they can actually rent
-    return render_template("browse.html", filterForm=filterForm,form=form,data=[bikes,bikeTypes,rentalRates,startWindow,endWindow]) # redirect to the bike search page, giving all the data
+    return render_template("browse.html", filterForm=form_b,form=form_a,data=[bikes,bikeTypes,rentalRates,startWindow,endWindow]) # redirect to the bike search page, giving all the data
 
 # OLD version of bikePage
 # @app.route('/bikePage')
