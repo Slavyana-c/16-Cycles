@@ -18,20 +18,29 @@ SOURCES += main.cpp\
     editdb.cpp \
     staff.cpp \
     addstaff.cpp \
-    simplecrypt.cpp
+    simplecrypt.cpp \
+    adminhome.cpp \
+    updatestaff.cpp \
+    removestaff.cpp
 
 HEADERS  += mainwindow.h \
     home.h \
     editdb.h \
     staff.h \
     addstaff.h \
-    simplecrypt.h
+    simplecrypt.h \
+    adminhome.h \
+    updatestaff.h \
+    removestaff.h
 
 FORMS    += mainwindow.ui \
     home.ui \
     editdb.ui \
     staff.ui \
-    addstaff.ui
-
+    addstaff.ui \
+    adminhome.ui \
+    updatestaff.ui \
+    removestaff.ui
+    
 RESOURCES += \
     resources.qrc
