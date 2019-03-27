@@ -77,4 +77,4 @@ class PaymentForm(FlaskForm):
 	submit = SubmitField('Submit')
 
 class RentButton(FlaskForm):
-	submit = SubmitField('RENT')
+	submit = SubmitField('RENT', validators=[DataRequired()])

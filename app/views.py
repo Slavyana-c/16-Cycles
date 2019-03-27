@@ -151,7 +151,6 @@ def bikePage():
         pass
     thisRentalRate = Rental_Rates.query.filter(Rental_Rates.bike_type_id == bikeId).first()
     print(thisRentalRate)
-    form = SelectDates();
     data = Bike_Types.query.filter(and_(Bike_Types.brand == brand, Bike_Types.model == model)).first()
     image = data.image
 
@@ -160,9 +159,8 @@ def bikePage():
 
     form = RentButton();
     if form.validate_on_submit():
-        print("\n\n\nData being passed")
-        print(data)
-        payForm(data)
+        payForm(bikeId)
+        return redirect(url_for('payForm(bikeId)'))
     return render_template("bikePage.html", data=data, form=form, rentStart=rentStartDate,rentEnd=rentEndDate,rentInfo=[bikeRentPrice,thisRentalRate,numberOfDays]) # redirect to the bike search page
 
 @app.route('/account')
@@ -274,14 +272,19 @@ def makeCheckoutTable(databaseOutput):
   </tr> """
     return output
 
-def payForm(bikeRenting):
+@app.route('/paymentform', methods=['GET', 'POST'])
+def payForm(bikeID):
+    print("\n\n\n\nWe got to here")
+    print(bikeID)
     form = PaymentForm()
-    if form.validate_on_submit():
-        qr(form.email.data, bikeRenting)
     return render_template("payment.html", form=form)
+
+    if form.validate_on_submit():
+        qr(form.email.data, )
 
 @app.route('/qr', methods=['GET', 'POST'])
 def qr(receivingAddress, bikeRented):
+    print("\n\n\n\nAnd here\n\n\n\n")
 
     # generating the QR code
     url = pyqrcode.create('https://ksassets.timeincuk.net/wp/uploads/sites/55/2016/07/2015_PeepShow_Mark2_Press_111115-920x610.jpg')
