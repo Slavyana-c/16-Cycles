@@ -55,8 +55,8 @@ def addShops():
     names = ["Leeds University Union","Headingley","City Centre"]
     addresses = ["Lifton Place, Leeds, LS2 9JZ","2 St Michael's Road, Leeds LS6 3AW","Unit 1, New Station St, Leeds LS1 5DE"]
     numbers = ["01133801400","01132785836","01132469132"]
-    latitudes = ["53.806576","53.789944","53.796104"]
-    longitudes = ["-1.555882","-1.560632","-1.547351"]
+    latitudes = [53.807348, 53.8193, 53.7956]
+    longitudes = [-1.558362, -1.5773, -1.5444]
     for i in range(3):
         print("Adding Shop: ",names[i])
         newShop = models.Shops(location_name=names[i],
