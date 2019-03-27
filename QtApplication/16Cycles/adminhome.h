@@ -15,6 +15,7 @@ public:
     explicit AdminHome(QWidget *parent = 0);
     ~AdminHome();
     void setGroupBoxName(QString name);
+    void setUserEmail(QString email);
 
 private slots:
     void on_adminLogOutButton_clicked();
@@ -27,8 +28,16 @@ private slots:
 
     void on_staffUpdateButton_clicked();
 
+    void on_resetPasswordButton_clicked();
+
+    void on_bikesViewButton_clicked();
+
+    void on_ordersViewButton_clicked();
+
 private:
     Ui::AdminHome *ui;
+    QString userName;
+    QString userEmail;
 };
 
 #endif // ADMINHOME_H

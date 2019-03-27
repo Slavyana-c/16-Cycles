@@ -1,6 +1,7 @@
 from app import db, app, login_manager
 from datetime import datetime
 from flask_login import UserMixin
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 
 @login_manager.user_loader
@@ -18,6 +19,19 @@ class Users(db.Model, UserMixin):
     # Relationship to Orders and Payment methods
     orders = db.relationship('Orders', backref='user', lazy=True)
     payment_methods = db.relationship('Payment_Methods', backref='user', lazy=True)
+
+    def get_reset_token(self, expires_seconds=3600):
+        s = Serializer(app.config['SECRET_KEY'], expires_seconds)
+        return s.dumps({'user_id': self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return Users.query.get(user_id)
 
 # The Staff database model
 class Staff(db.Model, UserMixin):

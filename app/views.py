@@ -1,7 +1,10 @@
 from flask import render_template, flash, url_for, redirect, request, abort
-from app import app, db, bcrypt, admin, models
+from app import app, db, bcrypt, admin, models, mail
 from app.models import Users,Bike_Types,Bikes,Shops,Rental_Rates,Orders,Rented_Bikes
-from .forms import NewUserForm, LoginForm, SelectDates, AppliedFilters, ExtendDate, PasswordChangeForm, PaymentForm
+from .forms import (NewUserForm, LoginForm, SelectDates, AppliedFilters,
+                    ExtendDate, PasswordChangeForm, RequestPasswordForm,
+                    NewPasswordForm, PaymentForm)
+from flask_mail import Message
 from sqlalchemy import and_, or_
 
 # all imports for sending emails
@@ -209,6 +212,48 @@ def logout():
 	logout_user()
 	flash('You have successfully logged out', 'success')
 	return redirect(url_for('home'))
+
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request',
+                  sender='noreply@16cycles.com',
+                  recipients=[user.email])
+    msg.body = '''To reset your password, visit the following link:
+{link}
+
+
+If you did not make this request, then ignore this email and no changes will be made.
+
+'''.format(link=url_for('resetToken', token=token, _external=True))
+    mail.send(msg)
+
+
+@app.route("/resetPassword", methods=['GET', 'POST'])
+def resetPassword():
+    form = RequestPasswordForm()
+    if form.validate_on_submit():
+        user = Users.query.filter_by(email=form.email.data).first()
+        send_reset_email(user)
+        flash('An email with reset instructions has been sent to the email supplied', 'info')
+        # if user verified return to account
+        return redirect(url_for('login'))
+    return render_template('resetPassword.html', title='Reset Password', form=form)
+
+@app.route("/resetPassword/<token>", methods=['GET', 'POST'])
+def resetToken(token):
+    user = Users.verify_reset_token(token)
+    if not user:
+        flash('That token is invalid or expired', 'warning')
+        return redirect(url_for('resetPassword'))
+    form = NewPasswordForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        flash('Your password has been updated.', 'success')
+        return redirect(url_for('login'))
+    return render_template('resetToken.html', title='Reset Password', form=form)
+
 
 
 def calculateRentPrice(numberOfDays,rentalRates):

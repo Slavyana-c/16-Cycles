@@ -31,7 +31,7 @@ class Ui_AddStaff
 {
 public:
     QGroupBox *groupBox;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_2;
     QLabel *nameLabel;
@@ -70,21 +70,21 @@ public:
         QFont font;
         font.setPointSize(24);
         groupBox->setFont(font);
-        widget = new QWidget(groupBox);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(20, 50, 941, 571));
-        verticalLayout = new QVBoxLayout(widget);
+        layoutWidget = new QWidget(groupBox);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        layoutWidget->setGeometry(QRect(20, 50, 941, 571));
+        verticalLayout = new QVBoxLayout(layoutWidget);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        nameLabel = new QLabel(widget);
+        nameLabel = new QLabel(layoutWidget);
         nameLabel->setObjectName(QStringLiteral("nameLabel"));
         nameLabel->setFont(font);
 
         horizontalLayout_2->addWidget(nameLabel);
 
-        nameLineEdit = new QLineEdit(widget);
+        nameLineEdit = new QLineEdit(layoutWidget);
         nameLineEdit->setObjectName(QStringLiteral("nameLineEdit"));
 
         horizontalLayout_2->addWidget(nameLineEdit);
@@ -94,13 +94,13 @@ public:
 
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        emailLabel = new QLabel(widget);
+        emailLabel = new QLabel(layoutWidget);
         emailLabel->setObjectName(QStringLiteral("emailLabel"));
         emailLabel->setFont(font);
 
         horizontalLayout_3->addWidget(emailLabel);
 
-        emailLineEdit = new QLineEdit(widget);
+        emailLineEdit = new QLineEdit(layoutWidget);
         emailLineEdit->setObjectName(QStringLiteral("emailLineEdit"));
 
         horizontalLayout_3->addWidget(emailLineEdit);
@@ -110,14 +110,15 @@ public:
 
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
-        passwordLabel = new QLabel(widget);
+        passwordLabel = new QLabel(layoutWidget);
         passwordLabel->setObjectName(QStringLiteral("passwordLabel"));
         passwordLabel->setFont(font);
 
         horizontalLayout_4->addWidget(passwordLabel);
 
-        passwordLineEdit = new QLineEdit(widget);
+        passwordLineEdit = new QLineEdit(layoutWidget);
         passwordLineEdit->setObjectName(QStringLiteral("passwordLineEdit"));
+        passwordLineEdit->setEchoMode(QLineEdit::Password);
 
         horizontalLayout_4->addWidget(passwordLineEdit);
 
@@ -126,14 +127,15 @@ public:
 
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        confirmPasswordLabel = new QLabel(widget);
+        confirmPasswordLabel = new QLabel(layoutWidget);
         confirmPasswordLabel->setObjectName(QStringLiteral("confirmPasswordLabel"));
         confirmPasswordLabel->setFont(font);
 
         horizontalLayout_5->addWidget(confirmPasswordLabel);
 
-        confirmPasswordLineEdit = new QLineEdit(widget);
+        confirmPasswordLineEdit = new QLineEdit(layoutWidget);
         confirmPasswordLineEdit->setObjectName(QStringLiteral("confirmPasswordLineEdit"));
+        confirmPasswordLineEdit->setEchoMode(QLineEdit::Password);
 
         horizontalLayout_5->addWidget(confirmPasswordLineEdit);
 
@@ -142,13 +144,13 @@ public:
 
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
-        contactNumberLabel = new QLabel(widget);
+        contactNumberLabel = new QLabel(layoutWidget);
         contactNumberLabel->setObjectName(QStringLiteral("contactNumberLabel"));
         contactNumberLabel->setFont(font);
 
         horizontalLayout_6->addWidget(contactNumberLabel);
 
-        contactNumberLineEdit = new QLineEdit(widget);
+        contactNumberLineEdit = new QLineEdit(layoutWidget);
         contactNumberLineEdit->setObjectName(QStringLiteral("contactNumberLineEdit"));
 
         horizontalLayout_6->addWidget(contactNumberLineEdit);
@@ -158,12 +160,12 @@ public:
 
         horizontalLayout_7 = new QHBoxLayout();
         horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
-        adressLabel = new QLabel(widget);
+        adressLabel = new QLabel(layoutWidget);
         adressLabel->setObjectName(QStringLiteral("adressLabel"));
 
         horizontalLayout_7->addWidget(adressLabel);
 
-        AddressLineEdit = new QLineEdit(widget);
+        AddressLineEdit = new QLineEdit(layoutWidget);
         AddressLineEdit->setObjectName(QStringLiteral("AddressLineEdit"));
 
         horizontalLayout_7->addWidget(AddressLineEdit);
@@ -173,7 +175,7 @@ public:
 
         horizontalLayout_8 = new QHBoxLayout();
         horizontalLayout_8->setObjectName(QStringLiteral("horizontalLayout_8"));
-        adminButton = new QRadioButton(widget);
+        adminButton = new QRadioButton(layoutWidget);
         adminButton->setObjectName(QStringLiteral("adminButton"));
 
         horizontalLayout_8->addWidget(adminButton);
@@ -183,7 +185,7 @@ public:
 
         horizontalLayout_9 = new QHBoxLayout();
         horizontalLayout_9->setObjectName(QStringLiteral("horizontalLayout_9"));
-        shopIDComboBox = new QComboBox(widget);
+        shopIDComboBox = new QComboBox(layoutWidget);
         shopIDComboBox->setObjectName(QStringLiteral("shopIDComboBox"));
 
         horizontalLayout_9->addWidget(shopIDComboBox);
@@ -193,12 +195,12 @@ public:
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        cancelButton = new QPushButton(widget);
+        cancelButton = new QPushButton(layoutWidget);
         cancelButton->setObjectName(QStringLiteral("cancelButton"));
 
         horizontalLayout->addWidget(cancelButton);
 
-        addStaffButton = new QPushButton(widget);
+        addStaffButton = new QPushButton(layoutWidget);
         addStaffButton->setObjectName(QStringLiteral("addStaffButton"));
 
         horizontalLayout->addWidget(addStaffButton);

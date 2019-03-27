@@ -60,8 +60,8 @@ void MainWindow::on_quitButton_clicked()
 void MainWindow::on_signInButton_clicked()
 {
     // Get data entered on window as strings
-    QString username,password;
-    username = ui-> usernameLineEdit-> text();
+    QString email,password;
+    email = ui-> usernameLineEdit-> text();
     password = ui-> passwordLineEdit-> text();
 
     // Open connection to database
@@ -73,7 +73,7 @@ void MainWindow::on_signInButton_clicked()
 
     // Prepare query to find username and password in database
     QSqlQuery query;
-    query.prepare("SELECT password,name,admin FROM staff WHERE email = '" + username + "'");
+    query.prepare("SELECT password,name,admin FROM staff WHERE email = '" + email + "'");
 
     // Execute query
     query.exec();
@@ -108,6 +108,7 @@ void MainWindow::on_signInButton_clicked()
         AdminHome adminHome;
         adminHome.setModal(true);
         adminHome.setGroupBoxName(query.value(1).toString());
+        adminHome.setUserEmail(email);
         QDesktopWidget desktop;
         QRect mainScreenSize = desktop.availableGeometry(desktop.primaryScreen());
         adminHome.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
