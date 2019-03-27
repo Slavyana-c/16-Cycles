@@ -40,6 +40,14 @@ def about():
 def meetOurStaff():
     return render_template("meetOurStaff.html") # redirect to the about page
 
+
+
+
+
+
+
+
+
 @app.route('/browse',methods=['GET','POST'])
 # lots of default arguments given here
 # def browse(startWindow=datetime.datetime.now(),
@@ -48,54 +56,93 @@ def meetOurStaff():
 def browse(startWindow=datetime.datetime.today(),
            endWindow=datetime.datetime.today()+timedelta(days=1),
            shopID = 1):
-    form = SelectDates()
-    if form.validate_on_submit():
-        startWindow = form.start_date.data
-        print(type(startWindow))
-        # startWindow = startWindow.date()
-        endWindow = form.end_date.data
-        print(type(endWindow))
-        # endWindow = endWindow.date()
+    form_a = SelectDates(prefix='a')
+    # filterForm = AppliedFilters()
+    form_b = AppliedFilters(prefix='b')
+    # filterForm = AppliedFilters(prefix="form_b")
 
-    # task = models.Tasks(title=form.title.data,
-    #                     description=form.description.data,
-    #                     completion_date=form.completion_date.data,
-    #                     user=current_user.id)
-    # startWindow = request.args.get('start', default = datetime.datetime.now(), type = datetime)
-    # endWindow = request.args.get('end',default = datetime.datetime.now()+timedelta(days=1), type = datetime)
-    # shopID = request.args.get('id', default = 1, type = int)
-    filterForm = AppliedFilters()
-    # if filterForm.validate_on_submit():
-    #     shopID = request.filterForm['shop']
-    form = SelectDates();
-    if form.validate_on_submit():
-        print("Button pressed or somethign")
     bikeTypes = Bike_Types.query.all()
-    bikes = Bikes.query.filter_by(shop_id=shopID).all()
-    print("\n\nBrowse page running")
-    #for a in bikes:
-    #    print("\nNew Bike")
-    #    print(bikeTypes[a.bike_type_id].model)
-    #    print(bikeTypes[a.id].model)
-    #    print(bikeTypes[a.bike_type_id].id)
-    #    print(bikeTypes[a.id].id)
-    #    print(a.bike_type_id)
-    #    print(a.id)
+    bikes = Bikes.query.all() # if no shop was chosen, we display all bikes
     rentalRates = Rental_Rates.query.all()
     orders = Orders.query.all()
     rentedBikes = Rented_Bikes.query.all()
     bikesToRemove = [] # stores the ID's of bikes we need to remove
+    filteredOutBikeIDs = []
+
+
+    if form_b.submit.data:
+        # shopID = request.filterForm['shop']
+        shopID = form_b.shopChoice.data
+        typeChosen = form_b.typeChoice.data
+        # shopID = request.form.getlist("users")
+        bikeTypes = Bike_Types.query.all()
+        bikes = []
+        if typeChosen == "None":
+            print('no type chosen')
+            # just get the bikes from the shop
+            bikes = Bikes.query.filter_by(shop_id=shopID).all()
+        else:
+            print('type ' + typeChosen + ' chosen')
+            # bike_types = Bike_Types.query.filter_by(use_type=typeChosen)
+            # bikes = Bike_Types.query.filter_by(use_type=typeChosen).all()
+            # bikes = Bike_Types.query.filter_by(use_type=typeChosen).all()
+            # bikeTypeId = Bikes.query.filter_by(id=bike_type_id).first().bike_type_id
+            # bikes = Bike_Types.query.filter_by(id=bikeTypeId).all().use_type
+
+            bikesWithDesiredType = Bike_Types.query.filter_by(use_type=typeChosen).all()
+            # print(bikesWithDesiredType.id)
+            for bike in bikesWithDesiredType:
+                print(bike)
+                filteredOutBikeIDs.append(bike.id)
+            print(filteredOutBikeIDs)
+
+            print("EQUATING IDS IN BIKES DB")
+
+            for ID in filteredOutBikeIDs:
+                # bikeExistsInShop = Bikes.query(db.exists().where(bike_type_id=ID)).scalar()
+                # print(bikeExistsInShop)
+                oneBike = Bikes.query.filter_by(bike_type_id=ID).first()
+                # if (bikeExistsInShop == False):
+                #     print("DO NOT ADD")
+                if oneBike is None:
+                    print("DO NOT ADD")
+                else:
+                    print(oneBike)
+                    bikes.append(oneBike)
+                # print(bikes)
+            print("END OF EQUATING IDS IN BIKES DB")
+
+            print("PRINTING BIKES THAT SHOULD BE DISPLAYED:")
+            print(bikes)
+            print("ENF OF PRINTING BIKES THAT SHOULD BE DISPLAYED:")
+
+            bikeTypeId = Bikes.query.filter_by(id=1).first().bike_type_id
+            bikeColour = Bike_Types.query.filter_by(id=bikeTypeId).all()
+
+            print(bikeColour)
+
+            for bike in bikes:
+                print (bike)
+            # bikes = Bike_Types.query.filter_by(Bike_Types.bike_type_id==Bike_Types.id).all()
+            # bikes = Bike_Types.query.join(Bikes).join(Bikes.bike_type).filter(Bike_Types.id==Bikes.bike_type_id).all()
+        rentalRates = Rental_Rates.query.all()
+        orders = Orders.query.all()
+        rentedBikes = Rented_Bikes.query.all()
+        print("Filters applied")
+        print(shopID)
+        print(typeChosen)
+
+
+    if form_a.validate_on_submit():
+        startWindow = form_a.start_date.data
+        print(type(startWindow))
+        # startWindow = startWindow.date()
+        endWindow = form_a.end_date.data
+        print(type(endWindow))
+        # endWindow = endWindow.date()
+
     i = 0
     while(i < len(rentedBikes)):
-        # print("startWindow", end='| ')
-        # print(     startWindow,end=' ')
-        # print(type(startWindow))
-        # print("rentedBikes[i].start_date.date()", end='| ')
-        # print(     rentedBikes[i].start_date.date(), end=' ')
-        # print(type(rentedBikes[i].start_date.date()))
-
-        # print(type(startWindow))
-        # print(type(rentedBikes[i].start_date))
         # checks to see if the bike is available within the given dates
         try:
             if(rentedBikes[i].start_date.date() <= startWindow and rentedBikes[i].end_date.date() >= startWindow or
@@ -120,18 +167,9 @@ def browse(startWindow=datetime.datetime.today(),
         else:
             i+=1
 
-    print("\nUpdated bikes")
-    print(bikes)
-
     # now the only bikes shown to the user are the ones they can actually rent
-    return render_template("browse.html", filterForm=filterForm,form=form,data=[bikes,bikeTypes,rentalRates,startWindow,endWindow]) # redirect to the bike search page, giving all the data
+    return render_template("browse.html", filterForm=form_b,form=form_a,data=[bikes,bikeTypes,rentalRates,startWindow,endWindow]) # redirect to the bike search page, giving all the data
 
-# OLD version of bikePage
-# @app.route('/bikePage')
-# def bikePage():
-#     form = SelectDates();
-#     data = Bike_Types.query.all()[0]#(brand='Voodoo')
-#     return render_template("bikePage.html", form=form) # redirect to the bike search page
 
 
 @app.route('/bikePage/',methods=['GET', 'POST'])
