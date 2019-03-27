@@ -65,7 +65,6 @@ class AppliedFilters(FlaskForm):
 	typeChoice = RadioField('Type', choices=[('Road','Road'),('Mountain','Mountain'),('Hybrid','Hybrid'),('Electric','Electric')])
 	submit = SubmitField('Update Date')
 
-
 class ExtendDate(FlaskForm):
 	new_end_date = DateField('Extend Date', validators=[DataRequired()])
 	submit = SubmitField('Update Date')
