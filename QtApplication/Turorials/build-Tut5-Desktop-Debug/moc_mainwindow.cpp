@@ -1,16 +1,16 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'home.h'
+** Meta object code from reading C++ file 'mainwindow.h'
 **
 ** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../16Cycles/home.h"
+#include "../../16cycles/mainwindow.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'home.h' doesn't include <QObject>."
+#error "The header file 'mainwindow.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
 #error "This file was generated using the moc from 5.9.2. It"
 #error "cannot be used with the include files from this version of Qt."
@@ -20,29 +20,29 @@
 QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_home_t {
+struct qt_meta_stringdata_MainWindow_t {
     QByteArrayData data[4];
-    char stringdata0[54];
+    char stringdata0[66];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_home_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_MainWindow_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_home_t qt_meta_stringdata_home = {
+static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_MainWindow = {
     {
-QT_MOC_LITERAL(0, 0, 4), // "home"
-QT_MOC_LITERAL(1, 5, 23), // "on_editDBButton_clicked"
-QT_MOC_LITERAL(2, 29, 0), // ""
-QT_MOC_LITERAL(3, 30, 23) // "on_logOutButton_clicked"
+QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
+QT_MOC_LITERAL(1, 11, 26), // "on_pushButtonClose_clicked"
+QT_MOC_LITERAL(2, 38, 0), // ""
+QT_MOC_LITERAL(3, 39, 26) // "on_pushButtonLogin_clicked"
 
     },
-    "home\0on_editDBButton_clicked\0\0"
-    "on_logOutButton_clicked"
+    "MainWindow\0on_pushButtonClose_clicked\0"
+    "\0on_pushButtonLogin_clicked"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_home[] = {
+static const uint qt_meta_data_MainWindow[] = {
 
  // content:
        7,       // revision
@@ -66,42 +66,42 @@ static const uint qt_meta_data_home[] = {
        0        // eod
 };
 
-void home::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        home *_t = static_cast<home *>(_o);
+        MainWindow *_t = static_cast<MainWindow *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->on_editDBButton_clicked(); break;
-        case 1: _t->on_logOutButton_clicked(); break;
+        case 0: _t->on_pushButtonClose_clicked(); break;
+        case 1: _t->on_pushButtonLogin_clicked(); break;
         default: ;
         }
     }
     Q_UNUSED(_a);
 }
 
-const QMetaObject home::staticMetaObject = {
-    { &QDialog::staticMetaObject, qt_meta_stringdata_home.data,
-      qt_meta_data_home,  qt_static_metacall, nullptr, nullptr}
+const QMetaObject MainWindow::staticMetaObject = {
+    { &QMainWindow::staticMetaObject, qt_meta_stringdata_MainWindow.data,
+      qt_meta_data_MainWindow,  qt_static_metacall, nullptr, nullptr}
 };
 
 
-const QMetaObject *home::metaObject() const
+const QMetaObject *MainWindow::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *home::qt_metacast(const char *_clname)
+void *MainWindow::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_home.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_MainWindow.stringdata0))
         return static_cast<void*>(this);
-    return QDialog::qt_metacast(_clname);
+    return QMainWindow::qt_metacast(_clname);
 }
 
-int home::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QDialog::qt_metacall(_c, _id, _a);
+    _id = QMainWindow::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
