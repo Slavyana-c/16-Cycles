@@ -170,21 +170,51 @@ void AdminHome::on_bikesViewButton_clicked()
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery *query = new QSqlQuery(mainWindow.db);
 
-    query-> prepare("SELECT * FROM bikes");
-    query-> exec();
-    if(!query-> next())
+    // Display question to check user wants to log out
+    QMessageBox::StandardButton reply = QMessageBox::question(this,"16Cycles","Do you want to see Bikes?",
+                                                              QMessageBox::Yes | QMessageBox::No);
+
+    // Display bikes if yes clicked
+    if(reply == QMessageBox::Yes)
     {
-        this-> close();
-        qDebug()<<("error bikes");
+        query-> prepare("SELECT * FROM bikes");
+        query-> exec();
+        if(!query-> next())
+        {
+            this-> close();
+            qDebug()<<("error bikes");
+        }
+
+        mainWindow.close();
+
+        model-> setQuery(*query);
+
+        ui-> tableView-> setModel(model);
+        ui-> tableView-> resizeColumnsToContents();
+        ui-> tableView-> resizeRowsToContents();
+    }
+    else
+    {
+        query-> prepare("SELECT * FROM bike_types");
+        query-> exec();
+        if(!query-> next())
+        {
+            this-> close();
+            qDebug()<<("error bikes");
+        }
+
+        mainWindow.close();
+
+        model-> setQuery(*query);
+
+        ui-> tableView-> setModel(model);
+        ui-> tableView-> resizeColumnsToContents();
+        ui-> tableView-> resizeRowsToContents();
     }
 
-    mainWindow.close();
 
-    model-> setQuery(*query);
 
-    ui-> tableView-> setModel(model);
-    ui-> tableView-> resizeColumnsToContents();
-    ui-> tableView-> resizeRowsToContents();
+
 }
 
 void AdminHome::on_ordersViewButton_clicked()

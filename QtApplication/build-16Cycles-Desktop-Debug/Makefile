@@ -60,7 +60,9 @@ SOURCES       = ../16Cycles/main.cpp \
 		../16Cycles/adminhome.cpp \
 		../16Cycles/updatestaff.cpp \
 		../16Cycles/removestaff.cpp \
-		../16Cycles/resetpassword.cpp qrc_resources.cpp \
+		../16Cycles/resetpassword.cpp \
+		../16Cycles/profits.cpp \
+		../16Cycles/createorder.cpp qrc_resources.cpp \
 		moc_mainwindow.cpp \
 		moc_home.cpp \
 		moc_editdb.cpp \
@@ -69,7 +71,9 @@ SOURCES       = ../16Cycles/main.cpp \
 		moc_adminhome.cpp \
 		moc_updatestaff.cpp \
 		moc_removestaff.cpp \
-		moc_resetpassword.cpp
+		moc_resetpassword.cpp \
+		moc_profits.cpp \
+		moc_createorder.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		home.o \
@@ -81,6 +85,8 @@ OBJECTS       = main.o \
 		updatestaff.o \
 		removestaff.o \
 		resetpassword.o \
+		profits.o \
+		createorder.o \
 		qrc_resources.o \
 		moc_mainwindow.o \
 		moc_home.o \
@@ -90,7 +96,9 @@ OBJECTS       = main.o \
 		moc_adminhome.o \
 		moc_updatestaff.o \
 		moc_removestaff.o \
-		moc_resetpassword.o
+		moc_resetpassword.o \
+		moc_profits.o \
+		moc_createorder.o
 DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/common/unix.conf \
 		/usr/lib64/qt5/mkspecs/common/linux.conf \
@@ -174,7 +182,9 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		../16Cycles/adminhome.h \
 		../16Cycles/updatestaff.h \
 		../16Cycles/removestaff.h \
-		../16Cycles/resetpassword.h ../16Cycles/main.cpp \
+		../16Cycles/resetpassword.h \
+		../16Cycles/profits.h \
+		../16Cycles/createorder.h ../16Cycles/main.cpp \
 		../16Cycles/mainwindow.cpp \
 		../16Cycles/home.cpp \
 		../16Cycles/editdb.cpp \
@@ -184,7 +194,9 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		../16Cycles/adminhome.cpp \
 		../16Cycles/updatestaff.cpp \
 		../16Cycles/removestaff.cpp \
-		../16Cycles/resetpassword.cpp
+		../16Cycles/resetpassword.cpp \
+		../16Cycles/profits.cpp \
+		../16Cycles/createorder.cpp
 QMAKE_TARGET  = 16Cycles
 DESTDIR       = 
 TARGET        = 16Cycles
@@ -193,7 +205,7 @@ TARGET        = 16Cycles
 first: all
 ####### Build rules
 
-$(TARGET): ui_mainwindow.h ui_home.h ui_editdb.h ui_staff.h ui_addstaff.h ui_adminhome.h ui_updatestaff.h ui_removestaff.h ui_resetpassword.h $(OBJECTS)  
+$(TARGET): ui_mainwindow.h ui_home.h ui_editdb.h ui_staff.h ui_addstaff.h ui_adminhome.h ui_updatestaff.h ui_removestaff.h ui_resetpassword.h ui_profits.h ui_createorder.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: ../16Cycles/16Cycles.pro /usr/lib64/qt5/mkspecs/linux-g++/qmake.conf /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
@@ -373,9 +385,9 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../16Cycles/resources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../16Cycles/mainwindow.h ../16Cycles/home.h ../16Cycles/editdb.h ../16Cycles/staff.h ../16Cycles/addstaff.h ../16Cycles/simplecrypt.h ../16Cycles/adminhome.h ../16Cycles/updatestaff.h ../16Cycles/removestaff.h ../16Cycles/resetpassword.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../16Cycles/main.cpp ../16Cycles/mainwindow.cpp ../16Cycles/home.cpp ../16Cycles/editdb.cpp ../16Cycles/staff.cpp ../16Cycles/addstaff.cpp ../16Cycles/simplecrypt.cpp ../16Cycles/adminhome.cpp ../16Cycles/updatestaff.cpp ../16Cycles/removestaff.cpp ../16Cycles/resetpassword.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../16Cycles/mainwindow.ui ../16Cycles/home.ui ../16Cycles/editdb.ui ../16Cycles/staff.ui ../16Cycles/addstaff.ui ../16Cycles/adminhome.ui ../16Cycles/updatestaff.ui ../16Cycles/removestaff.ui ../16Cycles/resetpassword.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../16Cycles/mainwindow.h ../16Cycles/home.h ../16Cycles/editdb.h ../16Cycles/staff.h ../16Cycles/addstaff.h ../16Cycles/simplecrypt.h ../16Cycles/adminhome.h ../16Cycles/updatestaff.h ../16Cycles/removestaff.h ../16Cycles/resetpassword.h ../16Cycles/profits.h ../16Cycles/createorder.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../16Cycles/main.cpp ../16Cycles/mainwindow.cpp ../16Cycles/home.cpp ../16Cycles/editdb.cpp ../16Cycles/staff.cpp ../16Cycles/addstaff.cpp ../16Cycles/simplecrypt.cpp ../16Cycles/adminhome.cpp ../16Cycles/updatestaff.cpp ../16Cycles/removestaff.cpp ../16Cycles/resetpassword.cpp ../16Cycles/profits.cpp ../16Cycles/createorder.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../16Cycles/mainwindow.ui ../16Cycles/home.ui ../16Cycles/editdb.ui ../16Cycles/staff.ui ../16Cycles/addstaff.ui ../16Cycles/adminhome.ui ../16Cycles/updatestaff.ui ../16Cycles/removestaff.ui ../16Cycles/resetpassword.ui ../16Cycles/profits.ui ../16Cycles/createorder.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -413,9 +425,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib64/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h /usr/lib64/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_home.cpp moc_editdb.cpp moc_staff.cpp moc_addstaff.cpp moc_adminhome.cpp moc_updatestaff.cpp moc_removestaff.cpp moc_resetpassword.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_home.cpp moc_editdb.cpp moc_staff.cpp moc_addstaff.cpp moc_adminhome.cpp moc_updatestaff.cpp moc_removestaff.cpp moc_resetpassword.cpp moc_profits.cpp moc_createorder.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_home.cpp moc_editdb.cpp moc_staff.cpp moc_addstaff.cpp moc_adminhome.cpp moc_updatestaff.cpp moc_removestaff.cpp moc_resetpassword.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_home.cpp moc_editdb.cpp moc_staff.cpp moc_addstaff.cpp moc_adminhome.cpp moc_updatestaff.cpp moc_removestaff.cpp moc_resetpassword.cpp moc_profits.cpp moc_createorder.cpp
 moc_mainwindow.cpp: ../16Cycles/home.h \
 		../16Cycles/simplecrypt.h \
 		../16Cycles/adminhome.h \
@@ -464,11 +476,21 @@ moc_resetpassword.cpp: ../16Cycles/resetpassword.h \
 		/usr/lib64/qt5/bin/moc
 	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/resetpassword.h -o moc_resetpassword.cpp
 
+moc_profits.cpp: ../16Cycles/profits.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/profits.h -o moc_profits.cpp
+
+moc_createorder.cpp: ../16Cycles/createorder.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/createorder.h -o moc_createorder.cpp
+
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_mainwindow.h ui_home.h ui_editdb.h ui_staff.h ui_addstaff.h ui_adminhome.h ui_updatestaff.h ui_removestaff.h ui_resetpassword.h
+compiler_uic_make_all: ui_mainwindow.h ui_home.h ui_editdb.h ui_staff.h ui_addstaff.h ui_adminhome.h ui_updatestaff.h ui_removestaff.h ui_resetpassword.h ui_profits.h ui_createorder.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_mainwindow.h ui_home.h ui_editdb.h ui_staff.h ui_addstaff.h ui_adminhome.h ui_updatestaff.h ui_removestaff.h ui_resetpassword.h
+	-$(DEL_FILE) ui_mainwindow.h ui_home.h ui_editdb.h ui_staff.h ui_addstaff.h ui_adminhome.h ui_updatestaff.h ui_removestaff.h ui_resetpassword.h ui_profits.h ui_createorder.h
 ui_mainwindow.h: ../16Cycles/mainwindow.ui \
 		/usr/lib64/qt5/bin/uic
 	/usr/lib64/qt5/bin/uic ../16Cycles/mainwindow.ui -o ui_mainwindow.h
@@ -504,6 +526,14 @@ ui_removestaff.h: ../16Cycles/removestaff.ui \
 ui_resetpassword.h: ../16Cycles/resetpassword.ui \
 		/usr/lib64/qt5/bin/uic
 	/usr/lib64/qt5/bin/uic ../16Cycles/resetpassword.ui -o ui_resetpassword.h
+
+ui_profits.h: ../16Cycles/profits.ui \
+		/usr/lib64/qt5/bin/uic
+	/usr/lib64/qt5/bin/uic ../16Cycles/profits.ui -o ui_profits.h
+
+ui_createorder.h: ../16Cycles/createorder.ui \
+		/usr/lib64/qt5/bin/uic
+	/usr/lib64/qt5/bin/uic ../16Cycles/createorder.ui -o ui_createorder.h
 
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
@@ -600,6 +630,14 @@ resetpassword.o: ../16Cycles/resetpassword.cpp ../16Cycles/resetpassword.h \
 		../16Cycles/adminhome.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o resetpassword.o ../16Cycles/resetpassword.cpp
 
+profits.o: ../16Cycles/profits.cpp ../16Cycles/profits.h \
+		ui_profits.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o profits.o ../16Cycles/profits.cpp
+
+createorder.o: ../16Cycles/createorder.cpp ../16Cycles/createorder.h \
+		ui_createorder.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o createorder.o ../16Cycles/createorder.cpp
+
 qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp
 
@@ -629,6 +667,12 @@ moc_removestaff.o: moc_removestaff.cpp
 
 moc_resetpassword.o: moc_resetpassword.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_resetpassword.o moc_resetpassword.cpp
+
+moc_profits.o: moc_profits.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_profits.o moc_profits.cpp
+
+moc_createorder.o: moc_createorder.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_createorder.o moc_createorder.cpp
 
 ####### Install
 
