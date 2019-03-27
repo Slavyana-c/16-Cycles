@@ -1,198 +1,139 @@
-from config import SQLALCHEMY_DATABASE_URI
-from app import db, models
-import os.path
-import random
-import datetime
-from datetime import timedelta
-import time
+from app import db, app, login_manager
+from datetime import datetime
+from flask_login import UserMixin
 
 
-def readFromCSV():
-    bikeData = open("bikeSpreadsheet.csv").read()  # read from the database
-    bikeData = bikeData.split(",") # split by commas
+@login_manager.user_loader
+def load_user(user_id):
+	return Users.query.get(int(user_id))
 
-    # since the last column ends with a \n, remove these newlines, which
-    # is a litle bit difficult since ["price\n14"] -> ["price","14"]
-    # which will cause some indexing errors, so we have to be careful.
-    i = 0
-    while(i<len(bikeData)):
-        if("\n" in bikeData[i]):
-            bikeData = bikeData[:i] + [bikeData[i].split("\n")[0]] + [bikeData[i].split("\n")[1]] + bikeData[i+1:]
-        i+=1
-    # remove the header and the last item which is just ''
-    bikeData = bikeData[9:-1]
+# The Users database model
+class Users(db.Model, UserMixin):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(60), nullable=False)
+    contact_number = db.Column(db.String(15), nullable=False)
+    times_rented = db.Column(db.Integer, default=0)
+    # Relationship to Orders and Payment methods
+    orders = db.relationship('Orders', backref='user', lazy=True)
+    payment_methods = db.relationship('Payment_Methods', backref='user', lazy=True)
 
-    return bikeData
+# The Staff database model
+class Staff(db.Model, UserMixin):
+    __tablename__ = 'staff'
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(60), nullable=False)
+    contact_number = db.Column(db.String(15), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.String(100), nullable=False)
+    admin = db.Column(db.Boolean, default=False)
+    # Foreign keys
+    shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
 
-def addBikeTypes():
-    bikeData = open("bikeSpreadsheet.csv").read()  # read from the database
-    bikeData = bikeData.split(",") # split by commas
+# The Bikes database model
+class Bikes(db.Model):
+    __tablename__ = 'bikes'
+    id = db.Column(db.Integer, primary_key=True)
+    days_used = db.Column(db.Integer, default=0)
+    times_rented = db.Column(db.Integer, default=0)
+    times_repaired = db.Column(db.Integer, default=0)
+    # If it is booked/sent for repairs
+    available = db.Column(db.Boolean, default=True)
+    # Foreign keys
+    bike_type_id = db.Column(db.Integer, db.ForeignKey('bike_types.id'), nullable=False)
+    shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
+    # Relationship to Bookings and repairs
+    #bookings = db.relationship('Bookings', backref='bike', lazy=True)
+    repairs = db.relationship('Repairs', backref='bike', lazy=True)
 
-    # since the last column ends with a \n, remove these newlines, which
-    # is a litle bit difficult since ["price\n14"] -> ["price","14"]
-    # which will cause some indexing errors, so we have to be careful.
-    i = 0
-    while(i<len(bikeData)):
-        if("\n" in bikeData[i]):
-            bikeData = bikeData[:i] + [bikeData[i].split("\n")[0]] + [bikeData[i].split("\n")[1]] + bikeData[i+1:]
-        i+=1
-    # remove the header and the last item which is just ''
-    bikeData = bikeData[9:-1]
+# The Bike_Types database model
+class Bike_Types(db.Model):
+    __tablename__ = 'bike_types'
+    id = db.Column(db.Integer, primary_key=True)
+    gears = db.Column(db.Integer, default=0)
+    weight = db.Column(db.Float, default=0.0)
+    brand = db.Column(db.String(50),nullable=False)
+    model = db.Column(db.String(50),nullable=False)
+    image = db.Column(db.String(20), nullable=False, default='default.jpg')
+    colour = db.Column(db.String(50),nullable=False)
+    user_type = db.Column(db.String(100),nullable=False)
+    use_type = db.Column(db.String(100),nullable=False)
+    times_rented = db.Column(db.Integer, default=0)
+    # Relationships to Bikes and Rental_Rates
+    bikes = db.relationship('Bikes', backref='bike_type', lazy=True)
+    rental_rates = db.relationship('Rental_Rates', backref='bike_type', lazy=True)
 
+# The Rental_Rates database model
+class Rental_Rates(db.Model):
+    __tablename__ = 'rental_rates'
+    id = db.Column(db.Integer, primary_key=True)
+    daily_rate = db.Column(db.Float, default=0.0)
+    weekly_rate = db.Column(db.Float, default=0.0)
+    monthly_rate = db.Column(db.Float, default=0.0)
+    # Foreign keys
+    bike_type_id = db.Column(db.Integer, db.ForeignKey('bike_types.id'), nullable=False)
 
-    # now printout the information
-    for i in range(0,len(bikeData),9):
-        print(bikeData[i],bikeData[i+1],bikeData[i+2],bikeData[i+3],bikeData[i+4],bikeData[i+5],bikeData[i+6],bikeData[i+7],bikeData[i+8])
-        newBike = models.Bike_Types(gears=bikeData[i],weight=bikeData[i+1],brand=bikeData[i+2],model=bikeData[i+3],image=bikeData[i+4],colour=bikeData[i+5],user_type=bikeData[i+6],use_type=bikeData[i+7],times_rented=0)
-        db.session.add(newBike)
+# The Shops database model
+class Shops(db.Model):
+    __tablename__ = 'shops'
+    id = db.Column(db.Integer, primary_key=True)
+    location_name = db.Column(db.String(100), unique=True, nullable=False)
+    latitude = db.Column(db.Float, default=0.0)
+    longitude = db.Column(db.Float, default=0.0)
+    address = db.Column(db.String(100), unique=True, nullable=False)
+    contact_number = db.Column(db.String(15), nullable=False)
+    # Relationship to Bikes
+    bikes = db.relationship('Bikes', backref='shop', lazy=True)
 
-    db.session.commit()
-    time.sleep(2)
+# The Repairs database model
+class Repairs(db.Model):
+    __tablename__ = 'repairs'
+    id = db.Column(db.Integer, primary_key=True)
+    date_complete = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    description = db.Column(db.String(500), nullable=False)
+    cost = db.Column(db.Float, default=0.0)
+    # Foreign key
+    bike_id = db.Column(db.Integer, db.ForeignKey('bikes.id'), nullable=False)
 
+# The Rented_Bikes database model
+# (Bookings of a single bike)
+class Rented_Bikes(db.Model):
+    __tablename__ = 'rented_bikes'
+    id = db.Column(db.Integer, primary_key=True)
+    start_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    end_date = db.Column(db.DateTime, nullable=False)
+    price = db.Column(db.Float, default=0.0)
+    # Foreign keys
+    bike_id = db.Column(db.Integer, db.ForeignKey('bikes.id'), nullable=False)
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
 
-def addShops():
-    # this function creates all the details for the stores
-    names = ["Leeds University Union","Headingley","City Centre"]
-    addresses = ["Lifton Place, Leeds, LS2 9JZ","2 St Michael's Road, Leeds LS6 3AW","Unit 1, New Station St, Leeds LS1 5DE"]
-    numbers = ["01133801400","01132785836","01132469132"]
-    latitudes = ["53.806576","53.789944","53.796104"]
-    longitudes = ["-1.555882","-1.560632","-1.547351"]
-    for i in range(3):
-        print("Adding Shop: ",names[i])
-        newShop = models.Shops(location_name=names[i],
-                               address=addresses[i],
-                               contact_number=numbers[i],
-                               latitude=latitudes[i],
-                               longitude=longitudes[i])
-        db.session.add(newShop)
-        db.session.commit()
-    time.sleep(2)
+# The Orders database model
+# (May consist of several Rented_Bikes)
+class Orders(db.Model):
+    __tablename__ = 'orders'
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    total_price = db.Column(db.Float, default=0.0)
+    #barcode = Something for the barcode here ...*
+    # Foreign keys
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    # Relationship to Rented_Bikes
+    rented_bikes = db.relationship('Rented_Bikes', backref='order', lazy=True)
 
-def addIndividualBikes():
-    print("Now Adding invididual bikes")
-    numOfBikesToAdd = 500
-    bikeIDs = []
-    allBikes = models.Bike_Types.query.all()
-    for bike in allBikes:
-        bikeIDs.append(bike.id)
-
-    shopIDs = []
-    allShops = models.Shops.query.all()
-    for shop in allShops:
-        shopIDs.append(shop.id)
-
-    for i in range(numOfBikesToAdd):
-        print("Adding Bike")
-        daysUsed = random.randint(10,100)
-        timesRented = int(daysUsed / (random.randint(1,5)))
-        timesRepaired = random.randint(0,10)
-        newBike = models.Bikes(days_used=daysUsed,times_rented=timesRented,times_repaired=timesRepaired,available=True,bike_type_id=random.choice(bikeIDs),shop_id=random.choice(shopIDs))
-        db.session.add(newBike)
-
-    db.session.commit()
-    time.sleep(2)
-
-def addRentalRates():
-    # for every bike, we can see how much it costs to rent it
-    # rental Rental_Rates (percentage of bike price)
-    #
-    # day 2%
-    # week 8%
-    # month 20%
-    dayPercent = 0.02
-    weekPercent = 0.08
-    monthPercent = 0.2
-    bikeIDs = []
-    allBikeData = readFromCSV()
-    allBikes = models.Bike_Types.query.all()
-    for bike in allBikes:
-        bikeIDs.append(bike.id)
-    for i in range(0,len(allBikeData),9):
-        print("Adding bike rental rate " + str(bikeIDs[i//9]))
-        bikePrice = int(allBikeData[i+8])
-        newRentalRate = models.Rental_Rates(daily_rate=round(bikePrice*dayPercent),
-                                            weekly_rate=round(bikePrice*weekPercent),
-                                            monthly_rate=round(bikePrice*monthPercent),
-                                            bike_type_id=bikeIDs[i//9]
-                                            )
-        db.session.add(newRentalRate)
-    db.session.commit()
-    time.sleep(2)
-
-
-def addStaff():
-
-    names = ["Jonathan","Matthew","Slavyana","Domantas","Ciaran","Andy"]
-    secondNames = ["Alderson","Cumber","Chervenkondeva","Dilys","Brennan","Parkes"]
-    addresses = ["70 Royal Park Road","The Tannery Flat 31","Charles Morris","Leodis","Liberty Dock","Surrey"]
-
-    for i in range(len(names)):
-        print("Adding staff member" + names[i] + " " + secondNames[i])
-        newStaff = models.Staff(email=names[i] + secondNames[i] + "@gmail.com",
-                              password="pass",
-                              contact_number="07" + str(random.randint(100000000,999999999)),
-                              name=names[i] + " " + secondNames[i],
-                              address = addresses[i],
-                              admin=True,
-                              shop_id = (i+2)//2)
-        db.session.add(newStaff)
-    db.session.commit()
-    time.sleep(2)
-
-def addUsersAndRentals():
-
-    numberOfUsers = 100
-    numberOfBikes = 500
-    alreadyRentedBikes = []
-    usersRentStart = []
-    names = ["Tom","Alice","Peter","Gabriel","Tohfah","Della","June","Matthew","Conor","Thomas","James","Stephen","Jane","Richard","Lisa"]
-    secondNames = ["Alderson","Carey","Yates","Robinson","Faucher","Fuhn","Amis","McNiel","Hacket","Calle","Court","Smith"]
-    for i in range(numberOfUsers):
-        firstName = random.choice(names)
-        secondName = random.choice(secondNames)
-        print("Adding " + firstName + " " + secondName)
-        newUser = models.Users(email=firstName + secondName + str(random.randint(0,10000)) + "@gmail.com",
-                              password="pass",
-                              contact_number="07" + str(random.randint(100000000,999999999)),
-                              times_rented=random.randint(0,10))
-        db.session.add(newUser)
-        db.session.commit()
-    time.sleep(2)
-    for i in range(numberOfUsers):
-            year = 2019
-            month = random.randint(1,12)
-            day = random.randint(1,27)
-            usersRentStart.append(datetime.date(year,month,day))
-            price = random.randint(0,150)
-            print("Adding order " + str(year) + "/" + str(month) + "/" + str(day) + ": " + str(price))
-            newOrder = models.Orders(date=datetime.date(year,month,day),
-                                    total_price=price,
-                                    user_id=i+1,
-                                   )
-            db.session.add(newOrder)
-    db.session.commit()
-    time.sleep(2)
-
-    for i in range(numberOfUsers):
-        start = usersRentStart[i]
-        end = usersRentStart[i] + timedelta(days=random.randint(2,16))
-
-        bikeToRent = random.randint(1,numberOfBikes-1)
-        while bikeToRent in alreadyRentedBikes:
-            bikeToRent = random.randint(1,numberOfBikes-1)
-        alreadyRentedBikes.append(bikeToRent)
-
-        print("Adding rental from ",start," to ",end," with ",bikeToRent)
-        newRental = models.Rented_Bikes(start_date = start, end_date= end,price = random.randint(10,100),bike_id=bikeToRent,order_id=i+1)
-        db.session.add(newRental)
-    db.session.commit()
-    time.sleep(2)
-
-
-
-addShops()
-addBikeTypes()
-addIndividualBikes()
-addRentalRates()
-addUsersAndRentals()
-addStaff()
+# The Payment Methods database model
+class Payment_Methods(db.Model):
+    __tablename__ = 'payment_methods'
+    id = db.Column(db.Integer, primary_key=True)
+    # Whether it was paid online or in store
+    online = db.Column(db.Boolean, default=True)
+    # Maybe add column for credit/debit cards/paypal/cash??
+    # payment_description (String)??
+    card_number = db.Column(db.String(16))
+    expiration_month = db.Column(db.Integer) # Add constraints here.
+    expiration_year = db.Column(db.Integer)
+    cvv = db.Column(db.Integer)
+    # Foreign keys
+    #User is null if payment method is not saved
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
