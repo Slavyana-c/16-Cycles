@@ -14,9 +14,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    home.cpp \
-    editdb.cpp \
-    staff.cpp \
     addstaff.cpp \
     simplecrypt.cpp \
     adminhome.cpp \
@@ -27,9 +24,6 @@ SOURCES += main.cpp\
     createorder.cpp
 
 HEADERS  += mainwindow.h \
-    home.h \
-    editdb.h \
-    staff.h \
     addstaff.h \
     simplecrypt.h \
     adminhome.h \
@@ -40,9 +34,6 @@ HEADERS  += mainwindow.h \
     createorder.h
 
 FORMS    += mainwindow.ui \
-    home.ui \
-    editdb.ui \
-    staff.ui \
     addstaff.ui \
     adminhome.ui \
     updatestaff.ui \

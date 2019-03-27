@@ -171,23 +171,14 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_9">
        <item>
-        <widget class="QComboBox" name="shopIDComboBox">
-         <item>
-          <property name="text">
-           <string>Shop ID 1</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Shop ID 2</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Shop ID 3</string>
-          </property>
-         </item>
+        <widget class="QLabel" name="shopIdLabel">
+         <property name="text">
+          <string>Shop ID</string>
+         </property>
         </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="shopIDComboBox"/>
        </item>
       </layout>
      </item>

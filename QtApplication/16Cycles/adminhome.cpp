@@ -5,6 +5,7 @@
 #include "removestaff.h"
 #include "updatestaff.h"
 #include "resetpassword.h"
+#include "profits.h"
 
 AdminHome::AdminHome(QWidget *parent) :
     QDialog(parent),
@@ -170,21 +171,51 @@ void AdminHome::on_bikesViewButton_clicked()
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery *query = new QSqlQuery(mainWindow.db);
 
-    query-> prepare("SELECT * FROM bikes");
-    query-> exec();
-    if(!query-> next())
+    // Display question to check user wants to log out
+    QMessageBox::StandardButton reply = QMessageBox::question(this,"16Cycles","Do you want to see Bikes?",
+                                                              QMessageBox::Yes | QMessageBox::No);
+
+    // Display bikes if yes clicked
+    if(reply == QMessageBox::Yes)
     {
-        this-> close();
-        qDebug()<<("error bikes");
+        query-> prepare("SELECT * FROM bikes");
+        query-> exec();
+        if(!query-> next())
+        {
+            this-> close();
+            qDebug()<<("error bikes");
+        }
+
+        mainWindow.close();
+
+        model-> setQuery(*query);
+
+        ui-> tableView-> setModel(model);
+        ui-> tableView-> resizeColumnsToContents();
+        ui-> tableView-> resizeRowsToContents();
+    }
+    else
+    {
+        query-> prepare("SELECT * FROM bike_types");
+        query-> exec();
+        if(!query-> next())
+        {
+            this-> close();
+            qDebug()<<("error bikes");
+        }
+
+        mainWindow.close();
+
+        model-> setQuery(*query);
+
+        ui-> tableView-> setModel(model);
+        ui-> tableView-> resizeColumnsToContents();
+        ui-> tableView-> resizeRowsToContents();
     }
 
-    mainWindow.close();
 
-    model-> setQuery(*query);
 
-    ui-> tableView-> setModel(model);
-    ui-> tableView-> resizeColumnsToContents();
-    ui-> tableView-> resizeRowsToContents();
+
 }
 
 void AdminHome::on_ordersViewButton_clicked()
@@ -214,4 +245,21 @@ void AdminHome::on_ordersViewButton_clicked()
     ui-> tableView-> setModel(model);
     ui-> tableView-> resizeColumnsToContents();
     ui-> tableView-> resizeRowsToContents();
+}
+
+void AdminHome::on_statisticsProfitsButton_clicked()
+{
+    Profits profitsPage;
+    QDesktopWidget desktop;
+    QRect mainScreenSize = desktop.availableGeometry(desktop.primaryScreen());
+    profitsPage.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
+
+    // Remove title bar
+    profitsPage.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+
+    // Set window title
+    profitsPage.setWindowTitle("16CyclesResetPassword");
+
+    // Show window
+    profitsPage.exec();
 }
