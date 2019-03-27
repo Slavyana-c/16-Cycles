@@ -196,7 +196,7 @@
                 {{ data[1][bike.bike_type_id].brand  + " " + data[1][bike.bike_type_id].model}}
                 <!-- <button class="btn btn-details" type="submit">Details</button> -->
                 <!-- rentStartDate=data[3],rentEndDate=data[4] -->
-                <form action="{{ url_for('bikePage', brand=data[1][bike.bike_type_id].brand, model = data[1][bike.bike_type_id].model, bike_id = bike.id, rentStartDate=data[3],rentEndDate=data[4] ) }}" method="post">
+                <form action="{{ url_for('bikePage', brand=data[1][bike.bike_type_id].brand, model = data[1][bike.bike_type_id].model, bike_id = data[1][bike.bike_type_id].id, rentStartDate=data[3],rentEndDate=data[4] ) }}" method="post">
                       <input class="btn btn-details" type="submit" value="Details" />
                 </form>
 

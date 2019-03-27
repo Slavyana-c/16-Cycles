@@ -72,6 +72,15 @@ def browse(startWindow=datetime.datetime.today(),
         print("Button pressed or somethign")
     bikeTypes = Bike_Types.query.all()
     bikes = Bikes.query.filter_by(shop_id=shopID).all()
+    print("\n\nBrowse page running")
+    #for a in bikes:
+    #    print("\nNew Bike")
+    #    print(bikeTypes[a.bike_type_id].model)
+    #    print(bikeTypes[a.id].model)
+    #    print(bikeTypes[a.bike_type_id].id)
+    #    print(bikeTypes[a.id].id)
+    #    print(a.bike_type_id)
+    #    print(a.id)
     rentalRates = Rental_Rates.query.all()
     orders = Orders.query.all()
     rentedBikes = Rented_Bikes.query.all()
@@ -111,6 +120,9 @@ def browse(startWindow=datetime.datetime.today(),
         else:
             i+=1
 
+    print("\nUpdated bikes")
+    print(bikes)
+
     # now the only bikes shown to the user are the ones they can actually rent
     return render_template("browse.html", filterForm=filterForm,form=form,data=[bikes,bikeTypes,rentalRates,startWindow,endWindow]) # redirect to the bike search page, giving all the data
 
@@ -129,8 +141,8 @@ def bikePage():
     rentStart = request.args.get('rentStartDate', default=datetime.datetime.today(),type = None)
     rentEnd   = request.args.get('rentEndDate', default=datetime.datetime.today()+timedelta(days=1),type = None)
     bikeId = request.args.get('bike_id', default = 'bike_id', type = str)
+    print("\nThis printout")
     print(request.args)
-
     # doing string formatting
     try:
         rentStartDate = datetime.date(int(rentStart.split("-")[0]),int(rentStart.split("-")[1]),int(rentStart.split("-")[2][:2]))
@@ -139,6 +151,7 @@ def bikePage():
         pass
     thisRentalRate = Rental_Rates.query.filter(Rental_Rates.bike_type_id == bikeId).first()
     print(thisRentalRate)
+    form = SelectDates();
     data = Bike_Types.query.filter(and_(Bike_Types.brand == brand, Bike_Types.model == model)).first()
     image = data.image
 
