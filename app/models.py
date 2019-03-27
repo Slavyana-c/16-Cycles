@@ -40,8 +40,8 @@ class Staff(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     contact_number = db.Column(db.String(15), nullable=False)
-    name = db.Column(db.String(100), unique=True, nullable=False)
-    address = db.Column(db.String(100), unique=True, nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.String(100), nullable=False)
     admin = db.Column(db.Boolean, default=False)
     # Foreign keys
     shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
@@ -94,6 +94,8 @@ class Shops(db.Model):
     __tablename__ = 'shops'
     id = db.Column(db.Integer, primary_key=True)
     location_name = db.Column(db.String(100), unique=True, nullable=False)
+    latitude = db.Column(db.Float, default=0.0)
+    longitude = db.Column(db.Float, default=0.0)
     address = db.Column(db.String(100), unique=True, nullable=False)
     contact_number = db.Column(db.String(15), nullable=False)
     # Relationship to Bikes
