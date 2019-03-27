@@ -59,15 +59,6 @@ void MainWindow::on_quitButton_clicked()
 // Sign in slot
 void MainWindow::on_signInButton_clicked()
 {
-
-
-
-
-
-
-
-
-
     // Get data entered on window as strings
     QString email,password;
     email = ui-> usernameLineEdit-> text();
@@ -113,23 +104,51 @@ void MainWindow::on_signInButton_clicked()
             lineEdit->clear();
         }
 
-        // Create new window
-        AdminHome adminHome;
-        adminHome.setModal(true);
-        adminHome.setGroupBoxName(query.value(1).toString());
-        adminHome.setUserEmail(email);
-        QDesktopWidget desktop;
-        QRect mainScreenSize = desktop.availableGeometry(desktop.primaryScreen());
-        adminHome.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
+        // Check for admin rights
+        if(query.value(2).toInt() == 1)
+        {
+            // Create new window
+            AdminHome adminHome;
+            adminHome.setModal(true);
+            adminHome.setGroupBoxName(query.value(1).toString());
+            adminHome.setUserEmail(email);
+            QDesktopWidget desktop;
+            QRect mainScreenSize = desktop.availableGeometry(desktop.primaryScreen());
+            adminHome.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
 
-        // Remove title bar
-        adminHome.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+            // Remove title bar
+            adminHome.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 
-        // Set window title
-        adminHome.setWindowTitle("16CyclesHome");
+            // Set window title
+            adminHome.setWindowTitle("16CyclesAdminHome");
 
-        // Show window
-        adminHome.exec();
+            // Show window
+            adminHome.exec();
+        }
+
+        // Not an admin
+        else
+        {
+            // Create new window
+            Home home;
+            home.setModal(true);
+            home.setGroupBoxName(query.value(1).toString());
+            home.setUserEmail(email);
+            QDesktopWidget desktop;
+            QRect mainScreenSize = desktop.availableGeometry(desktop.primaryScreen());
+            home.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
+
+            // Remove title bar
+            home.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+
+            // Set window title
+            home.setWindowTitle("16CyclesHome");
+
+            // Show window
+            home.exec();
+        }
+
+
     }
 
     // If query has no values, username and password incorrect, display error to user

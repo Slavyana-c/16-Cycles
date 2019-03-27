@@ -15,6 +15,9 @@ public:
     explicit CreateOrder(QWidget *parent = 0);
     ~CreateOrder();
 
+private slots:
+    void on_goBackButton_clicked();
+
 private:
     Ui::CreateOrder *ui;
 };

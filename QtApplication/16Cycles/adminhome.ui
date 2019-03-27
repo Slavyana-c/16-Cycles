@@ -52,12 +52,12 @@
     <property name="title">
      <string>Statistics</string>
     </property>
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QWidget" name="">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>20</y>
-       <width>184</width>
+       <x>1</x>
+       <y>21</y>
+       <width>287</width>
        <height>39</height>
       </rect>
      </property>
@@ -76,6 +76,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="statisticsShopsButton">
+        <property name="text">
+         <string>Shops</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </widget>
@@ -91,7 +98,7 @@
     <property name="title">
      <string>Staff</string>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>1</x>
@@ -144,7 +151,7 @@
     <property name="title">
      <string>Bikes</string>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>1</x>
@@ -204,7 +211,7 @@
     <property name="title">
      <string>Orders</string>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>1</x>
@@ -245,7 +252,7 @@
      </layout>
     </widget>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>1</x>

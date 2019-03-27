@@ -21,7 +21,16 @@ SOURCES += main.cpp\
     removestaff.cpp \
     resetpassword.cpp \
     profits.cpp \
-    createorder.cpp
+    createorder.cpp \
+    home.cpp \
+    updatebikes.cpp \
+    addbikes.cpp \
+    addbiketypes.cpp \
+    removebikes.cpp \
+    updateorders.cpp \
+    removeorder.cpp \
+    statisticsbikes.cpp \
+    statisticsshops.cpp
 
 HEADERS  += mainwindow.h \
     addstaff.h \
@@ -31,7 +40,16 @@ HEADERS  += mainwindow.h \
     removestaff.h \
     resetpassword.h \
     profits.h \
-    createorder.h
+    createorder.h \
+    home.h \
+    updatebikes.h \
+    addbikes.h \
+    addbiketypes.h \
+    removebikes.h \
+    updateorders.h \
+    removeorder.h \
+    statisticsbikes.h \
+    statisticsshops.h
 
 FORMS    += mainwindow.ui \
     addstaff.ui \
@@ -40,7 +58,16 @@ FORMS    += mainwindow.ui \
     removestaff.ui \
     resetpassword.ui \
     profits.ui \
-    createorder.ui
+    createorder.ui \
+    home.ui \
+    updatebikes.ui \
+    addbikes.ui \
+    addbiketypes.ui \
+    removebikes.ui \
+    updateorders.ui \
+    removeorder.ui \
+    statisticsbikes.ui \
+    statisticsshops.ui
     
 RESOURCES += \
     resources.qrc

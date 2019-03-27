@@ -12,3 +12,8 @@ CreateOrder::~CreateOrder()
 {
     delete ui;
 }
+
+void CreateOrder::on_goBackButton_clicked()
+{
+    this-> close();
+}

@@ -25,6 +25,19 @@
    <property name="title">
     <string>Create Order</string>
    </property>
+   <widget class="QPushButton" name="goBackButton">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>110</y>
+      <width>92</width>
+      <height>36</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Go Back</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>
