@@ -372,7 +372,7 @@ def payForm():
     rentDays = request.args.get('rentDays', type = int)
     rentCost = request.args.get('rentCost')
     bikeID = request.args.get('bike_id', default = 'bike_id', type = str)
-    rentStartDate = rentStart[8:] + "/" + rentStart[5:7] + "/" + rentStart[0:4]
+    rentStartDate = str(rentStart.day) + "/" + str(rentStart.month) + "/" + str(rentStart.year)
     rentEndDate = rentEnd[8:] + "/" + rentEnd[5:7] + "/" + rentEnd[0:4]
     print("\n\n\n\nWe got to here")
     print(request.args)
