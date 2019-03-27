@@ -2,7 +2,7 @@
 {% block content %}
 <head>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
-  <script src="../css/scripts/browse.js"> </script>
+  <!-- <script src="../css/scripts/browse.js"> </script> -->
   {#<script rel="script" href="{{ url_for('static', filename='scripts/browse.js') }}"></script>#}
 </head>
 <div class="container">
@@ -74,10 +74,13 @@ function initMap() {
 
 
   '{%for i in range(0, 3)%} '
-    var myLatLng = {lat: lats['{{i}}'], lng: lngs['{{i}}']};
+
     var name = '{{shops[i].location_name}}'
     var address = '{{shops[i].address}}'
     var number = '{{shops[i].contact_number}}'
+    var latitude = '{{shops[i].latitude}}'
+    var longitude = '{{shops[i].longitude}}'
+    var myLatLng = new google.maps.LatLng(parseFloat(latitude),parseFloat(longitude));
 
     var infowindow = new google.maps.InfoWindow({
         content: "<h4>"+ name +"</h4>" +
@@ -89,15 +92,20 @@ function initMap() {
     var marker = new google.maps.Marker({
         position: myLatLng,
         map: map,
-        title: 'Hello World!'
+        title: name
       });
+      var prev_infowindow =false;
 
-      google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+      google.maps.event.addListener(marker,'click', (function(marker,infowindow){
           return function() {
-              infowindow.setContent(content);
-              infowindow.open(map,marker);
+            if( prev_infowindow ) {
+              prev_infowindow.close();
+            }
+
+            prev_infowindow = infowindow;
+            infowindow.open(map,marker);
           };
-      })(marker,content,infowindow));
+      })(marker, infowindow));
 
   '{%endfor%}'
   }

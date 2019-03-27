@@ -38,7 +38,6 @@ def home():
 @app.route('/about')
 def about():
     shops = Shops.query.all()
-    print(shops[0].address)
     return render_template("about.html", shops=shops) # redirect to the about page
 
 
