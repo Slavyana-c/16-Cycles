@@ -11,6 +11,31 @@ AddStaff::AddStaff(QWidget *parent) :
     // Set validator for contact number
     ui-> contactNumberLineEdit-> setValidator(
                 new QRegularExpressionValidator(QRegularExpression("[0-9]\\d{0,10}"),this));
+
+    // Populate combo box
+    MainWindow mainWindow;
+    if(!mainWindow.openConnection())
+    {
+        this->close();
+        qDebug()<<("Failed open db bikes");
+    }
+
+    QSqlQueryModel *model = new QSqlQueryModel();
+    QSqlQuery *query = new QSqlQuery(mainWindow.db);
+
+    query-> prepare("SELECT id FROM shops");
+    query-> exec();
+    if(!query-> next())
+    {
+        this-> close();
+        qDebug()<<("error bikes");
+    }
+
+    mainWindow.close();
+
+    model-> setQuery(*query);
+
+    ui-> shopIDComboBox-> setModel(model);
 }
 
 AddStaff::~AddStaff()
@@ -26,7 +51,7 @@ void AddStaff::on_cancelButton_clicked()
 void AddStaff::on_addStaffButton_clicked()
 {
     // Display question to check user wants to cancel
-    QMessageBox::StandardButton reply = QMessageBox::question(this,"16Cycles","Are you sure you all data is correct?",
+    QMessageBox::StandardButton reply = QMessageBox::question(this,"16Cycles","Are you sure all your data is correct?",
                                                               QMessageBox::Yes | QMessageBox::No);
 
     if(reply == QMessageBox::Yes)

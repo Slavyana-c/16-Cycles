@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "home.h"
 #include "simplecrypt.h"
 #include "adminhome.h"
 #include <QMainWindow>

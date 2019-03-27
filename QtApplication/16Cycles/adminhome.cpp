@@ -5,6 +5,7 @@
 #include "removestaff.h"
 #include "updatestaff.h"
 #include "resetpassword.h"
+#include "profits.h"
 
 AdminHome::AdminHome(QWidget *parent) :
     QDialog(parent),
@@ -244,4 +245,21 @@ void AdminHome::on_ordersViewButton_clicked()
     ui-> tableView-> setModel(model);
     ui-> tableView-> resizeColumnsToContents();
     ui-> tableView-> resizeRowsToContents();
+}
+
+void AdminHome::on_statisticsProfitsButton_clicked()
+{
+    Profits profitsPage;
+    QDesktopWidget desktop;
+    QRect mainScreenSize = desktop.availableGeometry(desktop.primaryScreen());
+    profitsPage.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
+
+    // Remove title bar
+    profitsPage.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+
+    // Set window title
+    profitsPage.setWindowTitle("16CyclesResetPassword");
+
+    // Show window
+    profitsPage.exec();
 }

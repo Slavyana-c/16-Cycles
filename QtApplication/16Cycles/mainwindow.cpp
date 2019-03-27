@@ -59,6 +59,15 @@ void MainWindow::on_quitButton_clicked()
 // Sign in slot
 void MainWindow::on_signInButton_clicked()
 {
+
+
+
+
+
+
+
+
+
     // Get data entered on window as strings
     QString email,password;
     email = ui-> usernameLineEdit-> text();

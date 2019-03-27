@@ -54,6 +54,7 @@ public:
     QHBoxLayout *horizontalLayout_8;
     QRadioButton *adminButton;
     QHBoxLayout *horizontalLayout_9;
+    QLabel *shopIdLabel;
     QComboBox *shopIDComboBox;
     QHBoxLayout *horizontalLayout;
     QPushButton *cancelButton;
@@ -185,6 +186,11 @@ public:
 
         horizontalLayout_9 = new QHBoxLayout();
         horizontalLayout_9->setObjectName(QStringLiteral("horizontalLayout_9"));
+        shopIdLabel = new QLabel(layoutWidget);
+        shopIdLabel->setObjectName(QStringLiteral("shopIdLabel"));
+
+        horizontalLayout_9->addWidget(shopIdLabel);
+
         shopIDComboBox = new QComboBox(layoutWidget);
         shopIDComboBox->setObjectName(QStringLiteral("shopIDComboBox"));
 
@@ -225,12 +231,7 @@ public:
         contactNumberLabel->setText(QApplication::translate("AddStaff", "Contact Number     ", Q_NULLPTR));
         adressLabel->setText(QApplication::translate("AddStaff", "Address                   ", Q_NULLPTR));
         adminButton->setText(QApplication::translate("AddStaff", "Admin", Q_NULLPTR));
-        shopIDComboBox->clear();
-        shopIDComboBox->insertItems(0, QStringList()
-         << QApplication::translate("AddStaff", "Shop ID 1", Q_NULLPTR)
-         << QApplication::translate("AddStaff", "Shop ID 2", Q_NULLPTR)
-         << QApplication::translate("AddStaff", "Shop ID 3", Q_NULLPTR)
-        );
+        shopIdLabel->setText(QApplication::translate("AddStaff", "Shop ID", Q_NULLPTR));
         cancelButton->setText(QApplication::translate("AddStaff", "Cancel", Q_NULLPTR));
         addStaffButton->setText(QApplication::translate("AddStaff", "Add Staff", Q_NULLPTR));
     } // retranslateUi

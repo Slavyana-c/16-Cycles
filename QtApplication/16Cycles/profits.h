@@ -15,6 +15,11 @@ public:
     explicit Profits(QWidget *parent = 0);
     ~Profits();
 
+private slots:
+    void on_goBackButton_clicked();
+
+    void on_profitsShopComboBox_activated(const QString &arg1);
+
 private:
     Ui::Profits *ui;
 };

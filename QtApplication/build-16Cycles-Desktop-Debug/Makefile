@@ -52,9 +52,6 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../16Cycles/main.cpp \
 		../16Cycles/mainwindow.cpp \
-		../16Cycles/home.cpp \
-		../16Cycles/editdb.cpp \
-		../16Cycles/staff.cpp \
 		../16Cycles/addstaff.cpp \
 		../16Cycles/simplecrypt.cpp \
 		../16Cycles/adminhome.cpp \
@@ -64,9 +61,6 @@ SOURCES       = ../16Cycles/main.cpp \
 		../16Cycles/profits.cpp \
 		../16Cycles/createorder.cpp qrc_resources.cpp \
 		moc_mainwindow.cpp \
-		moc_home.cpp \
-		moc_editdb.cpp \
-		moc_staff.cpp \
 		moc_addstaff.cpp \
 		moc_adminhome.cpp \
 		moc_updatestaff.cpp \
@@ -76,9 +70,6 @@ SOURCES       = ../16Cycles/main.cpp \
 		moc_createorder.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
-		home.o \
-		editdb.o \
-		staff.o \
 		addstaff.o \
 		simplecrypt.o \
 		adminhome.o \
@@ -89,9 +80,6 @@ OBJECTS       = main.o \
 		createorder.o \
 		qrc_resources.o \
 		moc_mainwindow.o \
-		moc_home.o \
-		moc_editdb.o \
-		moc_staff.o \
 		moc_addstaff.o \
 		moc_adminhome.o \
 		moc_updatestaff.o \
@@ -174,9 +162,6 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/features/yacc.prf \
 		/usr/lib64/qt5/mkspecs/features/lex.prf \
 		../16Cycles/16Cycles.pro ../16Cycles/mainwindow.h \
-		../16Cycles/home.h \
-		../16Cycles/editdb.h \
-		../16Cycles/staff.h \
 		../16Cycles/addstaff.h \
 		../16Cycles/simplecrypt.h \
 		../16Cycles/adminhome.h \
@@ -186,9 +171,6 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		../16Cycles/profits.h \
 		../16Cycles/createorder.h ../16Cycles/main.cpp \
 		../16Cycles/mainwindow.cpp \
-		../16Cycles/home.cpp \
-		../16Cycles/editdb.cpp \
-		../16Cycles/staff.cpp \
 		../16Cycles/addstaff.cpp \
 		../16Cycles/simplecrypt.cpp \
 		../16Cycles/adminhome.cpp \
@@ -205,7 +187,7 @@ TARGET        = 16Cycles
 first: all
 ####### Build rules
 
-$(TARGET): ui_mainwindow.h ui_home.h ui_editdb.h ui_staff.h ui_addstaff.h ui_adminhome.h ui_updatestaff.h ui_removestaff.h ui_resetpassword.h ui_profits.h ui_createorder.h $(OBJECTS)  
+$(TARGET): ui_mainwindow.h ui_addstaff.h ui_adminhome.h ui_updatestaff.h ui_removestaff.h ui_resetpassword.h ui_profits.h ui_createorder.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: ../16Cycles/16Cycles.pro /usr/lib64/qt5/mkspecs/linux-g++/qmake.conf /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
@@ -385,9 +367,9 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../16Cycles/resources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../16Cycles/mainwindow.h ../16Cycles/home.h ../16Cycles/editdb.h ../16Cycles/staff.h ../16Cycles/addstaff.h ../16Cycles/simplecrypt.h ../16Cycles/adminhome.h ../16Cycles/updatestaff.h ../16Cycles/removestaff.h ../16Cycles/resetpassword.h ../16Cycles/profits.h ../16Cycles/createorder.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../16Cycles/main.cpp ../16Cycles/mainwindow.cpp ../16Cycles/home.cpp ../16Cycles/editdb.cpp ../16Cycles/staff.cpp ../16Cycles/addstaff.cpp ../16Cycles/simplecrypt.cpp ../16Cycles/adminhome.cpp ../16Cycles/updatestaff.cpp ../16Cycles/removestaff.cpp ../16Cycles/resetpassword.cpp ../16Cycles/profits.cpp ../16Cycles/createorder.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../16Cycles/mainwindow.ui ../16Cycles/home.ui ../16Cycles/editdb.ui ../16Cycles/staff.ui ../16Cycles/addstaff.ui ../16Cycles/adminhome.ui ../16Cycles/updatestaff.ui ../16Cycles/removestaff.ui ../16Cycles/resetpassword.ui ../16Cycles/profits.ui ../16Cycles/createorder.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../16Cycles/mainwindow.h ../16Cycles/addstaff.h ../16Cycles/simplecrypt.h ../16Cycles/adminhome.h ../16Cycles/updatestaff.h ../16Cycles/removestaff.h ../16Cycles/resetpassword.h ../16Cycles/profits.h ../16Cycles/createorder.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../16Cycles/main.cpp ../16Cycles/mainwindow.cpp ../16Cycles/addstaff.cpp ../16Cycles/simplecrypt.cpp ../16Cycles/adminhome.cpp ../16Cycles/updatestaff.cpp ../16Cycles/removestaff.cpp ../16Cycles/resetpassword.cpp ../16Cycles/profits.cpp ../16Cycles/createorder.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../16Cycles/mainwindow.ui ../16Cycles/addstaff.ui ../16Cycles/adminhome.ui ../16Cycles/updatestaff.ui ../16Cycles/removestaff.ui ../16Cycles/resetpassword.ui ../16Cycles/profits.ui ../16Cycles/createorder.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -425,31 +407,15 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib64/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h /usr/lib64/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_home.cpp moc_editdb.cpp moc_staff.cpp moc_addstaff.cpp moc_adminhome.cpp moc_updatestaff.cpp moc_removestaff.cpp moc_resetpassword.cpp moc_profits.cpp moc_createorder.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_addstaff.cpp moc_adminhome.cpp moc_updatestaff.cpp moc_removestaff.cpp moc_resetpassword.cpp moc_profits.cpp moc_createorder.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_home.cpp moc_editdb.cpp moc_staff.cpp moc_addstaff.cpp moc_adminhome.cpp moc_updatestaff.cpp moc_removestaff.cpp moc_resetpassword.cpp moc_profits.cpp moc_createorder.cpp
-moc_mainwindow.cpp: ../16Cycles/home.h \
-		../16Cycles/simplecrypt.h \
+	-$(DEL_FILE) moc_mainwindow.cpp moc_addstaff.cpp moc_adminhome.cpp moc_updatestaff.cpp moc_removestaff.cpp moc_resetpassword.cpp moc_profits.cpp moc_createorder.cpp
+moc_mainwindow.cpp: ../16Cycles/simplecrypt.h \
 		../16Cycles/adminhome.h \
 		../16Cycles/mainwindow.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
 	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/mainwindow.h -o moc_mainwindow.cpp
-
-moc_home.cpp: ../16Cycles/home.h \
-		moc_predefs.h \
-		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/home.h -o moc_home.cpp
-
-moc_editdb.cpp: ../16Cycles/editdb.h \
-		moc_predefs.h \
-		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/editdb.h -o moc_editdb.cpp
-
-moc_staff.cpp: ../16Cycles/staff.h \
-		moc_predefs.h \
-		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/staff.h -o moc_staff.cpp
 
 moc_addstaff.cpp: ../16Cycles/addstaff.h \
 		moc_predefs.h \
@@ -488,24 +454,12 @@ moc_createorder.cpp: ../16Cycles/createorder.h \
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_mainwindow.h ui_home.h ui_editdb.h ui_staff.h ui_addstaff.h ui_adminhome.h ui_updatestaff.h ui_removestaff.h ui_resetpassword.h ui_profits.h ui_createorder.h
+compiler_uic_make_all: ui_mainwindow.h ui_addstaff.h ui_adminhome.h ui_updatestaff.h ui_removestaff.h ui_resetpassword.h ui_profits.h ui_createorder.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_mainwindow.h ui_home.h ui_editdb.h ui_staff.h ui_addstaff.h ui_adminhome.h ui_updatestaff.h ui_removestaff.h ui_resetpassword.h ui_profits.h ui_createorder.h
+	-$(DEL_FILE) ui_mainwindow.h ui_addstaff.h ui_adminhome.h ui_updatestaff.h ui_removestaff.h ui_resetpassword.h ui_profits.h ui_createorder.h
 ui_mainwindow.h: ../16Cycles/mainwindow.ui \
 		/usr/lib64/qt5/bin/uic
 	/usr/lib64/qt5/bin/uic ../16Cycles/mainwindow.ui -o ui_mainwindow.h
-
-ui_home.h: ../16Cycles/home.ui \
-		/usr/lib64/qt5/bin/uic
-	/usr/lib64/qt5/bin/uic ../16Cycles/home.ui -o ui_home.h
-
-ui_editdb.h: ../16Cycles/editdb.ui \
-		/usr/lib64/qt5/bin/uic
-	/usr/lib64/qt5/bin/uic ../16Cycles/editdb.ui -o ui_editdb.h
-
-ui_staff.h: ../16Cycles/staff.ui \
-		/usr/lib64/qt5/bin/uic
-	/usr/lib64/qt5/bin/uic ../16Cycles/staff.ui -o ui_staff.h
 
 ui_addstaff.h: ../16Cycles/addstaff.ui \
 		/usr/lib64/qt5/bin/uic
@@ -546,48 +500,19 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 ####### Compile
 
 main.o: ../16Cycles/main.cpp ../16Cycles/mainwindow.h \
-		../16Cycles/home.h \
 		../16Cycles/simplecrypt.h \
 		../16Cycles/adminhome.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../16Cycles/main.cpp
 
 mainwindow.o: ../16Cycles/mainwindow.cpp ../16Cycles/mainwindow.h \
-		../16Cycles/home.h \
 		../16Cycles/simplecrypt.h \
 		../16Cycles/adminhome.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../16Cycles/mainwindow.cpp
 
-home.o: ../16Cycles/home.cpp ../16Cycles/home.h \
-		ui_home.h \
-		../16Cycles/mainwindow.h \
-		../16Cycles/simplecrypt.h \
-		../16Cycles/adminhome.h \
-		../16Cycles/editdb.h \
-		../16Cycles/staff.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o home.o ../16Cycles/home.cpp
-
-editdb.o: ../16Cycles/editdb.cpp ../16Cycles/editdb.h \
-		ui_editdb.h \
-		../16Cycles/mainwindow.h \
-		../16Cycles/home.h \
-		../16Cycles/simplecrypt.h \
-		../16Cycles/adminhome.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o editdb.o ../16Cycles/editdb.cpp
-
-staff.o: ../16Cycles/staff.cpp ../16Cycles/staff.h \
-		ui_staff.h \
-		../16Cycles/mainwindow.h \
-		../16Cycles/home.h \
-		../16Cycles/simplecrypt.h \
-		../16Cycles/adminhome.h \
-		../16Cycles/addstaff.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o staff.o ../16Cycles/staff.cpp
-
 addstaff.o: ../16Cycles/addstaff.cpp ../16Cycles/addstaff.h \
 		ui_addstaff.h \
 		../16Cycles/mainwindow.h \
-		../16Cycles/home.h \
 		../16Cycles/simplecrypt.h \
 		../16Cycles/adminhome.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o addstaff.o ../16Cycles/addstaff.cpp
@@ -598,18 +523,17 @@ simplecrypt.o: ../16Cycles/simplecrypt.cpp ../16Cycles/simplecrypt.h
 adminhome.o: ../16Cycles/adminhome.cpp ../16Cycles/adminhome.h \
 		ui_adminhome.h \
 		../16Cycles/mainwindow.h \
-		../16Cycles/home.h \
 		../16Cycles/simplecrypt.h \
 		../16Cycles/addstaff.h \
 		../16Cycles/removestaff.h \
 		../16Cycles/updatestaff.h \
-		../16Cycles/resetpassword.h
+		../16Cycles/resetpassword.h \
+		../16Cycles/profits.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o adminhome.o ../16Cycles/adminhome.cpp
 
 updatestaff.o: ../16Cycles/updatestaff.cpp ../16Cycles/updatestaff.h \
 		ui_updatestaff.h \
 		../16Cycles/mainwindow.h \
-		../16Cycles/home.h \
 		../16Cycles/simplecrypt.h \
 		../16Cycles/adminhome.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o updatestaff.o ../16Cycles/updatestaff.cpp
@@ -617,7 +541,6 @@ updatestaff.o: ../16Cycles/updatestaff.cpp ../16Cycles/updatestaff.h \
 removestaff.o: ../16Cycles/removestaff.cpp ../16Cycles/removestaff.h \
 		ui_removestaff.h \
 		../16Cycles/mainwindow.h \
-		../16Cycles/home.h \
 		../16Cycles/simplecrypt.h \
 		../16Cycles/adminhome.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o removestaff.o ../16Cycles/removestaff.cpp
@@ -625,13 +548,15 @@ removestaff.o: ../16Cycles/removestaff.cpp ../16Cycles/removestaff.h \
 resetpassword.o: ../16Cycles/resetpassword.cpp ../16Cycles/resetpassword.h \
 		ui_resetpassword.h \
 		../16Cycles/mainwindow.h \
-		../16Cycles/home.h \
 		../16Cycles/simplecrypt.h \
 		../16Cycles/adminhome.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o resetpassword.o ../16Cycles/resetpassword.cpp
 
 profits.o: ../16Cycles/profits.cpp ../16Cycles/profits.h \
-		ui_profits.h
+		ui_profits.h \
+		../16Cycles/mainwindow.h \
+		../16Cycles/simplecrypt.h \
+		../16Cycles/adminhome.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o profits.o ../16Cycles/profits.cpp
 
 createorder.o: ../16Cycles/createorder.cpp ../16Cycles/createorder.h \
@@ -643,15 +568,6 @@ qrc_resources.o: qrc_resources.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
-
-moc_home.o: moc_home.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_home.o moc_home.cpp
-
-moc_editdb.o: moc_editdb.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_editdb.o moc_editdb.cpp
-
-moc_staff.o: moc_staff.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_staff.o moc_staff.cpp
 
 moc_addstaff.o: moc_addstaff.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_addstaff.o moc_addstaff.cpp
