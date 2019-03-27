@@ -44,36 +44,47 @@
 <div class="container">
   <div class="row">
     <h1>Our Locations</h1>
+    <h1>{{ shops[0].address }}</h1>
+    </address>
+
+    </address>
 </div>
 
 <div id="map"></div>
 
 <script>
+lats = [53.807348, 53.8193, 53.7956]
+lngs = [-1.558362, -1.5773, -1.5444]
+
+
+
+var address2 = '{{shops[0].address}}'
+var num = '{{shops|length}}'
+
+
+for (var i = 0; i < '{{shops|length}}'; i++) {
+  var myLatLng = {lat: lats[i], lng: lngs[i]};
+  var name = '{{shops[].location_name}}'
+  var address = '{{shops[2].address}}'
+  var number = '{{shops[2].contact_number}}'
+}
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 15
+    zoom: 13
   });
   var geocoder = new google.maps.Geocoder();
-  var address = "Leeds Arts University"
+  var address = "University of Leeds"
 
   var infowindow = new google.maps.InfoWindow({
       content: "<h4>Store name</h4>" +
-                "<b>Address:</b> some address here</br>" +
-                "<b>Phone:</b> 123456789</br>" +
-                "<b>Bikes in store:</b> 20</br>"
+                "<b>Address: </b>" + address2 + "</br>" +
+                "<b>Phone: </b>" + num + "</br>" +
+                "<b>Bikes in store: </b> 20</br>"
   });
 
   geocoder.geocode({'address': address}, function(results, status) {
     if (status === 'OK') {
       map.setCenter(results[0].geometry.location);
-      var marker = new google.maps.Marker({
-        map: map,
-        position: results[0].geometry.location,
-        title: "16 Cycles"
-      });
-      marker.addListener('click', function() {
-      infowindow.open(map, marker);
-      });
 
 
     } else {
@@ -82,7 +93,7 @@ function initMap() {
   });
 
 
-  var myLatLng = {lat: 53.806631, lng: -1.555035};
+  var myLatLng = {lat: lats[0], lng: lngs[0]};
   var marker = new google.maps.Marker({
       position: myLatLng,
       map: map,
@@ -97,16 +108,29 @@ function initMap() {
       };
   })(marker,content,infowindow));
 
-  myLatLng = {lat: 53.810829, lng: -1.538412};
+  myLatLng = {lat: lats[1], lng: lngs[1]};
   marker = new google.maps.Marker({
         position: myLatLng,
         infowindow: infowindow,
         map: map,
         title: 'Hello World!'
       });
+      google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+          return function() {
+              infowindow.setContent(content);
+              infowindow.open(map,marker);
+          };
+      })(marker,content,infowindow));
 
+    myLatLng = {lat: lats[2], lng: lngs[2]};
+    marker = new google.maps.Marker({
+            position: myLatLng,
+            infowindow: infowindow,
+            map: map,
+            title: 'Hello World!'
+          });
 
-        google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+    google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
             return function() {
                 infowindow.setContent(content);
                 infowindow.open(map,marker);

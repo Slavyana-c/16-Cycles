@@ -34,7 +34,10 @@ def home():
 
 @app.route('/about')
 def about():
-    return render_template("about.html") # redirect to the about page
+    shops = Shops.query.all()
+    print(shops[0].address)
+    return render_template("about.html", shops=shops) # redirect to the about page
+
 
 @app.route('/maps')
 def maps():
