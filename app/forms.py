@@ -75,3 +75,6 @@ class PaymentForm(FlaskForm):
 	expDate = StringField('Expiry Date', validators=[DataRequired(), Regexp("\d\d\/\d\d", flags=0, message="Date needs to be of the form mm/yy")])
 	email = StringField('Email Address', validators=[DataRequired()])
 	submit = SubmitField('Submit')
+
+class RentButton(FlaskForm):
+	submit = SubmitField('RENT')

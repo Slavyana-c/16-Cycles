@@ -1,7 +1,7 @@
 from flask import render_template, flash, url_for, redirect, request, abort
 from app import app, db, bcrypt, admin, models
 from app.models import Users,Bike_Types,Bikes,Shops,Rental_Rates,Orders,Rented_Bikes
-from .forms import NewUserForm, LoginForm, SelectDates, AppliedFilters, ExtendDate, PasswordChangeForm, PaymentForm
+from .forms import NewUserForm, LoginForm, SelectDates, AppliedFilters, ExtendDate, PasswordChangeForm, PaymentForm, RentButton
 from sqlalchemy import and_, or_
 
 # all imports for sending emails
@@ -126,23 +126,31 @@ def browse(startWindow=datetime.datetime.today(),
 def bikePage():
     brand = request.args.get('brand', default = 'BRAND', type = str)
     model = request.args.get('model', default = 'MODEL', type = str)
-    rentStart = request.args.get('rentStartDate',default='START',type = None)
-    rentEnd   = request.args.get('rentEndDate', default='END',type = None)
+    rentStart = request.args.get('rentStartDate', default=datetime.datetime.today(),type = None)
+    rentEnd   = request.args.get('rentEndDate', default=datetime.datetime.today()+timedelta(days=1),type = None)
     bikeId = request.args.get('bike_id', default = 'bike_id', type = str)
+    print(request.args)
 
     # doing string formatting
-    rentStartDate = datetime.date(int(rentStart.split("-")[0]),int(rentStart.split("-")[1]),int(rentStart.split("-")[2][:2]))
-    rentEndDate = datetime.date(int(rentEnd.split("-")[0]),int(rentEnd.split("-")[1]),int(rentEnd.split("-")[2][:2]))
-
+    try:
+        rentStartDate = datetime.date(int(rentStart.split("-")[0]),int(rentStart.split("-")[1]),int(rentStart.split("-")[2][:2]))
+        rentEndDate = datetime.date(int(rentEnd.split("-")[0]),int(rentEnd.split("-")[1]),int(rentEnd.split("-")[2][:2]))
+    except:
+        pass
     thisRentalRate = Rental_Rates.query.filter(Rental_Rates.bike_type_id == bikeId).first()
-    form = SelectDates();
+    print(thisRentalRate)
     data = Bike_Types.query.filter(and_(Bike_Types.brand == brand, Bike_Types.model == model)).first()
     image = data.image
 
     numberOfDays = (rentEndDate-rentStartDate).days
     bikeRentPrice = calculateRentPrice(numberOfDays,thisRentalRate)
 
-    return render_template("bikePage.html", data=data, form=form,rentStart=rentStartDate,rentEnd=rentEndDate,rentInfo=[bikeRentPrice,thisRentalRate,numberOfDays]) # redirect to the bike search page
+    form = RentButton();
+    if form.validate_on_submit():
+        print("\n\n\nData being passed")
+        print(data)
+        payForm(data)
+    return render_template("bikePage.html", data=data, form=form, rentStart=rentStartDate,rentEnd=rentEndDate,rentInfo=[bikeRentPrice,thisRentalRate,numberOfDays]) # redirect to the bike search page
 
 @app.route('/account')
 def account():
@@ -253,15 +261,14 @@ def makeCheckoutTable(databaseOutput):
   </tr> """
     return output
 
-def payForm(bikesRenting):
+def payForm(bikeRenting):
     form = PaymentForm()
     if form.validate_on_submit():
-        qr(form.email.data, bikesRenting)
-        bikePage(1)
+        qr(form.email.data, bikeRenting)
     return render_template("payment.html", form=form)
 
 @app.route('/qr', methods=['GET', 'POST'])
-def qr(receivingAddress, bikesRented):
+def qr(receivingAddress, bikeRented):
 
     # generating the QR code
     url = pyqrcode.create('https://ksassets.timeincuk.net/wp/uploads/sites/55/2016/07/2015_PeepShow_Mark2_Press_111115-920x610.jpg')
@@ -269,11 +276,7 @@ def qr(receivingAddress, bikesRented):
 
 
     # we take this dummy database output for use in the emails
-    dummyDatabaseOutput = [["Carrera Kraken","4372812","28/02/19","02/03/19","35.6"],
-                          ["Boardman MTB 8.8","2841849","05/04/19","08/04/19","108.2"],
-                          ["Apollo Storm","7394836","08/04/19","15/04/19","57.8"],
-                          ["Apollo Storm","7394836","08/04/19","15/04/19","57.8"]]
-
+    dummyDatabaseOutput = bikeRented
     dummyRecieptOutput = ["Jonathan Alderson", "27/02/19","15:36:23","5437289","76.8"]
 
 
