@@ -1,6 +1,7 @@
 from app import db, app, login_manager
 from datetime import datetime
 from flask_login import UserMixin
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 
 @login_manager.user_loader
@@ -19,6 +20,19 @@ class Users(db.Model, UserMixin):
     orders = db.relationship('Orders', backref='user', lazy=True)
     payment_methods = db.relationship('Payment_Methods', backref='user', lazy=True)
 
+    def get_reset_token(self, expires_seconds=3600):
+        s = Serializer(app.config['SECRET_KEY'], expires_seconds)
+        return s.dumps({'user_id': self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return Users.query.get(user_id)
+
 # The Staff database model
 class Staff(db.Model, UserMixin):
     __tablename__ = 'staff'
@@ -26,8 +40,8 @@ class Staff(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     contact_number = db.Column(db.String(15), nullable=False)
-    name = db.Column(db.String(100), unique=True, nullable=False)
-    address = db.Column(db.String(100), unique=True, nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.String(100), nullable=False)
     admin = db.Column(db.Boolean, default=False)
     # Foreign keys
     shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
@@ -80,6 +94,8 @@ class Shops(db.Model):
     __tablename__ = 'shops'
     id = db.Column(db.Integer, primary_key=True)
     location_name = db.Column(db.String(100), unique=True, nullable=False)
+    latitude = db.Column(db.Float, default=0.0)
+    longitude = db.Column(db.Float, default=0.0)
     address = db.Column(db.String(100), unique=True, nullable=False)
     contact_number = db.Column(db.String(15), nullable=False)
     # Relationship to Bikes

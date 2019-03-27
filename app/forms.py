@@ -49,6 +49,28 @@ class PasswordChangeForm(FlaskForm):
 	submit = SubmitField('Submit')
 
 
+class RequestPasswordForm(FlaskForm):
+
+	email = StringField('Email',
+						validators=[DataRequired(), Email()])
+	submit = SubmitField('Request Password Reset')
+
+	def validate_email(self, email):
+		user = Users.query.filter_by(email=email.data).first()
+		if user is None:
+			raise ValidationError('No account with that email exists')
+
+
+class NewPasswordForm(FlaskForm):
+
+	password = PasswordField('Password',
+							  validators=[DataRequired(), Length(min=5, max=25)])
+	confirm_password = PasswordField('Confirm Password',
+									validators=[DataRequired(),
+												EqualTo('password')])
+	submit = SubmitField('Change Password')
+
+
 # form in the newTask.html
 class SelectDates(FlaskForm):
 	start_date = DateField('Rent Start Date', validators=[DataRequired()], default=datetime.datetime.now())
