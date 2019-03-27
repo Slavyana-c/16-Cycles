@@ -48,7 +48,7 @@ bool MainWindow::openConnection()
 void MainWindow::on_quitButton_clicked()
 {
     // Display question to check user wants to quit
-    QMessageBox::StandardButton reply = QMessageBox::question(this,"16Cycles","Are you sure you want to quit",
+    QMessageBox::StandardButton reply = QMessageBox::question(this,"16Cycles","Are you sure you want to quit?",
                                                               QMessageBox::Yes | QMessageBox::No);
 
     // Close window if yes clicked, else do nothing
@@ -60,8 +60,8 @@ void MainWindow::on_quitButton_clicked()
 void MainWindow::on_signInButton_clicked()
 {
     // Get data entered on window as strings
-    QString username,password;
-    username = ui-> usernameLineEdit-> text();
+    QString email,password;
+    email = ui-> usernameLineEdit-> text();
     password = ui-> passwordLineEdit-> text();
 
     // Open connection to database
@@ -73,7 +73,7 @@ void MainWindow::on_signInButton_clicked()
 
     // Prepare query to find username and password in database
     QSqlQuery query;
-    query.prepare("SELECT * FROM users WHERE email = '" + username + "' AND password = '" + password + "'");
+    query.prepare("SELECT password,name,admin FROM staff WHERE email = '" + email + "'");
 
     // Execute query
     query.exec();
@@ -81,6 +81,17 @@ void MainWindow::on_signInButton_clicked()
     // If query returned a value, log in user
     if(query.next())
     {
+        // Decrypt password
+        SimpleCrypt crypto(Q_UINT64_C(0x0c2ad4a4acb9f023));
+        QString passwordDecrypt = crypto.decryptToString(query.value(0).toString());
+
+        // Compare with users input
+        if(QString::compare(password,passwordDecrypt,Qt::CaseSensitive) != 0)
+        {
+            QMessageBox::critical(this,"16Cycles","Username and password incorrect");
+            return;
+        }
+
         // Always close connection before closing window and opening new window
         closeConnection();
 
@@ -93,24 +104,23 @@ void MainWindow::on_signInButton_clicked()
             lineEdit->clear();
         }
 
-        // Hide current window and display new window
-        //this-> hide();
-        home homePage;
-        homePage.setModal(true);
-
-        // Set window size
+        // Create new window
+        AdminHome adminHome;
+        adminHome.setModal(true);
+        adminHome.setGroupBoxName(query.value(1).toString());
+        adminHome.setUserEmail(email);
         QDesktopWidget desktop;
         QRect mainScreenSize = desktop.availableGeometry(desktop.primaryScreen());
-        homePage.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
+        adminHome.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
 
         // Remove title bar
-        homePage.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+        adminHome.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 
         // Set window title
-        homePage.setWindowTitle("16CyclesHome");
+        adminHome.setWindowTitle("16CyclesHome");
 
         // Show window
-        homePage.exec();
+        adminHome.exec();
     }
 
     // If query has no values, username and password incorrect, display error to user

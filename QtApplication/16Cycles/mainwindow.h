@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include "home.h"
+#include "simplecrypt.h"
+#include "adminhome.h"
 #include <QMainWindow>
 #include <QDesktopWidget>
 #include <QRect>
@@ -10,6 +12,10 @@
 #include <QtSql>
 #include <QDebug>
 #include <QFileInfo>
+#include <QIntValidator>
+#include <QRegularExpression>
+#include <QCryptographicHash>
+#include <QComboBox>
 
 namespace Ui {
 class MainWindow;

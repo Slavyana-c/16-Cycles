@@ -52,9 +52,9 @@
   <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>22</x>
-     <y>192</y>
-     <width>701</width>
+     <x>23</x>
+     <y>193</y>
+     <width>698</width>
      <height>59</height>
     </rect>
    </property>
@@ -68,6 +68,18 @@
       </property>
       <property name="text">
        <string>Earnings </string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="staffButton">
+      <property name="font">
+       <font>
+        <pointsize>24</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Staff</string>
       </property>
      </widget>
     </item>

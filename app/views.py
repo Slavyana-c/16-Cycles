@@ -1,7 +1,10 @@
 from flask import render_template, flash, url_for, redirect, request, abort
-from app import app, db, bcrypt, admin, models
+from app import app, db, bcrypt, admin, models, mail
 from app.models import Users,Bike_Types,Bikes,Shops,Rental_Rates,Orders,Rented_Bikes
-from .forms import NewUserForm, LoginForm, SelectDates, AppliedFilters, ExtendDate, PasswordChangeForm
+from .forms import (NewUserForm, LoginForm, SelectDates, AppliedFilters,
+                    ExtendDate, PasswordChangeForm, RequestPasswordForm,
+                    NewPasswordForm, PaymentForm)
+from flask_mail import Message
 from sqlalchemy import and_, or_
 
 # all imports for sending emails
@@ -39,10 +42,6 @@ def about():
     return render_template("about.html", shops=shops) # redirect to the about page
 
 
-@app.route('/maps')
-def maps():
-    return render_template("maps.html") # redirect to the about page
-
 @app.route('/meetOurStaff')
 def meetOurStaff():
     return render_template("meetOurStaff.html") # redirect to the about page
@@ -52,8 +51,9 @@ def meetOurStaff():
 # def browse(startWindow=datetime.datetime.now(),
 #            endWindow=datetime.datetime.now()+timedelta(days=1),
 #            shopID = 1):
-def browse(startWindow=datetime.datetime.now(),
-           endWindow=datetime.datetime.now()+timedelta(days=1),
+
+def browse(startWindow=datetime.datetime.today(),
+           endWindow=datetime.datetime.today()+timedelta(days=1),
            shopID = 1):
     form = SelectDates()
     if form.validate_on_submit():
@@ -79,6 +79,17 @@ def browse(startWindow=datetime.datetime.now(),
         print("Button pressed or somethign")
     bikeTypes = Bike_Types.query.all()
     bikes = Bikes.query.filter_by(shop_id=shopID).all()
+
+    print("\n\nBrowse page running")
+    #for a in bikes:
+    #    print("\nNew Bike")
+    #    print(bikeTypes[a.bike_type_id].model)
+    #    print(bikeTypes[a.id].model)
+    #    print(bikeTypes[a.bike_type_id].id)
+    #    print(bikeTypes[a.id].id)
+    #    print(a.bike_type_id)
+    #    print(a.id)
+
     rentalRates = Rental_Rates.query.all()
     orders = Orders.query.all()
     rentedBikes = Rented_Bikes.query.all()
@@ -109,8 +120,6 @@ def browse(startWindow=datetime.datetime.now(),
     # be shown to the user
     if(startWindow > endWindow):
         bikes = []
-        print("Bikes have been removed")
-
     # remove the bikes that will be rented in the given time
     i = 0
     while(i < len(bikes)):
@@ -119,9 +128,12 @@ def browse(startWindow=datetime.datetime.now(),
         else:
             i+=1
 
-    # now the only bikes shown to the user are the ones they can actually rent
+    print("\nUpdated bikes")
+    print(bikes)
 
-    return render_template("browse.html", filterForm=filterForm,form=form,data=[bikes,bikeTypes,rentalRates]) # redirect to the bike search page, giving all the data
+    # now the only bikes shown to the user are the ones they can actually rent
+    return render_template("browse.html", filterForm=filterForm,form=form,data=[bikes,bikeTypes,rentalRates,startWindow,endWindow]) # redirect to the bike search page, giving all the data
+
 
 # OLD version of bikePage
 # @app.route('/bikePage')
@@ -130,25 +142,30 @@ def browse(startWindow=datetime.datetime.now(),
 #     data = Bike_Types.query.all()[0]#(brand='Voodoo')
 #     return render_template("bikePage.html", form=form) # redirect to the bike search page
 
+
 @app.route('/bikePage/',methods=['GET', 'POST'])
 def bikePage():
     brand = request.args.get('brand', default = 'BRAND', type = str)
     model = request.args.get('model', default = 'MODEL', type = str)
-    id = request.args.get('id', default = 'ID', type = str)
+    rentStart = request.args.get('rentStartDate',default='START',type = None)
+    rentEnd   = request.args.get('rentEndDate', default='END',type = None)
+    bikeId = request.args.get('bike_id', default = 'bike_id', type = str)
+    print("\nThis printout")
+    print(request.args)
+    # doing string formatting
+    rentStartDate = datetime.date(int(rentStart.split("-")[0]),int(rentStart.split("-")[1]),int(rentStart.split("-")[2][:2]))
+    rentEndDate = datetime.date(int(rentEnd.split("-")[0]),int(rentEnd.split("-")[1]),int(rentEnd.split("-")[2][:2]))
 
-
-    print("BRAND: " + brand + " and MODEL: " + model)
-
+    thisRentalRate = Rental_Rates.query.filter(Rental_Rates.bike_type_id == bikeId).first()
+    print(thisRentalRate)
     form = SelectDates();
-    # data = Bike_Types.query.all()#(brand='Voodoo')
     data = Bike_Types.query.filter(and_(Bike_Types.brand == brand, Bike_Types.model == model)).first()
     image = data.image
 
-    # redirectToIndividualBikePageURL = "bikePage?brand=" + brand + "&model=" + model
-    # return redirect(url_for(redirectToIndividualBikePageURL))
+    numberOfDays = (rentEndDate-rentStartDate).days
+    bikeRentPrice = calculateRentPrice(numberOfDays,thisRentalRate)
 
-    return render_template("bikePage.html", data=data,image=image, form=form, brand=brand, model=model) # redirect to the bike search page
-
+    return render_template("bikePage.html", data=data, form=form,rentStart=rentStartDate,rentEnd=rentEndDate,rentInfo=[bikeRentPrice,thisRentalRate,numberOfDays]) # redirect to the bike search page
 
 @app.route('/account')
 def account():
@@ -202,6 +219,78 @@ def logout():
 	flash('You have successfully logged out', 'success')
 	return redirect(url_for('home'))
 
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request',
+                  sender='noreply@16cycles.com',
+                  recipients=[user.email])
+    msg.body = '''To reset your password, visit the following link:
+{link}
+
+
+If you did not make this request, then ignore this email and no changes will be made.
+
+'''.format(link=url_for('resetToken', token=token, _external=True))
+    mail.send(msg)
+
+
+@app.route("/resetPassword", methods=['GET', 'POST'])
+def resetPassword():
+    form = RequestPasswordForm()
+    if form.validate_on_submit():
+        user = Users.query.filter_by(email=form.email.data).first()
+        send_reset_email(user)
+        flash('An email with reset instructions has been sent to the email supplied', 'info')
+        # if user verified return to account
+        return redirect(url_for('login'))
+    return render_template('resetPassword.html', title='Reset Password', form=form)
+
+@app.route("/resetPassword/<token>", methods=['GET', 'POST'])
+def resetToken(token):
+    user = Users.verify_reset_token(token)
+    if not user:
+        flash('That token is invalid or expired', 'warning')
+        return redirect(url_for('resetPassword'))
+    form = NewPasswordForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        flash('Your password has been updated.', 'success')
+        return redirect(url_for('login'))
+    return render_template('resetToken.html', title='Reset Password', form=form)
+
+
+
+def calculateRentPrice(numberOfDays,rentalRates):
+    # we have a start date
+    # and an end date
+    # so we can find out the number of days
+    # we have a a daily rate, weekly rate and monthly rate
+
+    # we round the rental rate to the nearest 10p
+    # so it isn't as bad for the user
+
+
+
+    print("\nRental Rate")
+    print(numberOfDays)
+    print(rentalRates.daily_rate,rentalRates.weekly_rate,rentalRates.monthly_rate)
+
+    # less than a week case
+    if(numberOfDays < 7):
+        # return the number of days * the weekly raet
+        return rentalRates.daily_rate * numberOfDays
+
+    # less than a month case
+    if(numberOfDays < 28):
+        # we divide the weekly rate by seven and multiply my number of days
+        return round((rentalRates.weekly_rate/7) * numberOfDays,1)
+
+    # more than a month
+    # so we take the monthly rate / 28 and multiply by number of days
+    return round((rentalRates.monthly_rate/28) * numberOfDays,1)
+
 
 def makeBikeRentalsTable(databaseOutput):
     output = ""
@@ -227,10 +316,15 @@ def makeCheckoutTable(databaseOutput):
 
     return output
 
-
+def payForm(bikesRenting):
+    form = PaymentForm()
+    if form.validate_on_submit():
+        qr(form.email.data, bikesRenting)
+        bikePage(1)
+    return render_template("payment.html", form=form)
 
 @app.route('/qr', methods=['GET', 'POST'])
-def qr():
+def qr(receivingAddress, bikesRented):
 
     # generating the QR code
     url = pyqrcode.create('https://ksassets.timeincuk.net/wp/uploads/sites/55/2016/07/2015_PeepShow_Mark2_Press_111115-920x610.jpg')
@@ -249,7 +343,6 @@ def qr():
     # setting up email things
     sendingAddress = "16.cycles.recipt@gmail.com"
     sendingPassword = "phatgitproject"
-    receivingAddress = "jonathancharlesalderson@gmail.com"
 
     msg = MIMEMultipart()
 

@@ -31,17 +31,22 @@
     <string>EDIT DB!!!!</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QPushButton" name="homeButton">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>310</y>
-     <width>341</width>
-     <height>161</height>
+     <x>60</x>
+     <y>150</y>
+     <width>161</width>
+     <height>71</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>24</pointsize>
+    </font>
+   </property>
    <property name="text">
-    <string>Nope</string>
+    <string>Home</string>
    </property>
   </widget>
  </widget>
