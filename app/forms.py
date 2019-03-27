@@ -6,9 +6,6 @@ from app.models import Users
 import datetime
 from datetime import timedelta
 
-
-
-
 class NewUserForm(FlaskForm):
 
 	email = StringField('Email',
