@@ -7,3 +7,4 @@ app/*.pyc
 .idea/workspace.xml
 =======
 >>>>>>> 054f1a4fac7356c3c51241470f1b211e8173fb51
+/QtApplication/*/*.o
