@@ -66,6 +66,7 @@ def browse(startWindow=datetime.datetime.today(),
     orders = Orders.query.all()
     rentedBikes = Rented_Bikes.query.all()
     bikesToRemove = [] # stores the ID's of bikes we need to remove
+    filteredOutBikeIDs = []
 
 
 
@@ -75,6 +76,7 @@ def browse(startWindow=datetime.datetime.today(),
         typeChosen = form_b.typeChoice.data
         # shopID = request.form.getlist("users")
         bikeTypes = Bike_Types.query.all()
+        bikes = []
         if typeChosen == "None":
             print('no type chosen')
             # just get the bikes from the shop
@@ -84,11 +86,46 @@ def browse(startWindow=datetime.datetime.today(),
             # bike_types = Bike_Types.query.filter_by(use_type=typeChosen)
             # bikes = Bike_Types.query.filter_by(use_type=typeChosen).all()
             # bikes = Bike_Types.query.filter_by(use_type=typeChosen).all()
-            joinedTables = Bikes.query.join(Bike_Types)
-            print(joinedTables)
-            # print(joinedTables.use_type)
-            bikes = Bikes.query.join(Bike_Types).filter(Bikes.bike_type_id == Bike_Types.id).all()
-            bikes
+            # bikeTypeId = Bikes.query.filter_by(id=bike_type_id).first().bike_type_id
+            # bikes = Bike_Types.query.filter_by(id=bikeTypeId).all().use_type
+
+            bikesWithDesiredType = Bike_Types.query.filter_by(use_type=typeChosen).all()
+            # print(bikesWithDesiredType.id)
+            for bike in bikesWithDesiredType:
+                print(bike)
+                filteredOutBikeIDs.append(bike.id)
+            print(filteredOutBikeIDs)
+
+            print("EQUATING IDS IN BIKES DB")
+
+            for ID in filteredOutBikeIDs:
+                # bikeExistsInShop = Bikes.query(db.exists().where(bike_type_id=ID)).scalar()
+                # print(bikeExistsInShop)
+                oneBike = Bikes.query.filter_by(bike_type_id=ID).first()
+                # if (bikeExistsInShop == False):
+                #     print("DO NOT ADD")
+                if oneBike is None:
+                    print("DO NOT ADD")
+                else:
+                    print(oneBike)
+                    bikes.append(oneBike)
+                # print(bikes)
+            print("END OF EQUATING IDS IN BIKES DB")
+
+            print("PRINTING BIKES THAT SHOULD BE DISPLAYED:")
+            print(bikes)
+            print("ENF OF PRINTING BIKES THAT SHOULD BE DISPLAYED:")
+
+            bikeTypeId = Bikes.query.filter_by(id=1).first().bike_type_id
+            bikeColour = Bike_Types.query.filter_by(id=bikeTypeId).all()
+
+            print(bikeColour)
+            #
+            # joinedTables = Bikes.query.join(Bike_Types)
+            # print(joinedTables)
+            # # print(joinedTables.use_type)
+            # bikes = Bikes.query.join(Bike_Types).filter(Bikes.bike_type_id == Bike_Types.id).all()
+            # bikes
             for bike in bikes:
                 print (bike)
             # bikes = Bike_Types.query.filter_by(Bike_Types.bike_type_id==Bike_Types.id).all()

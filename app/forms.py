@@ -64,8 +64,11 @@ class SelectDates(FlaskForm):
 
 class AppliedFilters(FlaskForm):
 	# shopChoice = RadioField('Extend Date', validators=[DataRequired()])
-	shopChoice = RadioField('Shop', choices=[(1,'University'),(2,'Town'),(3,'Headingley')])
-	typeChoice = RadioField('Type', choices=[('Road','Road'),('Mountain','Mountain'),('Hybrid','Hybrid'),('Electric','Electric')])
+	shopChoice   = RadioField('Shop', choices=[(1,'University'),(2,'Town'),(3,'Headingley')])
+	typeChoice   = RadioField('Type', choices=[('Road','Road'),('Mountain','Mountain'),('Hybrid','Hybrid'),('Electric','Electric')])
+	ageChoice    = RadioField('Age', choices=[('Adult','Adult'),('Child','Child')])
+	colourChoice = RadioField('Colour', choices=[('Blue','Blue'),('Red','Red'),('Grey','Grey'),('Black','Black'),('White','White'),('Brown','Brown')])
+	brandChoice  = RadioField('Brand', choices=[('Apollo','Apollo'),('Boardman','Boardman'),('Carrera','Carrera'),('Elswick','Elswick'),('Gtech','Gtech'),('Pendleton','Pendleton'),('Raleigh','Raleigh'),('Voodoo','Voodoo')])
 	submit = SubmitField('Apply Filters')
 
 class ExtendDate(FlaskForm):
