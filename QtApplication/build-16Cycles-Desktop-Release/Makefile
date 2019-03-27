@@ -52,19 +52,77 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../16Cycles/main.cpp \
 		../16Cycles/mainwindow.cpp \
+		../16Cycles/addstaff.cpp \
+		../16Cycles/simplecrypt.cpp \
+		../16Cycles/adminhome.cpp \
+		../16Cycles/updatestaff.cpp \
+		../16Cycles/removestaff.cpp \
+		../16Cycles/resetpassword.cpp \
+		../16Cycles/profits.cpp \
+		../16Cycles/createorder.cpp \
 		../16Cycles/home.cpp \
-		../16Cycles/editdb.cpp qrc_resources.cpp \
+		../16Cycles/updatebikes.cpp \
+		../16Cycles/addbikes.cpp \
+		../16Cycles/addbiketypes.cpp \
+		../16Cycles/removebikes.cpp \
+		../16Cycles/updateorders.cpp \
+		../16Cycles/removeorder.cpp \
+		../16Cycles/statisticsbikes.cpp \
+		../16Cycles/statisticsshops.cpp qrc_resources.cpp \
 		moc_mainwindow.cpp \
+		moc_addstaff.cpp \
+		moc_adminhome.cpp \
+		moc_updatestaff.cpp \
+		moc_removestaff.cpp \
+		moc_resetpassword.cpp \
+		moc_profits.cpp \
+		moc_createorder.cpp \
 		moc_home.cpp \
-		moc_editdb.cpp
+		moc_updatebikes.cpp \
+		moc_addbikes.cpp \
+		moc_addbiketypes.cpp \
+		moc_removebikes.cpp \
+		moc_updateorders.cpp \
+		moc_removeorder.cpp \
+		moc_statisticsbikes.cpp \
+		moc_statisticsshops.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
+		addstaff.o \
+		simplecrypt.o \
+		adminhome.o \
+		updatestaff.o \
+		removestaff.o \
+		resetpassword.o \
+		profits.o \
+		createorder.o \
 		home.o \
-		editdb.o \
+		updatebikes.o \
+		addbikes.o \
+		addbiketypes.o \
+		removebikes.o \
+		updateorders.o \
+		removeorder.o \
+		statisticsbikes.o \
+		statisticsshops.o \
 		qrc_resources.o \
 		moc_mainwindow.o \
+		moc_addstaff.o \
+		moc_adminhome.o \
+		moc_updatestaff.o \
+		moc_removestaff.o \
+		moc_resetpassword.o \
+		moc_profits.o \
+		moc_createorder.o \
 		moc_home.o \
-		moc_editdb.o
+		moc_updatebikes.o \
+		moc_addbikes.o \
+		moc_addbiketypes.o \
+		moc_removebikes.o \
+		moc_updateorders.o \
+		moc_removeorder.o \
+		moc_statisticsbikes.o \
+		moc_statisticsshops.o
 DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/common/unix.conf \
 		/usr/lib64/qt5/mkspecs/common/linux.conf \
@@ -139,11 +197,41 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/features/yacc.prf \
 		/usr/lib64/qt5/mkspecs/features/lex.prf \
 		../16Cycles/16Cycles.pro ../16Cycles/mainwindow.h \
+		../16Cycles/addstaff.h \
+		../16Cycles/simplecrypt.h \
+		../16Cycles/adminhome.h \
+		../16Cycles/updatestaff.h \
+		../16Cycles/removestaff.h \
+		../16Cycles/resetpassword.h \
+		../16Cycles/profits.h \
+		../16Cycles/createorder.h \
 		../16Cycles/home.h \
-		../16Cycles/editdb.h ../16Cycles/main.cpp \
+		../16Cycles/updatebikes.h \
+		../16Cycles/addbikes.h \
+		../16Cycles/addbiketypes.h \
+		../16Cycles/removebikes.h \
+		../16Cycles/updateorders.h \
+		../16Cycles/removeorder.h \
+		../16Cycles/statisticsbikes.h \
+		../16Cycles/statisticsshops.h ../16Cycles/main.cpp \
 		../16Cycles/mainwindow.cpp \
+		../16Cycles/addstaff.cpp \
+		../16Cycles/simplecrypt.cpp \
+		../16Cycles/adminhome.cpp \
+		../16Cycles/updatestaff.cpp \
+		../16Cycles/removestaff.cpp \
+		../16Cycles/resetpassword.cpp \
+		../16Cycles/profits.cpp \
+		../16Cycles/createorder.cpp \
 		../16Cycles/home.cpp \
-		../16Cycles/editdb.cpp
+		../16Cycles/updatebikes.cpp \
+		../16Cycles/addbikes.cpp \
+		../16Cycles/addbiketypes.cpp \
+		../16Cycles/removebikes.cpp \
+		../16Cycles/updateorders.cpp \
+		../16Cycles/removeorder.cpp \
+		../16Cycles/statisticsbikes.cpp \
+		../16Cycles/statisticsshops.cpp
 QMAKE_TARGET  = 16Cycles
 DESTDIR       = 
 TARGET        = 16Cycles
@@ -152,7 +240,7 @@ TARGET        = 16Cycles
 first: all
 ####### Build rules
 
-$(TARGET): ui_mainwindow.h ui_home.h ui_editdb.h $(OBJECTS)  
+$(TARGET): ui_mainwindow.h ui_addstaff.h ui_adminhome.h ui_updatestaff.h ui_removestaff.h ui_resetpassword.h ui_profits.h ui_createorder.h ui_home.h ui_updatebikes.h ui_addbikes.h ui_addbiketypes.h ui_removebikes.h ui_updateorders.h ui_removeorder.h ui_statisticsbikes.h ui_statisticsshops.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: ../16Cycles/16Cycles.pro /usr/lib64/qt5/mkspecs/linux-g++/qmake.conf /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
@@ -330,9 +418,9 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../16Cycles/resources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../16Cycles/mainwindow.h ../16Cycles/home.h ../16Cycles/editdb.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../16Cycles/main.cpp ../16Cycles/mainwindow.cpp ../16Cycles/home.cpp ../16Cycles/editdb.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../16Cycles/mainwindow.ui ../16Cycles/home.ui ../16Cycles/editdb.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../16Cycles/mainwindow.h ../16Cycles/addstaff.h ../16Cycles/simplecrypt.h ../16Cycles/adminhome.h ../16Cycles/updatestaff.h ../16Cycles/removestaff.h ../16Cycles/resetpassword.h ../16Cycles/profits.h ../16Cycles/createorder.h ../16Cycles/home.h ../16Cycles/updatebikes.h ../16Cycles/addbikes.h ../16Cycles/addbiketypes.h ../16Cycles/removebikes.h ../16Cycles/updateorders.h ../16Cycles/removeorder.h ../16Cycles/statisticsbikes.h ../16Cycles/statisticsshops.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../16Cycles/main.cpp ../16Cycles/mainwindow.cpp ../16Cycles/addstaff.cpp ../16Cycles/simplecrypt.cpp ../16Cycles/adminhome.cpp ../16Cycles/updatestaff.cpp ../16Cycles/removestaff.cpp ../16Cycles/resetpassword.cpp ../16Cycles/profits.cpp ../16Cycles/createorder.cpp ../16Cycles/home.cpp ../16Cycles/updatebikes.cpp ../16Cycles/addbikes.cpp ../16Cycles/addbiketypes.cpp ../16Cycles/removebikes.cpp ../16Cycles/updateorders.cpp ../16Cycles/removeorder.cpp ../16Cycles/statisticsbikes.cpp ../16Cycles/statisticsshops.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../16Cycles/mainwindow.ui ../16Cycles/addstaff.ui ../16Cycles/adminhome.ui ../16Cycles/updatestaff.ui ../16Cycles/removestaff.ui ../16Cycles/resetpassword.ui ../16Cycles/profits.ui ../16Cycles/createorder.ui ../16Cycles/home.ui ../16Cycles/updatebikes.ui ../16Cycles/addbikes.ui ../16Cycles/addbiketypes.ui ../16Cycles/removebikes.ui ../16Cycles/updateorders.ui ../16Cycles/removeorder.ui ../16Cycles/statisticsbikes.ui ../16Cycles/statisticsshops.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -370,41 +458,169 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib64/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -m64 -mtune=generic -O2 -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h /usr/lib64/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_home.cpp moc_editdb.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_addstaff.cpp moc_adminhome.cpp moc_updatestaff.cpp moc_removestaff.cpp moc_resetpassword.cpp moc_profits.cpp moc_createorder.cpp moc_home.cpp moc_updatebikes.cpp moc_addbikes.cpp moc_addbiketypes.cpp moc_removebikes.cpp moc_updateorders.cpp moc_removeorder.cpp moc_statisticsbikes.cpp moc_statisticsshops.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_home.cpp moc_editdb.cpp
-moc_mainwindow.cpp: ../16Cycles/home.h \
+	-$(DEL_FILE) moc_mainwindow.cpp moc_addstaff.cpp moc_adminhome.cpp moc_updatestaff.cpp moc_removestaff.cpp moc_resetpassword.cpp moc_profits.cpp moc_createorder.cpp moc_home.cpp moc_updatebikes.cpp moc_addbikes.cpp moc_addbiketypes.cpp moc_removebikes.cpp moc_updateorders.cpp moc_removeorder.cpp moc_statisticsbikes.cpp moc_statisticsshops.cpp
+moc_mainwindow.cpp: ../16Cycles/simplecrypt.h \
+		../16Cycles/adminhome.h \
+		../16Cycles/home.h \
 		../16Cycles/mainwindow.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
 	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/mainwindow.h -o moc_mainwindow.cpp
+
+moc_addstaff.cpp: ../16Cycles/addstaff.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/addstaff.h -o moc_addstaff.cpp
+
+moc_adminhome.cpp: ../16Cycles/adminhome.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/adminhome.h -o moc_adminhome.cpp
+
+moc_updatestaff.cpp: ../16Cycles/updatestaff.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/updatestaff.h -o moc_updatestaff.cpp
+
+moc_removestaff.cpp: ../16Cycles/removestaff.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/removestaff.h -o moc_removestaff.cpp
+
+moc_resetpassword.cpp: ../16Cycles/resetpassword.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/resetpassword.h -o moc_resetpassword.cpp
+
+moc_profits.cpp: ../16Cycles/profits.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/profits.h -o moc_profits.cpp
+
+moc_createorder.cpp: ../16Cycles/createorder.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/createorder.h -o moc_createorder.cpp
 
 moc_home.cpp: ../16Cycles/home.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
 	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/home.h -o moc_home.cpp
 
-moc_editdb.cpp: ../16Cycles/editdb.h \
+moc_updatebikes.cpp: ../16Cycles/updatebikes.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/editdb.h -o moc_editdb.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/updatebikes.h -o moc_updatebikes.cpp
+
+moc_addbikes.cpp: ../16Cycles/addbikes.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/addbikes.h -o moc_addbikes.cpp
+
+moc_addbiketypes.cpp: ../16Cycles/addbiketypes.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/addbiketypes.h -o moc_addbiketypes.cpp
+
+moc_removebikes.cpp: ../16Cycles/removebikes.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/removebikes.h -o moc_removebikes.cpp
+
+moc_updateorders.cpp: ../16Cycles/updateorders.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/updateorders.h -o moc_updateorders.cpp
+
+moc_removeorder.cpp: ../16Cycles/removeorder.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/removeorder.h -o moc_removeorder.cpp
+
+moc_statisticsbikes.cpp: ../16Cycles/statisticsbikes.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/statisticsbikes.h -o moc_statisticsbikes.cpp
+
+moc_statisticsshops.cpp: ../16Cycles/statisticsshops.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/statisticsshops.h -o moc_statisticsshops.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_mainwindow.h ui_home.h ui_editdb.h
+compiler_uic_make_all: ui_mainwindow.h ui_addstaff.h ui_adminhome.h ui_updatestaff.h ui_removestaff.h ui_resetpassword.h ui_profits.h ui_createorder.h ui_home.h ui_updatebikes.h ui_addbikes.h ui_addbiketypes.h ui_removebikes.h ui_updateorders.h ui_removeorder.h ui_statisticsbikes.h ui_statisticsshops.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_mainwindow.h ui_home.h ui_editdb.h
+	-$(DEL_FILE) ui_mainwindow.h ui_addstaff.h ui_adminhome.h ui_updatestaff.h ui_removestaff.h ui_resetpassword.h ui_profits.h ui_createorder.h ui_home.h ui_updatebikes.h ui_addbikes.h ui_addbiketypes.h ui_removebikes.h ui_updateorders.h ui_removeorder.h ui_statisticsbikes.h ui_statisticsshops.h
 ui_mainwindow.h: ../16Cycles/mainwindow.ui \
 		/usr/lib64/qt5/bin/uic
 	/usr/lib64/qt5/bin/uic ../16Cycles/mainwindow.ui -o ui_mainwindow.h
+
+ui_addstaff.h: ../16Cycles/addstaff.ui \
+		/usr/lib64/qt5/bin/uic
+	/usr/lib64/qt5/bin/uic ../16Cycles/addstaff.ui -o ui_addstaff.h
+
+ui_adminhome.h: ../16Cycles/adminhome.ui \
+		/usr/lib64/qt5/bin/uic
+	/usr/lib64/qt5/bin/uic ../16Cycles/adminhome.ui -o ui_adminhome.h
+
+ui_updatestaff.h: ../16Cycles/updatestaff.ui \
+		/usr/lib64/qt5/bin/uic
+	/usr/lib64/qt5/bin/uic ../16Cycles/updatestaff.ui -o ui_updatestaff.h
+
+ui_removestaff.h: ../16Cycles/removestaff.ui \
+		/usr/lib64/qt5/bin/uic
+	/usr/lib64/qt5/bin/uic ../16Cycles/removestaff.ui -o ui_removestaff.h
+
+ui_resetpassword.h: ../16Cycles/resetpassword.ui \
+		/usr/lib64/qt5/bin/uic
+	/usr/lib64/qt5/bin/uic ../16Cycles/resetpassword.ui -o ui_resetpassword.h
+
+ui_profits.h: ../16Cycles/profits.ui \
+		/usr/lib64/qt5/bin/uic
+	/usr/lib64/qt5/bin/uic ../16Cycles/profits.ui -o ui_profits.h
+
+ui_createorder.h: ../16Cycles/createorder.ui \
+		/usr/lib64/qt5/bin/uic
+	/usr/lib64/qt5/bin/uic ../16Cycles/createorder.ui -o ui_createorder.h
 
 ui_home.h: ../16Cycles/home.ui \
 		/usr/lib64/qt5/bin/uic
 	/usr/lib64/qt5/bin/uic ../16Cycles/home.ui -o ui_home.h
 
-ui_editdb.h: ../16Cycles/editdb.ui \
+ui_updatebikes.h: ../16Cycles/updatebikes.ui \
 		/usr/lib64/qt5/bin/uic
-	/usr/lib64/qt5/bin/uic ../16Cycles/editdb.ui -o ui_editdb.h
+	/usr/lib64/qt5/bin/uic ../16Cycles/updatebikes.ui -o ui_updatebikes.h
+
+ui_addbikes.h: ../16Cycles/addbikes.ui \
+		/usr/lib64/qt5/bin/uic
+	/usr/lib64/qt5/bin/uic ../16Cycles/addbikes.ui -o ui_addbikes.h
+
+ui_addbiketypes.h: ../16Cycles/addbiketypes.ui \
+		/usr/lib64/qt5/bin/uic
+	/usr/lib64/qt5/bin/uic ../16Cycles/addbiketypes.ui -o ui_addbiketypes.h
+
+ui_removebikes.h: ../16Cycles/removebikes.ui \
+		/usr/lib64/qt5/bin/uic
+	/usr/lib64/qt5/bin/uic ../16Cycles/removebikes.ui -o ui_removebikes.h
+
+ui_updateorders.h: ../16Cycles/updateorders.ui \
+		/usr/lib64/qt5/bin/uic
+	/usr/lib64/qt5/bin/uic ../16Cycles/updateorders.ui -o ui_updateorders.h
+
+ui_removeorder.h: ../16Cycles/removeorder.ui \
+		/usr/lib64/qt5/bin/uic
+	/usr/lib64/qt5/bin/uic ../16Cycles/removeorder.ui -o ui_removeorder.h
+
+ui_statisticsbikes.h: ../16Cycles/statisticsbikes.ui \
+		/usr/lib64/qt5/bin/uic
+	/usr/lib64/qt5/bin/uic ../16Cycles/statisticsbikes.ui -o ui_statisticsbikes.h
+
+ui_statisticsshops.h: ../16Cycles/statisticsshops.ui \
+		/usr/lib64/qt5/bin/uic
+	/usr/lib64/qt5/bin/uic ../16Cycles/statisticsshops.ui -o ui_statisticsshops.h
 
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
@@ -417,25 +633,138 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 ####### Compile
 
 main.o: ../16Cycles/main.cpp ../16Cycles/mainwindow.h \
+		../16Cycles/simplecrypt.h \
+		../16Cycles/adminhome.h \
 		../16Cycles/home.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../16Cycles/main.cpp
 
 mainwindow.o: ../16Cycles/mainwindow.cpp ../16Cycles/mainwindow.h \
+		../16Cycles/simplecrypt.h \
+		../16Cycles/adminhome.h \
 		../16Cycles/home.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../16Cycles/mainwindow.cpp
 
+addstaff.o: ../16Cycles/addstaff.cpp ../16Cycles/addstaff.h \
+		ui_addstaff.h \
+		../16Cycles/mainwindow.h \
+		../16Cycles/simplecrypt.h \
+		../16Cycles/adminhome.h \
+		../16Cycles/home.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o addstaff.o ../16Cycles/addstaff.cpp
+
+simplecrypt.o: ../16Cycles/simplecrypt.cpp ../16Cycles/simplecrypt.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o simplecrypt.o ../16Cycles/simplecrypt.cpp
+
+adminhome.o: ../16Cycles/adminhome.cpp ../16Cycles/adminhome.h \
+		ui_adminhome.h \
+		../16Cycles/mainwindow.h \
+		../16Cycles/simplecrypt.h \
+		../16Cycles/home.h \
+		../16Cycles/resetpassword.h \
+		../16Cycles/addstaff.h \
+		../16Cycles/removestaff.h \
+		../16Cycles/updatestaff.h \
+		../16Cycles/profits.h \
+		../16Cycles/addbikes.h \
+		../16Cycles/addbiketypes.h \
+		../16Cycles/removebikes.h \
+		../16Cycles/updatebikes.h \
+		../16Cycles/createorder.h \
+		../16Cycles/removeorder.h \
+		../16Cycles/updateorders.h \
+		../16Cycles/statisticsbikes.h \
+		../16Cycles/statisticsshops.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o adminhome.o ../16Cycles/adminhome.cpp
+
+updatestaff.o: ../16Cycles/updatestaff.cpp ../16Cycles/updatestaff.h \
+		ui_updatestaff.h \
+		../16Cycles/mainwindow.h \
+		../16Cycles/simplecrypt.h \
+		../16Cycles/adminhome.h \
+		../16Cycles/home.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o updatestaff.o ../16Cycles/updatestaff.cpp
+
+removestaff.o: ../16Cycles/removestaff.cpp ../16Cycles/removestaff.h \
+		ui_removestaff.h \
+		../16Cycles/mainwindow.h \
+		../16Cycles/simplecrypt.h \
+		../16Cycles/adminhome.h \
+		../16Cycles/home.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o removestaff.o ../16Cycles/removestaff.cpp
+
+resetpassword.o: ../16Cycles/resetpassword.cpp ../16Cycles/resetpassword.h \
+		ui_resetpassword.h \
+		../16Cycles/mainwindow.h \
+		../16Cycles/simplecrypt.h \
+		../16Cycles/adminhome.h \
+		../16Cycles/home.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o resetpassword.o ../16Cycles/resetpassword.cpp
+
+profits.o: ../16Cycles/profits.cpp ../16Cycles/profits.h \
+		ui_profits.h \
+		../16Cycles/mainwindow.h \
+		../16Cycles/simplecrypt.h \
+		../16Cycles/adminhome.h \
+		../16Cycles/home.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o profits.o ../16Cycles/profits.cpp
+
+createorder.o: ../16Cycles/createorder.cpp ../16Cycles/createorder.h \
+		ui_createorder.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o createorder.o ../16Cycles/createorder.cpp
+
 home.o: ../16Cycles/home.cpp ../16Cycles/home.h \
 		ui_home.h \
 		../16Cycles/mainwindow.h \
-		../16Cycles/editdb.h
+		../16Cycles/simplecrypt.h \
+		../16Cycles/adminhome.h \
+		../16Cycles/resetpassword.h \
+		../16Cycles/addstaff.h \
+		../16Cycles/removestaff.h \
+		../16Cycles/updatestaff.h \
+		../16Cycles/profits.h \
+		../16Cycles/addbikes.h \
+		../16Cycles/addbiketypes.h \
+		../16Cycles/removebikes.h \
+		../16Cycles/updatebikes.h \
+		../16Cycles/createorder.h \
+		../16Cycles/removeorder.h \
+		../16Cycles/updateorders.h \
+		../16Cycles/statisticsbikes.h \
+		../16Cycles/statisticsshops.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o home.o ../16Cycles/home.cpp
 
-editdb.o: ../16Cycles/editdb.cpp ../16Cycles/editdb.h \
-		ui_editdb.h \
-		../16Cycles/mainwindow.h \
-		../16Cycles/home.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o editdb.o ../16Cycles/editdb.cpp
+updatebikes.o: ../16Cycles/updatebikes.cpp ../16Cycles/updatebikes.h \
+		ui_updatebikes.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o updatebikes.o ../16Cycles/updatebikes.cpp
+
+addbikes.o: ../16Cycles/addbikes.cpp ../16Cycles/addbikes.h \
+		ui_addbikes.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o addbikes.o ../16Cycles/addbikes.cpp
+
+addbiketypes.o: ../16Cycles/addbiketypes.cpp ../16Cycles/addbiketypes.h \
+		ui_addbiketypes.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o addbiketypes.o ../16Cycles/addbiketypes.cpp
+
+removebikes.o: ../16Cycles/removebikes.cpp ../16Cycles/removebikes.h \
+		ui_removebikes.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o removebikes.o ../16Cycles/removebikes.cpp
+
+updateorders.o: ../16Cycles/updateorders.cpp ../16Cycles/updateorders.h \
+		ui_updateorders.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o updateorders.o ../16Cycles/updateorders.cpp
+
+removeorder.o: ../16Cycles/removeorder.cpp ../16Cycles/removeorder.h \
+		ui_removeorder.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o removeorder.o ../16Cycles/removeorder.cpp
+
+statisticsbikes.o: ../16Cycles/statisticsbikes.cpp ../16Cycles/statisticsbikes.h \
+		ui_statisticsbikes.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o statisticsbikes.o ../16Cycles/statisticsbikes.cpp
+
+statisticsshops.o: ../16Cycles/statisticsshops.cpp ../16Cycles/statisticsshops.h \
+		ui_statisticsshops.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o statisticsshops.o ../16Cycles/statisticsshops.cpp
 
 qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp
@@ -443,11 +772,53 @@ qrc_resources.o: qrc_resources.cpp
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
 
+moc_addstaff.o: moc_addstaff.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_addstaff.o moc_addstaff.cpp
+
+moc_adminhome.o: moc_adminhome.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_adminhome.o moc_adminhome.cpp
+
+moc_updatestaff.o: moc_updatestaff.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_updatestaff.o moc_updatestaff.cpp
+
+moc_removestaff.o: moc_removestaff.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_removestaff.o moc_removestaff.cpp
+
+moc_resetpassword.o: moc_resetpassword.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_resetpassword.o moc_resetpassword.cpp
+
+moc_profits.o: moc_profits.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_profits.o moc_profits.cpp
+
+moc_createorder.o: moc_createorder.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_createorder.o moc_createorder.cpp
+
 moc_home.o: moc_home.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_home.o moc_home.cpp
 
-moc_editdb.o: moc_editdb.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_editdb.o moc_editdb.cpp
+moc_updatebikes.o: moc_updatebikes.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_updatebikes.o moc_updatebikes.cpp
+
+moc_addbikes.o: moc_addbikes.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_addbikes.o moc_addbikes.cpp
+
+moc_addbiketypes.o: moc_addbiketypes.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_addbiketypes.o moc_addbiketypes.cpp
+
+moc_removebikes.o: moc_removebikes.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_removebikes.o moc_removebikes.cpp
+
+moc_updateorders.o: moc_updateorders.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_updateorders.o moc_updateorders.cpp
+
+moc_removeorder.o: moc_removeorder.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_removeorder.o moc_removeorder.cpp
+
+moc_statisticsbikes.o: moc_statisticsbikes.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_statisticsbikes.o moc_statisticsbikes.cpp
+
+moc_statisticsshops.o: moc_statisticsshops.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_statisticsshops.o moc_statisticsshops.cpp
 
 ####### Install
 
