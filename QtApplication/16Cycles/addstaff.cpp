@@ -62,7 +62,7 @@ void AddStaff::on_addStaffButton_clicked()
             if(contactNumber.length() == 11)
             {
                 // Check passwords minimum length
-                if(password.length() > 5)
+                if(password.length() >= 5)
                 {
                     // Check password and confirm password match
                     if((QString::compare(password,confirmPassword,Qt::CaseSensitive)) == 0)
