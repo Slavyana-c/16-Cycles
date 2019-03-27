@@ -13,7 +13,7 @@ AdminHome::AdminHome(QWidget *parent) :
 {
     ui->setupUi(this);
 }
-// test
+
 AdminHome::~AdminHome()
 {
     delete ui;
