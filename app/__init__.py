@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_admin import Admin #import for the flask admin page
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_mail import Mail
 
 
 
@@ -24,7 +25,7 @@ def load_user(user_id):
 login_manager.login_view='login'
 login_manager.login_message_category='info'
 
-
+mail = Mail(app)
 
 
 from app import views, models

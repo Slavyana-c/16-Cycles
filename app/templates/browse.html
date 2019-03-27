@@ -41,96 +41,113 @@
                       <h3>Filter</h3>
                   </div>
 
-                  <ul class="list-unstyled components">
-
-                    <li>
-                        <a href="#shopSubmenu"
-                           data-toggle="collapse"
-                           aria-expanded="false"
-                           class="dropdown-toggle">
-                           <b>Shop</b>
-                        </a>
-                        <ul class="collapse list-unstyled" id="shopSubmenu">
-                          <form method="POST" action="">
-                            <div class="shopRadio">
-                              <input type="radio" name="shop" checked id="option1" value=1> University  </input>
-                            </div>
-                            <div class="shopRadio">
-                              <input type="radio" name="shop" id="option2" value=2> Town </input>
-                            </div>
-                            <div class="shopRadio">
-                              <input type="radio" name="shop" id="option3" value=3> Headingley  </input>
-                            </div>
-
-                          </form>
-                        </ul>
-                    </li>
-
-                      <li class="active">
-                          <a href="#bikeTypeSubmenu"
-                             data-toggle="collapse"
-                             aria-expanded="false"
-                             class="dropdown-toggle">
-                             <b>Type</b>
-                          </a>
-                          <ul class="collapse list-unstyled" id="bikeTypeSubmenu">
-                              <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Road     </div>
-                              <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Mountain </div>
-                              <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Hybrid   </div>
-                              <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Electric </div>
-                          </ul>
-                      </li>
+                  <form method="POST" action="">
+                    <ul class="list-unstyled components">
 
                       <li>
-                          <a href="#userTypeSubmenu"
+                          <a href="#shopSubmenu"
                              data-toggle="collapse"
                              aria-expanded="false"
                              class="dropdown-toggle">
-                             <b>Age</b>
+                             <b>Shop</b>
                           </a>
-                          <ul class="collapse list-unstyled" id="userTypeSubmenu">
-                              <div class="userTypeRadio"><input type="radio" name="userType"        > Adult     </div>
-                              <div class="userTypeRadio"><input type="radio" name="userType"        > Child     </div>
+                          <ul class="collapse list-unstyled" id="shopSubmenu">
+
+
+                              {{ filterForm.hidden_tag() }}
+                                  {{ filterForm.shopChoice }}
+                              <!-- <div class="shopRadio">
+                                <input type="radio" name="shop" checked id="option1" value=1> University  </input>
+                              </div>
+                              <div class="shopRadio">
+                                <input type="radio" name="shop" id="option2" value=2> Town </input>
+                              </div>
+                              <div class="shopRadio">
+                                <input type="radio" name="shop" id="option3" value=3> Headingley  </input>
+                              </div> -->
                           </ul>
                       </li>
 
-                      <li>
-                          <a href="#colourSubmenu"
-                             data-toggle="collapse"
-                             aria-expanded="false"
-                             class="dropdown-toggle">
-                             <b>Colour</b>
-                          </a>
-                          <ul class="collapse list-unstyled" id="colourSubmenu">
-                              <div class="colourRadio"><input type="radio" name="colour"        > Blue     </div>
-                              <div class="colourRadio"><input type="radio" name="colour"        > Red     </div>
-                              <div class="colourRadio"><input type="radio" name="colour"        > Grey     </div>
-                              <div class="colourRadio"><input type="radio" name="colour"        > Black     </div>
-                              <div class="colourRadio"><input type="radio" name="colour"        > White     </div>
-                              <div class="colourRadio"><input type="radio" name="colour"        > Brown     </div>
-                              <div class="colourRadio"><input type="radio" name="colour"        > Red     </div>
-                          </ul>
-                      </li>
+                        <li class="active">
+                            <a href="#bikeTypeSubmenu"
+                               data-toggle="collapse"
+                               aria-expanded="false"
+                               class="dropdown-toggle">
+                               <b>Type</b>
+                            </a>
+                            <ul class="collapse list-unstyled" id="bikeTypeSubmenu">
+                              {{ filterForm.typeChoice }}
+                                <!-- <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Road     </div>
+                                <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Mountain </div>
+                                <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Hybrid   </div>
+                                <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Electric </div> -->
+                            </ul>
+                        </li>
 
-                      <li>
-                          <a href="#brandSubmenu"
-                             data-toggle="collapse"
-                             aria-expanded="false"
-                             class="dropdown-toggle">
-                             <b>Brand</b>
-                          </a>
-                          <ul class="collapse list-unstyled" id="brandSubmenu">
-                              <div class="brandRadio"><input type="radio" name="brand"        > Apollo      </div>
-                              <div class="brandRadio"><input type="radio" name="brand"        > Boardman    </div>
-                              <div class="brandRadio"><input type="radio" name="brand"        > Carrera     </div>
-                              <div class="brandRadio"><input type="radio" name="brand"        > Elswick     </div>
-                              <div class="brandRadio"><input type="radio" name="brand"        > Gtech       </div>
-                              <div class="brandRadio"><input type="radio" name="brand"        > Pendleton   </div>
-                              <div class="brandRadio"><input type="radio" name="brand"        > Raleigh     </div>
-                              <div class="brandRadio"><input type="radio" name="brand"        > Voodoo      </div>
-                          </ul>
-                      </li>
-                  </ul>
+                        <li>
+                            <a href="#userTypeSubmenu"
+                               data-toggle="collapse"
+                               aria-expanded="false"
+                               class="dropdown-toggle">
+                               <b>Age</b>
+                            </a>
+                            <ul class="collapse list-unstyled" id="userTypeSubmenu">
+                              {{ filterForm.ageChoice }}
+                                <!-- <div class="userTypeRadio"><input type="radio" name="userType"        > Adult     </div>
+                                <div class="userTypeRadio"><input type="radio" name="userType"        > Child     </div> -->
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#colourSubmenu"
+                               data-toggle="collapse"
+                               aria-expanded="false"
+                               class="dropdown-toggle">
+                               <b>Colour</b>
+                            </a>
+                            <ul class="collapse list-unstyled" id="colourSubmenu">
+                              {{ filterForm.colourChoice }}
+                                <!-- <div class="colourRadio"><input type="radio" name="colour"        > Blue     </div>
+                                <div class="colourRadio"><input type="radio" name="colour"        > Red     </div>
+                                <div class="colourRadio"><input type="radio" name="colour"        > Grey     </div>
+                                <div class="colourRadio"><input type="radio" name="colour"        > Black     </div>
+                                <div class="colourRadio"><input type="radio" name="colour"        > White     </div>
+                                <div class="colourRadio"><input type="radio" name="colour"        > Brown     </div>
+                                <div class="colourRadio"><input type="radio" name="colour"        > Red     </div> -->
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#brandSubmenu"
+                               data-toggle="collapse"
+                               aria-expanded="false"
+                               class="dropdown-toggle">
+                               <b>Brand</b>
+                            </a>
+                            <ul class="collapse list-unstyled" id="brandSubmenu">
+                              {{ filterForm.brandChoice }}
+                                <!-- <div class="brandRadio"><input type="radio" name="brand"        > Apollo      </div>
+                                <div class="brandRadio"><input type="radio" name="brand"        > Boardman    </div>
+                                <div class="brandRadio"><input type="radio" name="brand"        > Carrera     </div>
+                                <div class="brandRadio"><input type="radio" name="brand"        > Elswick     </div>
+                                <div class="brandRadio"><input type="radio" name="brand"        > Gtech       </div>
+                                <div class="brandRadio"><input type="radio" name="brand"        > Pendleton   </div>
+                                <div class="brandRadio"><input type="radio" name="brand"        > Raleigh     </div>
+                                <div class="brandRadio"><input type="radio" name="brand"        > Voodoo      </div> -->
+                            </ul>
+                        </li>
+                        <div class="dateselection center">
+                          <!-- <button type="button" onclick="refreshBrowse();" name="search" id="bikeSearchButton">Search</button> -->
+                          {{ filterForm.submit(class="btn btn-outline-info", id="bikeSearchButton") }}
+                        </div>
+                    </ul>
+
+
+                  </form>
+
+
+
+
               </nav>
           </div>
         </div>

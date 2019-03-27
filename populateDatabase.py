@@ -3,7 +3,8 @@ from app import db, models
 import os.path
 import random
 import datetime
-
+from datetime import timedelta
+import time
 
 
 def readFromCSV():
@@ -46,6 +47,7 @@ def addBikeTypes():
         db.session.add(newBike)
 
     db.session.commit()
+    time.sleep(2)
 
 
 def addShops():
@@ -53,12 +55,18 @@ def addShops():
     names = ["Leeds University Union","Headingley","City Centre"]
     addresses = ["Lifton Place, Leeds, LS2 9JZ","2 St Michael's Road, Leeds LS6 3AW","Unit 1, New Station St, Leeds LS1 5DE"]
     numbers = ["01133801400","01132785836","01132469132"]
+    latitudes = [53.807348,53.8193,53.7956]
+    longitudes = [-1.558362,-1.5773,-1.5444]
     for i in range(3):
+        print("Adding Shop: ",names[i])
         newShop = models.Shops(location_name=names[i],
                                address=addresses[i],
-                               contact_number=numbers[i])
+                               contact_number=numbers[i],
+                               latitude=latitudes[i],
+                               longitude=longitudes[i])
         db.session.add(newShop)
         db.session.commit()
+    time.sleep(2)
 
 def addIndividualBikes():
     print("Now Adding invididual bikes")
@@ -78,6 +86,7 @@ def addIndividualBikes():
         db.session.add(newBike)
 
     db.session.commit()
+    time.sleep(2)
 
 def addRentalRates():
     # for every bike, we can see how much it costs to rent it
@@ -95,6 +104,7 @@ def addRentalRates():
     for bike in allBikes:
         bikeIDs.append(bike.id)
     for i in range(0,len(allBikeData),9):
+        print("Adding bike rental rate " + str(bikeIDs[i//9]))
         bikePrice = int(allBikeData[i+8])
         newRentalRate = models.Rental_Rates(daily_rate=round(bikePrice*dayPercent),
                                             weekly_rate=round(bikePrice*weekPercent),
@@ -103,6 +113,7 @@ def addRentalRates():
                                             )
         db.session.add(newRentalRate)
     db.session.commit()
+    time.sleep(2)
 
 def addRentedBikes():
 
@@ -133,8 +144,8 @@ def addRentedBikes():
     db.session.add(newRental)
     db.session.commit()
 
-#addShops()
-#addBikeTypes()
-#addIndividualBikes()
-#addRentalRates()
-#addRentedBikes()
+addShops()
+addBikeTypes()
+addIndividualBikes()
+addRentalRates()
+addRentedBikes()

@@ -49,6 +49,28 @@ class PasswordChangeForm(FlaskForm):
 	submit = SubmitField('Submit')
 
 
+class RequestPasswordForm(FlaskForm):
+
+	email = StringField('Email',
+						validators=[DataRequired(), Email()])
+	submit = SubmitField('Request Password Reset')
+
+	def validate_email(self, email):
+		user = Users.query.filter_by(email=email.data).first()
+		if user is None:
+			raise ValidationError('No account with that email exists')
+
+
+class NewPasswordForm(FlaskForm):
+
+	password = PasswordField('Password',
+							  validators=[DataRequired(), Length(min=5, max=25)])
+	confirm_password = PasswordField('Confirm Password',
+									validators=[DataRequired(),
+												EqualTo('password')])
+	submit = SubmitField('Change Password')
+
+
 # form in the newTask.html
 class SelectDates(FlaskForm):
 	start_date = DateField('Rent Start Date', validators=[DataRequired()], default=datetime.datetime.now())
@@ -61,9 +83,12 @@ class SelectDates(FlaskForm):
 
 class AppliedFilters(FlaskForm):
 	# shopChoice = RadioField('Extend Date', validators=[DataRequired()])
-	shopChoice = RadioField('Shop', choices=[('University'),('Town'),('Headingley')])
-	typeChoice = RadioField('Type', choices=[('Road','Road'),('Mountain','Mountain'),('Hybrid','Hybrid'),('Electric','Electric')])
-	submit = SubmitField('Update Date')
+	shopChoice   = RadioField('Shop', choices=[(1,'University'),(2,'Town'),(3,'Headingley')])
+	typeChoice   = RadioField('Type', choices=[('Road','Road'),('Mountain','Mountain'),('Hybrid','Hybrid'),('Electric','Electric')])
+	ageChoice    = RadioField('Age', choices=[('Adult','Adult'),('Child','Child')])
+	colourChoice = RadioField('Colour', choices=[('Blue','Blue'),('Red','Red'),('Grey','Grey'),('Black','Black'),('White','White'),('Brown','Brown')])
+	brandChoice  = RadioField('Brand', choices=[('Apollo','Apollo'),('Boardman','Boardman'),('Carrera','Carrera'),('Elswick','Elswick'),('Gtech','Gtech'),('Pendleton','Pendleton'),('Raleigh','Raleigh'),('Voodoo','Voodoo')])
+	submit = SubmitField('Apply Filters')
 
 class ExtendDate(FlaskForm):
 	new_end_date = DateField('Extend Date', validators=[DataRequired()])
