@@ -57,6 +57,7 @@ def addShops():
     numbers = ["01133801400","01132785836","01132469132"]
     latitudes = [53.807348,53.8193,53.7956]
     longitudes = [-1.558362,-1.5773,-1.5444]
+
     for i in range(3):
         print("Adding Shop: ",names[i])
         newShop = models.Shops(location_name=names[i],

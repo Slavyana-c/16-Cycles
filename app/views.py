@@ -37,7 +37,14 @@ def home():
 
 @app.route('/about')
 def about():
-    return render_template("about.html") # redirect to the about page
+    shops = Shops.query.all()
+    bikeCount = []
+    for shop in shops:
+        bikesInShop= Bikes.query.filter(Bikes.shop_id==shop.id).count()
+        bikeCount.append(bikesInShop)
+
+    return render_template("about.html", shops=shops, bikeCount=bikeCount) # redirect to the about page
+
 
 @app.route('/meetOurStaff')
 def meetOurStaff():
@@ -56,6 +63,7 @@ def meetOurStaff():
 # def browse(startWindow=datetime.datetime.now(),
 #            endWindow=datetime.datetime.now()+timedelta(days=1),
 #            shopID = 1):
+
 def browse(startWindow=datetime.datetime.today(),
            endWindow=datetime.datetime.today()+timedelta(days=1),
            shopID = 1):
@@ -65,6 +73,7 @@ def browse(startWindow=datetime.datetime.today(),
     # filterForm = AppliedFilters(prefix="form_b")
 
     bikeTypes = Bike_Types.query.all()
+
     bikes = Bikes.query.all() # if no shop was chosen, we display all bikes
     rentalRates = Rental_Rates.query.all()
     orders = Orders.query.all()
@@ -161,7 +170,6 @@ def browse(startWindow=datetime.datetime.today(),
     # be shown to the user
     if(startWindow > endWindow):
         bikes = []
-
     # remove the bikes that will be rented in the given time
     i = 0
     while(i < len(bikes)):
@@ -176,6 +184,7 @@ def browse(startWindow=datetime.datetime.today(),
 
     # now the only bikes shown to the user are the ones they can actually rent
     return render_template("browse.html", filterForm=form_b,form=form_a,data=[bikes,bikeTypes,rentalRates,startWindow,endWindow]) # redirect to the bike search page, giving all the data
+
 
 # OLD version of bikePage
 # @app.route('/bikePage')
@@ -337,9 +346,6 @@ def calculateRentPrice(numberOfDays,rentalRates):
     return round((rentalRates.monthly_rate/28) * numberOfDays,1)
 
 
-
-
-
 def makeBikeRentalsTable(databaseOutput):
     output = ""
     for bike in databaseOutput:
@@ -361,6 +367,7 @@ def makeCheckoutTable(databaseOutput):
     <th>""" + titles[i] + """</th>
     <td>""" + str(databaseOutput[i]) + """</td>
   </tr> """
+
     return output
 
 @app.route('/paymentform', methods=['GET', 'POST'])
@@ -466,9 +473,6 @@ def qr(receivingAddress, bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDat
     fp.close()
     msgImage.add_header('Content-ID','<image1>')
     msg.attach(msgImage)
-
-
-
 
     msg.attach(emailBody)
 
