@@ -143,12 +143,9 @@ def bikePage():
     bikeId = request.args.get('bike_id', default = 'bike_id', type = str)
     print("\nThis printout")
     print(request.args)
-    # doing string formatting
-    try:
-        rentStartDate = datetime.date(int(rentStart.split("-")[0]),int(rentStart.split("-")[1]),int(rentStart.split("-")[2][:2]))
-        rentEndDate = datetime.date(int(rentEnd.split("-")[0]),int(rentEnd.split("-")[1]),int(rentEnd.split("-")[2][:2]))
-    except:
-        pass
+    rentStartDate = datetime.date(int(rentStart.split("-")[0]),int(rentStart.split("-")[1]),int(rentStart.split("-")[2][:2]))
+    rentEndDate = datetime.date(int(rentEnd.split("-")[0]),int(rentEnd.split("-")[1]),int(rentEnd.split("-")[2][:2]))
+
     thisRentalRate = Rental_Rates.query.filter(Rental_Rates.bike_type_id == bikeId).first()
     print(thisRentalRate)
     data = Bike_Types.query.filter(and_(Bike_Types.brand == brand, Bike_Types.model == model)).first()
@@ -159,9 +156,9 @@ def bikePage():
 
     form = RentButton();
     if form.validate_on_submit():
-        payForm(bikeId)
+        payForm()
         return redirect(url_for('payForm(bikeId)'))
-    return render_template("bikePage.html", data=data, form=form, rentStart=rentStartDate,rentEnd=rentEndDate,rentInfo=[bikeRentPrice,thisRentalRate,numberOfDays]) # redirect to the bike search page
+    return render_template("bikePage.html", data=data, form=form, rentStart=rentStartDate, rentEnd=rentEndDate, rentInfo=[bikeRentPrice,thisRentalRate,numberOfDays]) # redirect to the bike search page
 
 @app.route('/account')
 def account():
@@ -255,9 +252,9 @@ def makeBikeRentalsTable(databaseOutput):
         output +=  """   <tr>
   <td>""" + bike[0] +  """</span></td>
   <td>""" + bike[1] + """</span></td>
-  <td>""" + bike[2] + """</span></td>
   <td>""" + bike[3] + """</span></td>
   <td>""" + bike[4] + """</span></td>
+  <td>""" + bike[5] + """</span></td>
 </tr>
 """
     return output
@@ -268,31 +265,42 @@ def makeCheckoutTable(databaseOutput):
     for i in range(len(titles)):
         output += """  <tr>
     <th>""" + titles[i] + """</th>
-    <td>""" + databaseOutput[i] + """</td>
+    <td>""" + str(databaseOutput[i]) + """</td>
   </tr> """
     return output
 
 @app.route('/paymentform', methods=['GET', 'POST'])
-def payForm(bikeID):
+def payForm():
+    brand = request.args.get('brand', default = 'BRAND', type = str)
+    model = request.args.get('model', default = 'MODEL', type = str)
+    rentStart = request.args.get('rentStartDate', default=datetime.datetime.today(), type = None)
+    rentEnd = request.args.get('rentDateEnd', default=datetime.datetime.today()+timedelta(days=1), type = None)
+    rentDays = request.args.get('rentDays', type = int)
+    rentCost = request.args.get('rentCost')
+    bikeID = request.args.get('bike_id', default = 'bike_id', type = str)
+    rentStartDate = `rentStart.day` + "/" + `rentStart.month` + "/" + `rentStart.year`
+    rentEndDate = rentEnd[8:] + "/" + rentEnd[5:7] + "/" + rentEnd[0:4]
     print("\n\n\n\nWe got to here")
-    print(bikeID)
+    print(request.args)
+    data = Bike_Types.query.filter(and_(Bike_Types.brand == brand, Bike_Types.model == model)).first()
+    image = data.image
+
     form = PaymentForm()
-    return render_template("payment.html", form=form)
 
     if form.validate_on_submit():
-        qr(form.email.data, )
+        qr(form.email.data, brand, model, bikeID, rentStartDate, rentEndDate, rentCost)
+        return redirect(url_for('browse'))
+    return render_template("payment.html", form=form, data=data, image=image, rentCost=rentCost, rentDays=rentDays, rentStart=rentStartDate, rentEnd=rentEndDate)
 
 @app.route('/qr', methods=['GET', 'POST'])
-def qr(receivingAddress, bikeRented):
-    print("\n\n\n\nAnd here\n\n\n\n")
-
+def qr(receivingAddress, bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDate, rentCost):
     # generating the QR code
     url = pyqrcode.create('https://ksassets.timeincuk.net/wp/uploads/sites/55/2016/07/2015_PeepShow_Mark2_Press_111115-920x610.jpg')
     url.png('app/qrCode.png', scale=2) # nice and big
 
 
     # we take this dummy database output for use in the emails
-    dummyDatabaseOutput = bikeRented
+    order = [(bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDate, rentCost)]
     dummyRecieptOutput = ["Jonathan Alderson", "27/02/19","15:36:23","5437289","76.8"]
 
 
@@ -335,7 +343,7 @@ def qr(receivingAddress, bikeRented):
               <th scope="col">Price</span></th>
             </tr>
           </thead>
-          <tbody> """ + makeBikeRentalsTable(dummyDatabaseOutput) + """
+          <tbody> """ + makeBikeRentalsTable(order) + """
 
           </tbody>
         </table>
@@ -370,7 +378,7 @@ def qr(receivingAddress, bikeRented):
 
     msg.attach(emailBody)
 
-    # setup email sending
+    # setup email sending3122824.3 for
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
     server.login(sendingAddress, sendingPassword)
