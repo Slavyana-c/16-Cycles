@@ -45,18 +45,9 @@ def about():
 
     return render_template("about.html", shops=shops, bikeCount=bikeCount) # redirect to the about page
 
-
 @app.route('/meetOurStaff')
 def meetOurStaff():
     return render_template("meetOurStaff.html") # redirect to the about page
-
-
-
-
-
-
-
-
 
 @app.route('/browse',methods=['GET','POST'])
 # lots of default arguments given here
@@ -222,6 +213,7 @@ def bikePage():
     return render_template("bikePage.html", data=data, form=form, rentStart=rentStartDate, rentEnd=rentEndDate, rentInfo=[bikeRentPrice,thisRentalRate,numberOfDays]) # redirect to the bike search page
 
 @app.route('/account')
+@login_required
 def account():
     form = ExtendDate();
     return render_template("account.html", form=form) # redirect to the account page
@@ -268,6 +260,7 @@ def login():
 	return render_template("login.html", form=form)
 
 @app.route('/logout')
+@login_required
 def logout():
 	logout_user()
 	flash('You have successfully logged out', 'success')
@@ -314,8 +307,6 @@ def resetToken(token):
         return redirect(url_for('login'))
     return render_template('resetToken.html', title='Reset Password', form=form)
 
-
-
 def calculateRentPrice(numberOfDays,rentalRates):
     # we have a start date
     # and an end date
@@ -324,8 +315,6 @@ def calculateRentPrice(numberOfDays,rentalRates):
 
     # we round the rental rate to the nearest 10p
     # so it isn't as bad for the user
-
-
 
     print("\nRental Rate")
     print(numberOfDays)
@@ -344,7 +333,6 @@ def calculateRentPrice(numberOfDays,rentalRates):
     # more than a month
     # so we take the monthly rate / 28 and multiply by number of days
     return round((rentalRates.monthly_rate/28) * numberOfDays,1)
-
 
 def makeBikeRentalsTable(databaseOutput):
     output = ""
@@ -371,6 +359,7 @@ def makeCheckoutTable(databaseOutput):
     return output
 
 @app.route('/paymentform', methods=['GET', 'POST'])
+@login_required
 def payForm():
     brand = request.args.get('brand', default = 'BRAND', type = str)
     model = request.args.get('model', default = 'MODEL', type = str)
@@ -399,7 +388,6 @@ def qr(receivingAddress, bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDat
     url = pyqrcode.create('https://ksassets.timeincuk.net/wp/uploads/sites/55/2016/07/2015_PeepShow_Mark2_Press_111115-920x610.jpg')
     url.png('app/qrCode.png', scale=2) # nice and big
 
-
     # we take this dummy database output for use in the emails
     order = [(bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDate, rentCost)]
     dummyRecieptOutput = ["Jonathan Alderson", "27/02/19","15:36:23","5437289","76.8"]
@@ -414,8 +402,6 @@ def qr(receivingAddress, bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDat
     msg['From'] = "16 Cycles Rentals"
     msg['To'] = receivingAddress
     msg['Subject'] = "Your Reciept From Today"
-
-
 
     # actual body of the email
     html = """\
