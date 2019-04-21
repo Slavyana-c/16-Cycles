@@ -376,6 +376,9 @@ def payForm():
     image = data.image
 
     form = PaymentForm()
+    email = current_user.email
+    form.email.default = email
+    form.process()
 
     if form.validate_on_submit():
         qr(form.email.data, brand, model, bikeID, rentStartDate, rentEndDate, rentCost)
