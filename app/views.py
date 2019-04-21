@@ -376,13 +376,16 @@ def payForm():
     image = data.image
 
     form = PaymentForm()
+
+
+    if form.validate_on_submit():
+        print("validate")
+        qr(form.email.data, brand, model, bikeID, rentStartDate, rentEndDate, rentCost)
+        return redirect(url_for('browse'))
+
     email = current_user.email
     form.email.default = email
     form.process()
-
-    if form.validate_on_submit():
-        qr(form.email.data, brand, model, bikeID, rentStartDate, rentEndDate, rentCost)
-        return redirect(url_for('browse'))
     return render_template("payment.html", form=form, data=data, image=image, rentCost=rentCost, rentDays=rentDays, rentStart=rentStartDate, rentEnd=rentEndDate)
 
 @app.route('/qr', methods=['GET', 'POST'])

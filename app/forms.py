@@ -99,6 +99,7 @@ class PaymentForm(FlaskForm):
 	cvv = StringField('CVV', validators=[DataRequired(), Regexp("\d{3}", flags=0, message="Field must be 3 characters long. Please try again"), Length(max=3, message="Field must be 3 characters long. Please try again")])
 	expDate = StringField('Expiry Date', validators=[DataRequired(), Regexp("\d\d\/\d\d", flags=0, message="Date needs to be of the form mm/yy")])
 	email = StringField('Email Address', validators=[DataRequired()])
+	save = BooleanField('Save payment information')
 	submit = SubmitField('Submit')
 
 class RentButton(FlaskForm):
