@@ -1,6 +1,6 @@
 from flask import render_template, flash, url_for, redirect, request, abort
 from app import app, db, bcrypt, admin, models, mail
-from app.models import Users,Bike_Types,Bikes,Shops,Rental_Rates,Orders,Rented_Bikes
+from app.models import Users,Bike_Types,Bikes,Shops,Rental_Rates,Orders,Rented_Bikes,Payment_Methods
 from .forms import (NewUserForm, LoginForm, SelectDates, AppliedFilters,
                     ExtendDate, PasswordChangeForm, RequestPasswordForm,
                     NewPasswordForm, PaymentForm, RentButton)
@@ -30,6 +30,7 @@ admin.add_view(ModelView(Shops, db.session))
 admin.add_view(ModelView(Rental_Rates, db.session))
 admin.add_view(ModelView(Orders, db.session))
 admin.add_view(ModelView(Rented_Bikes, db.session))
+admin.add_view(ModelView(Payment_Methods, db.session))
 
 @app.route('/')
 def home():
@@ -379,7 +380,13 @@ def payForm():
 
 
     if form.validate_on_submit():
-        print("validate")
+        if(form.save.data == True):
+            	#pwrd_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+                date = form.expDate.data.split("/")
+                payment = Payment_Methods(card_number=form.cardNumber.data, cvv=form.cvv.data, expiration_month=date[0], expiration_year=date[1], user_id=current_user.id)
+                db.session.add(payment)
+                db.session.commit()
+
         qr(form.email.data, brand, model, bikeID, rentStartDate, rentEndDate, rentCost)
         return redirect(url_for('browse'))
 
