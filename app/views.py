@@ -23,13 +23,22 @@ from datetime import timedelta
 import pyqrcode
 from flask_admin.contrib.sqla import ModelView
 from flask_login import login_user, logout_user, current_user, login_required
+
+
+
+class RentedView(ModelView):
+    column_display_pk = True # optional, but I like to see the IDs in the list
+    column_hide_backrefs = False
+    column_list = ('id', 'start_date', 'end_date', 'price', 'bike_id')
+
+
 admin.add_view(ModelView(Users, db.session))
 admin.add_view(ModelView(Bike_Types, db.session))
 admin.add_view(ModelView(Bikes, db.session))
 admin.add_view(ModelView(Shops, db.session))
 admin.add_view(ModelView(Rental_Rates, db.session))
 admin.add_view(ModelView(Orders, db.session))
-admin.add_view(ModelView(Rented_Bikes, db.session))
+admin.add_view(RentedView(Rented_Bikes, db.session))
 admin.add_view(ModelView(Payment_Methods, db.session))
 
 @app.route('/')
@@ -380,12 +389,21 @@ def payForm():
 
 
     if form.validate_on_submit():
+
+        # Save payment method, if selected
         if(form.save.data == True):
             	#pwrd_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
                 date = form.expDate.data.split("/")
                 payment = Payment_Methods(card_number=form.cardNumber.data, cvv=form.cvv.data, expiration_month=date[0], expiration_year=date[1], user_id=current_user.id)
                 db.session.add(payment)
                 db.session.commit()
+        
+        # Save order in database
+        datetimeStart = datetime.datetime.strptime(rentStartDate, '%d/%m/%Y')
+        datetimeEnd = datetime.datetime.strptime(rentEndDate, '%d/%m/%Y')
+        rental = Rented_Bikes(start_date=datetimeStart, end_date=datetimeEnd, bike_id=bikeID, price=rentCost, order_id=1)
+        db.session.add(rental)
+        db.session.commit()
 
         qr(form.email.data, brand, model, bikeID, rentStartDate, rentEndDate, rentCost)
         return redirect(url_for('browse'))
