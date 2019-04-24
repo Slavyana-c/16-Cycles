@@ -6,7 +6,7 @@
 
 QT       += core gui sql
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = 16Cycles
 TEMPLATE = app
@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     removeorder.cpp \
     statisticsbikes.cpp \
     statisticsshops.cpp \
-    piechartwidget.cpp
+    piechartwidget.cpp \
+    qcustomplot.cpp
 
 HEADERS  += mainwindow.h \
     addstaff.h \
@@ -51,7 +52,8 @@ HEADERS  += mainwindow.h \
     removeorder.h \
     statisticsbikes.h \
     statisticsshops.h \
-    piechartwidget.h
+    piechartwidget.h \
+    qcustomplot.h
 
 FORMS    += mainwindow.ui \
     addstaff.ui \

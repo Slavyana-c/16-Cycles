@@ -20,6 +20,10 @@ private slots:
 
     void on_filterTwoDatesRefreshButton_clicked();
 
+    void on_filterTwoDatesShopsComboBox_activated(const QString &arg1);
+
+    void on_filterAllTimeShopsComboBox_activated(const QString &arg1);
+
 private:
     Ui::Profits *ui;
 };

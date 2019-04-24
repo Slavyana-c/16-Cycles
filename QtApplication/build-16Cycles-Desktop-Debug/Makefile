@@ -12,10 +12,10 @@ MAKEFILE      = Makefile
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SQL_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_QML_DEBUG -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SQL_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../16Cycles -I. -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtWidgets -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtSql -isystem /usr/include/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib64/qt5/mkspecs/linux-g++
+INCPATH       = -I../16Cycles -I. -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtPrintSupport -isystem /usr/include/qt5/QtWidgets -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtSql -isystem /usr/include/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib64/qt5/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake-qt5
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -38,7 +38,7 @@ DISTNAME      = 16Cycles1.0.0
 DISTDIR = /home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/build-16Cycles-Desktop-Debug/.tmp/16Cycles1.0.0
 LINK          = g++
 LFLAGS        = 
-LIBS          = $(SUBLIBS) -lQt5Widgets -lQt5Gui -lQt5Sql -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -lQt5PrintSupport -lQt5Widgets -lQt5Gui -lQt5Sql -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -69,7 +69,8 @@ SOURCES       = ../16Cycles/main.cpp \
 		../16Cycles/removeorder.cpp \
 		../16Cycles/statisticsbikes.cpp \
 		../16Cycles/statisticsshops.cpp \
-		../16Cycles/piechartwidget.cpp qrc_resources.cpp \
+		../16Cycles/piechartwidget.cpp \
+		../16Cycles/qcustomplot.cpp qrc_resources.cpp \
 		moc_mainwindow.cpp \
 		moc_addstaff.cpp \
 		moc_adminhome.cpp \
@@ -87,7 +88,8 @@ SOURCES       = ../16Cycles/main.cpp \
 		moc_removeorder.cpp \
 		moc_statisticsbikes.cpp \
 		moc_statisticsshops.cpp \
-		moc_piechartwidget.cpp
+		moc_piechartwidget.cpp \
+		moc_qcustomplot.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		addstaff.o \
@@ -108,6 +110,7 @@ OBJECTS       = main.o \
 		statisticsbikes.o \
 		statisticsshops.o \
 		piechartwidget.o \
+		qcustomplot.o \
 		qrc_resources.o \
 		moc_mainwindow.o \
 		moc_addstaff.o \
@@ -126,7 +129,8 @@ OBJECTS       = main.o \
 		moc_removeorder.o \
 		moc_statisticsbikes.o \
 		moc_statisticsshops.o \
-		moc_piechartwidget.o
+		moc_piechartwidget.o \
+		moc_qcustomplot.o
 DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/common/unix.conf \
 		/usr/lib64/qt5/mkspecs/common/linux.conf \
@@ -219,7 +223,8 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		../16Cycles/removeorder.h \
 		../16Cycles/statisticsbikes.h \
 		../16Cycles/statisticsshops.h \
-		../16Cycles/piechartwidget.h ../16Cycles/main.cpp \
+		../16Cycles/piechartwidget.h \
+		../16Cycles/qcustomplot.h ../16Cycles/main.cpp \
 		../16Cycles/mainwindow.cpp \
 		../16Cycles/addstaff.cpp \
 		../16Cycles/simplecrypt.cpp \
@@ -238,7 +243,8 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		../16Cycles/removeorder.cpp \
 		../16Cycles/statisticsbikes.cpp \
 		../16Cycles/statisticsshops.cpp \
-		../16Cycles/piechartwidget.cpp
+		../16Cycles/piechartwidget.cpp \
+		../16Cycles/qcustomplot.cpp
 QMAKE_TARGET  = 16Cycles
 DESTDIR       = 
 TARGET        = 16Cycles
@@ -326,6 +332,7 @@ Makefile: ../16Cycles/16Cycles.pro /usr/lib64/qt5/mkspecs/linux-g++/qmake.conf /
 		/usr/lib64/qt5/mkspecs/features/lex.prf \
 		../16Cycles/16Cycles.pro \
 		../16Cycles/resources.qrc \
+		/usr/lib64/libQt5PrintSupport.prl \
 		/usr/lib64/libQt5Widgets.prl \
 		/usr/lib64/libQt5Gui.prl \
 		/usr/lib64/libQt5Sql.prl \
@@ -407,6 +414,7 @@ Makefile: ../16Cycles/16Cycles.pro /usr/lib64/qt5/mkspecs/linux-g++/qmake.conf /
 /usr/lib64/qt5/mkspecs/features/lex.prf:
 ../16Cycles/16Cycles.pro:
 ../16Cycles/resources.qrc:
+/usr/lib64/libQt5PrintSupport.prl:
 /usr/lib64/libQt5Widgets.prl:
 /usr/lib64/libQt5Gui.prl:
 /usr/lib64/libQt5Sql.prl:
@@ -427,8 +435,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../16Cycles/resources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../16Cycles/mainwindow.h ../16Cycles/addstaff.h ../16Cycles/simplecrypt.h ../16Cycles/adminhome.h ../16Cycles/updatestaff.h ../16Cycles/removestaff.h ../16Cycles/resetpassword.h ../16Cycles/profits.h ../16Cycles/createorder.h ../16Cycles/home.h ../16Cycles/updatebikes.h ../16Cycles/addbikes.h ../16Cycles/addbiketypes.h ../16Cycles/removebikes.h ../16Cycles/updateorders.h ../16Cycles/removeorder.h ../16Cycles/statisticsbikes.h ../16Cycles/statisticsshops.h ../16Cycles/piechartwidget.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../16Cycles/main.cpp ../16Cycles/mainwindow.cpp ../16Cycles/addstaff.cpp ../16Cycles/simplecrypt.cpp ../16Cycles/adminhome.cpp ../16Cycles/updatestaff.cpp ../16Cycles/removestaff.cpp ../16Cycles/resetpassword.cpp ../16Cycles/profits.cpp ../16Cycles/createorder.cpp ../16Cycles/home.cpp ../16Cycles/updatebikes.cpp ../16Cycles/addbikes.cpp ../16Cycles/addbiketypes.cpp ../16Cycles/removebikes.cpp ../16Cycles/updateorders.cpp ../16Cycles/removeorder.cpp ../16Cycles/statisticsbikes.cpp ../16Cycles/statisticsshops.cpp ../16Cycles/piechartwidget.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../16Cycles/mainwindow.h ../16Cycles/addstaff.h ../16Cycles/simplecrypt.h ../16Cycles/adminhome.h ../16Cycles/updatestaff.h ../16Cycles/removestaff.h ../16Cycles/resetpassword.h ../16Cycles/profits.h ../16Cycles/createorder.h ../16Cycles/home.h ../16Cycles/updatebikes.h ../16Cycles/addbikes.h ../16Cycles/addbiketypes.h ../16Cycles/removebikes.h ../16Cycles/updateorders.h ../16Cycles/removeorder.h ../16Cycles/statisticsbikes.h ../16Cycles/statisticsshops.h ../16Cycles/piechartwidget.h ../16Cycles/qcustomplot.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../16Cycles/main.cpp ../16Cycles/mainwindow.cpp ../16Cycles/addstaff.cpp ../16Cycles/simplecrypt.cpp ../16Cycles/adminhome.cpp ../16Cycles/updatestaff.cpp ../16Cycles/removestaff.cpp ../16Cycles/resetpassword.cpp ../16Cycles/profits.cpp ../16Cycles/createorder.cpp ../16Cycles/home.cpp ../16Cycles/updatebikes.cpp ../16Cycles/addbikes.cpp ../16Cycles/addbiketypes.cpp ../16Cycles/removebikes.cpp ../16Cycles/updateorders.cpp ../16Cycles/removeorder.cpp ../16Cycles/statisticsbikes.cpp ../16Cycles/statisticsshops.cpp ../16Cycles/piechartwidget.cpp ../16Cycles/qcustomplot.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../16Cycles/mainwindow.ui ../16Cycles/addstaff.ui ../16Cycles/adminhome.ui ../16Cycles/updatestaff.ui ../16Cycles/removestaff.ui ../16Cycles/resetpassword.ui ../16Cycles/profits.ui ../16Cycles/createorder.ui ../16Cycles/home.ui ../16Cycles/updatebikes.ui ../16Cycles/addbikes.ui ../16Cycles/addbiketypes.ui ../16Cycles/removebikes.ui ../16Cycles/updateorders.ui ../16Cycles/removeorder.ui ../16Cycles/statisticsbikes.ui ../16Cycles/statisticsshops.ui $(DISTDIR)/
 
 
@@ -458,7 +466,8 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: ../16Cycles/resources.qrc \
 		/usr/lib64/qt5/bin/rcc \
-		../16Cycles/images/app_static_images_logo.png
+		../16Cycles/images/app_static_images_logo.png \
+		../16Cycles/styles/style.qss
 	/usr/lib64/qt5/bin/rcc -name resources ../16Cycles/resources.qrc -o qrc_resources.cpp
 
 compiler_moc_predefs_make_all: moc_predefs.h
@@ -467,101 +476,106 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib64/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h /usr/lib64/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_addstaff.cpp moc_adminhome.cpp moc_updatestaff.cpp moc_removestaff.cpp moc_resetpassword.cpp moc_profits.cpp moc_createorder.cpp moc_home.cpp moc_updatebikes.cpp moc_addbikes.cpp moc_addbiketypes.cpp moc_removebikes.cpp moc_updateorders.cpp moc_removeorder.cpp moc_statisticsbikes.cpp moc_statisticsshops.cpp moc_piechartwidget.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_addstaff.cpp moc_adminhome.cpp moc_updatestaff.cpp moc_removestaff.cpp moc_resetpassword.cpp moc_profits.cpp moc_createorder.cpp moc_home.cpp moc_updatebikes.cpp moc_addbikes.cpp moc_addbiketypes.cpp moc_removebikes.cpp moc_updateorders.cpp moc_removeorder.cpp moc_statisticsbikes.cpp moc_statisticsshops.cpp moc_piechartwidget.cpp moc_qcustomplot.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_addstaff.cpp moc_adminhome.cpp moc_updatestaff.cpp moc_removestaff.cpp moc_resetpassword.cpp moc_profits.cpp moc_createorder.cpp moc_home.cpp moc_updatebikes.cpp moc_addbikes.cpp moc_addbiketypes.cpp moc_removebikes.cpp moc_updateorders.cpp moc_removeorder.cpp moc_statisticsbikes.cpp moc_statisticsshops.cpp moc_piechartwidget.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_addstaff.cpp moc_adminhome.cpp moc_updatestaff.cpp moc_removestaff.cpp moc_resetpassword.cpp moc_profits.cpp moc_createorder.cpp moc_home.cpp moc_updatebikes.cpp moc_addbikes.cpp moc_addbiketypes.cpp moc_removebikes.cpp moc_updateorders.cpp moc_removeorder.cpp moc_statisticsbikes.cpp moc_statisticsshops.cpp moc_piechartwidget.cpp moc_qcustomplot.cpp
 moc_mainwindow.cpp: ../16Cycles/simplecrypt.h \
 		../16Cycles/adminhome.h \
 		../16Cycles/home.h \
 		../16Cycles/mainwindow.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/mainwindow.h -o moc_mainwindow.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/mainwindow.h -o moc_mainwindow.cpp
 
 moc_addstaff.cpp: ../16Cycles/addstaff.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/addstaff.h -o moc_addstaff.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/addstaff.h -o moc_addstaff.cpp
 
 moc_adminhome.cpp: ../16Cycles/adminhome.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/adminhome.h -o moc_adminhome.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/adminhome.h -o moc_adminhome.cpp
 
 moc_updatestaff.cpp: ../16Cycles/updatestaff.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/updatestaff.h -o moc_updatestaff.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/updatestaff.h -o moc_updatestaff.cpp
 
 moc_removestaff.cpp: ../16Cycles/removestaff.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/removestaff.h -o moc_removestaff.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/removestaff.h -o moc_removestaff.cpp
 
 moc_resetpassword.cpp: ../16Cycles/resetpassword.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/resetpassword.h -o moc_resetpassword.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/resetpassword.h -o moc_resetpassword.cpp
 
 moc_profits.cpp: ../16Cycles/profits.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/profits.h -o moc_profits.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/profits.h -o moc_profits.cpp
 
 moc_createorder.cpp: ../16Cycles/createorder.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/createorder.h -o moc_createorder.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/createorder.h -o moc_createorder.cpp
 
 moc_home.cpp: ../16Cycles/home.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/home.h -o moc_home.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/home.h -o moc_home.cpp
 
 moc_updatebikes.cpp: ../16Cycles/updatebikes.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/updatebikes.h -o moc_updatebikes.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/updatebikes.h -o moc_updatebikes.cpp
 
 moc_addbikes.cpp: ../16Cycles/addbikes.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/addbikes.h -o moc_addbikes.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/addbikes.h -o moc_addbikes.cpp
 
 moc_addbiketypes.cpp: ../16Cycles/addbiketypes.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/addbiketypes.h -o moc_addbiketypes.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/addbiketypes.h -o moc_addbiketypes.cpp
 
 moc_removebikes.cpp: ../16Cycles/removebikes.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/removebikes.h -o moc_removebikes.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/removebikes.h -o moc_removebikes.cpp
 
 moc_updateorders.cpp: ../16Cycles/updateorders.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/updateorders.h -o moc_updateorders.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/updateorders.h -o moc_updateorders.cpp
 
 moc_removeorder.cpp: ../16Cycles/removeorder.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/removeorder.h -o moc_removeorder.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/removeorder.h -o moc_removeorder.cpp
 
 moc_statisticsbikes.cpp: ../16Cycles/statisticsbikes.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/statisticsbikes.h -o moc_statisticsbikes.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/statisticsbikes.h -o moc_statisticsbikes.cpp
 
 moc_statisticsshops.cpp: ../16Cycles/statisticsshops.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/statisticsshops.h -o moc_statisticsshops.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/statisticsshops.h -o moc_statisticsshops.cpp
 
 moc_piechartwidget.cpp: ../16Cycles/piechartwidget.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/piechartwidget.h -o moc_piechartwidget.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/piechartwidget.h -o moc_piechartwidget.cpp
+
+moc_qcustomplot.cpp: ../16Cycles/qcustomplot.h \
+		moc_predefs.h \
+		/usr/lib64/qt5/bin/moc
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/cserv1_a/soc_msc/ll16m23c/year2/Project/16-cycles/QtApplication/16Cycles -I/usr/include/qt5 -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include ../16Cycles/qcustomplot.h -o moc_qcustomplot.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -594,7 +608,8 @@ ui_resetpassword.h: ../16Cycles/resetpassword.ui \
 	/usr/lib64/qt5/bin/uic ../16Cycles/resetpassword.ui -o ui_resetpassword.h
 
 ui_profits.h: ../16Cycles/profits.ui \
-		/usr/lib64/qt5/bin/uic
+		/usr/lib64/qt5/bin/uic \
+		../16Cycles/qcustomplot.h
 	/usr/lib64/qt5/bin/uic ../16Cycles/profits.ui -o ui_profits.h
 
 ui_createorder.h: ../16Cycles/createorder.ui \
@@ -673,6 +688,7 @@ simplecrypt.o: ../16Cycles/simplecrypt.cpp ../16Cycles/simplecrypt.h
 
 adminhome.o: ../16Cycles/adminhome.cpp ../16Cycles/adminhome.h \
 		ui_adminhome.h \
+		../16Cycles/piechartwidget.h \
 		../16Cycles/mainwindow.h \
 		../16Cycles/simplecrypt.h \
 		../16Cycles/home.h \
@@ -718,6 +734,7 @@ resetpassword.o: ../16Cycles/resetpassword.cpp ../16Cycles/resetpassword.h \
 
 profits.o: ../16Cycles/profits.cpp ../16Cycles/profits.h \
 		ui_profits.h \
+		../16Cycles/qcustomplot.h \
 		../16Cycles/mainwindow.h \
 		../16Cycles/simplecrypt.h \
 		../16Cycles/adminhome.h \
@@ -784,6 +801,9 @@ statisticsshops.o: ../16Cycles/statisticsshops.cpp ../16Cycles/statisticsshops.h
 piechartwidget.o: ../16Cycles/piechartwidget.cpp ../16Cycles/piechartwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o piechartwidget.o ../16Cycles/piechartwidget.cpp
 
+qcustomplot.o: ../16Cycles/qcustomplot.cpp ../16Cycles/qcustomplot.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qcustomplot.o ../16Cycles/qcustomplot.cpp
+
 qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp
 
@@ -840,6 +860,9 @@ moc_statisticsshops.o: moc_statisticsshops.cpp
 
 moc_piechartwidget.o: moc_piechartwidget.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_piechartwidget.o moc_piechartwidget.cpp
+
+moc_qcustomplot.o: moc_qcustomplot.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_qcustomplot.o moc_qcustomplot.cpp
 
 ####### Install
 
