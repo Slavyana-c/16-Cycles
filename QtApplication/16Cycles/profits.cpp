@@ -15,25 +15,7 @@ Profits::Profits(QWidget *parent) :
         this->close();
         qDebug()<<("Failed open db bikes");
     }
-
-    QSqlQueryModel *modelPrices = new QSqlQueryModel();
     QSqlQuery *queryp = new QSqlQuery(mainWindow.db);
-
-    // Get list of prices of rented bikes
-    queryp-> prepare("SELECT total_price FROM orders");
-    queryp-> exec();
-    queryp-> next();
-    modelPrices-> setQuery(*queryp);
-    ui-> profitsTableView-> setModel(modelPrices);
-    ui-> profitsTableView-> resizeColumnsToContents();
-    ui-> profitsTableView-> resizeRowsToContents();
-
-    // Calculate sum
-    queryp-> prepare("SELECT SUM(total_price) FROM orders");
-    queryp-> exec();
-    queryp-> next();
-    QString profitsSumLabelText = "SUM = " + queryp-> value(0).toString();
-    ui-> profitsSumLabel-> setText(profitsSumLabelText);
 
     // Populate profits shop id combo box
     QSqlQueryModel *modelShops = new QSqlQueryModel();
@@ -41,7 +23,7 @@ Profits::Profits(QWidget *parent) :
     queryp-> exec();
     queryp-> next();
     modelShops-> setQuery(*queryp);
-    ui-> profitsShopComboBox-> setModel(modelShops);
+    ui-> filterTwoDatesShopsComboBox-> setModel(modelShops);
 
     mainWindow.closeConnection();
 }
@@ -56,8 +38,12 @@ void Profits::on_goBackButton_clicked()
     this-> close();
 }
 
-void Profits::on_profitsShopComboBox_activated(const QString &arg1)
+void Profits::on_filterTwoDatesRefreshButton_clicked()
 {
+    QString dateOne,dateTwo;
+    dateOne = ui-> dateOneLineEdit-> text();
+    dateTwo = ui-> dateTwoLineEdit-> text();
+
     // Open DB
     MainWindow mainWindow;
     if(!mainWindow.openConnection())
@@ -66,24 +52,28 @@ void Profits::on_profitsShopComboBox_activated(const QString &arg1)
         qDebug()<<("Failed open db bikes");
     }
 
-    QSqlQueryModel *modelPrices = new QSqlQueryModel();
-    QSqlQuery *queryp = new QSqlQuery(mainWindow.db);
+    QSqlQuery query;
+    query.prepare("SELECT SUM(o.total_price) FROM orders o WHERE date between '" + dateOne + " 00:00:00' AND '" + dateTwo + " 00:00:00'");
 
-    // Get list of prices of rented bikes for the shop
-    queryp-> prepare("SELECT o.total_price FROM orders o INNER JOIN rented_bikes rb ON o.id = rb.order_id INNER JOIN bikes b ON rb.bike_id = b.id WHERE b.shop_id = '" + arg1 + "'");
-    queryp-> exec();
-    queryp-> next();
-    modelPrices-> setQuery(*queryp);
-    ui-> profitsTableView-> setModel(modelPrices);
-    ui-> profitsTableView-> resizeColumnsToContents();
-    ui-> profitsTableView-> resizeRowsToContents();
+    // Execute query
+    if(!query.exec())
+    {
+        QMessageBox::critical(this,"16CyclesProfits","Failed to run query. Enter dates in format 0000-00-00 (year-month-day)");
+    }
 
-    // Calculate sum
-    queryp-> prepare("SELECT SUM(o.total_price) FROM orders o INNER JOIN rented_bikes rb ON o.id = rb.order_id INNER JOIN bikes b ON rb.bike_id = b.id WHERE b.shop_id = '" + arg1 + "'");
-    queryp-> exec();
-    queryp-> next();
-    QString profitsSumLabelText = "SUM = " + queryp-> value(0).toString();
-    ui-> profitsSumLabel-> setText(profitsSumLabelText);
+    // If query returned a value
+    if(query.next())
+    {
+        QString profit = "£";
+        profit += query.value(0).toString();
+        ui-> FilterTwoDatesProfitsLabel-> setText(profit);
+    }
+
+    else
+    {
+        ui-> FilterTwoDatesProfitsLabel-> setText("£0.00");
+    }
+
 
     mainWindow.closeConnection();
 }

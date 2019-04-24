@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>961</width>
-    <height>699</height>
+    <height>481</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>10</y>
+     <y>20</y>
      <width>921</width>
-     <height>681</height>
+     <height>331</height>
     </rect>
    </property>
    <property name="title">
@@ -28,8 +28,8 @@
    <widget class="QPushButton" name="goBackButton">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>260</y>
+      <x>10</x>
+      <y>220</y>
       <width>92</width>
       <height>36</height>
      </rect>
@@ -38,49 +38,166 @@
      <string>Go Back</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QGroupBox" name="filterTwoDatesGroupBox">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>10</y>
-      <width>681</width>
-      <height>220</height>
+      <x>0</x>
+      <y>110</y>
+      <width>921</width>
+      <height>111</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QTableView" name="profitsTableView"/>
-     </item>
-     <item>
-      <widget class="QLabel" name="profitsSumLabel">
-       <property name="text">
-        <string>Sum : </string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <property name="title">
+     <string>Filter By Two Dates</string>
+    </property>
+    <widget class="QGroupBox" name="filterTwoDatesProfitsAllShopsGroupBox">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>20</y>
+       <width>181</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Total Profits All shops</string>
+     </property>
+     <widget class="QLabel" name="FilterTwoDatesProfitsLabel">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>91</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="text">
+       <string>£0.00</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="filterTwoDatesShopsGroupBox">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>20</y>
+       <width>361</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Total Profits Per Shop</string>
+     </property>
+     <widget class="QWidget" name="">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>30</y>
+        <width>331</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLabel" name="filterTwoDatesShopsLabel">
+           <property name="text">
+            <string>Current Shop</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="filterTwoDatesShopsComboBox"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="FilterTwoDatesProfitsShopsLabel">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="text">
+          <string>£0.00</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QPushButton" name="filterTwoDatesRefreshButton">
+     <property name="geometry">
+      <rect>
+       <x>800</x>
+       <y>60</y>
+       <width>88</width>
+       <height>36</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Refresh</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>208</width>
+       <height>39</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="dateOneLabel">
+        <property name="text">
+         <string>Date One</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="dateOneLineEdit"/>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>208</width>
+       <height>39</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLabel" name="dateTwoLabel">
+        <property name="text">
+         <string>Date One</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="dateTwoLineEdit"/>
+      </item>
+     </layout>
+    </widget>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>0</x>
       <y>30</y>
-      <width>222</width>
-      <height>38</height>
+      <width>901</width>
+      <height>41</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="profitsFilterShop">
-       <property name="text">
-        <string>Filter By Shop ID</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="profitsShopComboBox"/>
-     </item>
-    </layout>
+    <property name="title">
+     <string>Filter All time By Shop</string>
+    </property>
    </widget>
   </widget>
  </widget>

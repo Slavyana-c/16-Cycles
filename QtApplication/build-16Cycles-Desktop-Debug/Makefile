@@ -673,7 +673,6 @@ simplecrypt.o: ../16Cycles/simplecrypt.cpp ../16Cycles/simplecrypt.h
 
 adminhome.o: ../16Cycles/adminhome.cpp ../16Cycles/adminhome.h \
 		ui_adminhome.h \
-		../16Cycles/piechartwidget.h \
 		../16Cycles/mainwindow.h \
 		../16Cycles/simplecrypt.h \
 		../16Cycles/home.h \

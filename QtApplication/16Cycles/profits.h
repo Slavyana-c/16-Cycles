@@ -18,7 +18,7 @@ public:
 private slots:
     void on_goBackButton_clicked();
 
-    void on_profitsShopComboBox_activated(const QString &arg1);
+    void on_filterTwoDatesRefreshButton_clicked();
 
 private:
     Ui::Profits *ui;
