@@ -24,8 +24,11 @@ private slots:
 
     void on_filterAllTimeShopsComboBox_activated(const QString &arg1);
 
+    void on_graphsRefreshButton_clicked();
+
 private:
     Ui::Profits *ui;
+    QVector<double> x,y;
 };
 
 #endif // PROFITS_H
