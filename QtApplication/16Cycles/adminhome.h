@@ -30,29 +30,7 @@ private slots:
 
     void on_resetPasswordButton_clicked();
 
-    void on_bikesViewButton_clicked();
-
-    void on_ordersViewButton_clicked();
-
     void on_statisticsProfitsButton_clicked();
-
-    void on_bikesUpdateButton_clicked();
-
-    void on_bikesAddBikeButton_clicked();
-
-    void on_bikesAddTypeButton_clicked();
-
-    void on_BikesRemoveButton_clicked();
-
-    void on_ordersUpdateButton_clicked();
-
-    void on_ordersCreateButton_clicked();
-
-    void on_ordersRemoveButton_clicked();
-
-    void on_statisticsBikesButton_clicked();
-
-    void on_statisticsShopsButton_clicked();
 
 private:
     Ui::AdminHome *ui;

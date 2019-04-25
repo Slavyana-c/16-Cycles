@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1575</width>
-    <height>579</height>
+    <width>924</width>
+    <height>505</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,8 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>1541</width>
-     <height>561</height>
+     <width>251</width>
+     <height>291</height>
     </rect>
    </property>
    <property name="font">
@@ -30,38 +30,28 @@
    <property name="title">
     <string>Welcome</string>
    </property>
-   <widget class="QTableView" name="tableView">
+   <widget class="QGroupBox" name="statistsicsGroupBox">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>50</y>
-      <width>991</width>
-      <height>441</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QGroupBox" name="groupBox">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>230</y>
-      <width>461</width>
+      <x>10</x>
+      <y>160</y>
+      <width>221</width>
       <height>71</height>
      </rect>
     </property>
     <property name="title">
      <string>Statistics</string>
     </property>
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QWidget" name="">
      <property name="geometry">
       <rect>
-       <x>1</x>
+       <x>21</x>
        <y>21</y>
-       <width>287</width>
+       <width>184</width>
        <height>39</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
        <widget class="QPushButton" name="statisticsProfitsButton">
         <property name="text">
@@ -70,16 +60,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="statisticsBikesButton">
+       <widget class="QPushButton" name="statisticsHiresButton">
         <property name="text">
-         <string>Bikes</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="statisticsShopsButton">
-        <property name="text">
-         <string>Shops</string>
+         <string>Hires</string>
         </property>
        </widget>
       </item>
@@ -89,165 +72,60 @@
    <widget class="QGroupBox" name="staffGroupBox">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>30</y>
-      <width>479</width>
-      <height>71</height>
+      <width>221</width>
+      <height>121</height>
      </rect>
     </property>
     <property name="title">
      <string>Staff</string>
     </property>
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QWidget" name="">
      <property name="geometry">
       <rect>
-       <x>1</x>
+       <x>20</x>
        <y>21</y>
-       <width>372</width>
-       <height>39</height>
+       <width>186</width>
+       <height>86</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QPushButton" name="staffUpdateButton">
-        <property name="text">
-         <string>Update</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="staffAddButton">
+          <property name="text">
+           <string>Add</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="staffRemoveButton">
+          <property name="text">
+           <string>Remove</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
-       <widget class="QPushButton" name="staffAddButton">
-        <property name="text">
-         <string>Add</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="staffRemoveButton">
-        <property name="text">
-         <string>Remove</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="staffViewButton">
-        <property name="text">
-         <string>View</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="bikesGroupBox">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>100</y>
-      <width>479</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Bikes</string>
-    </property>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>1</x>
-       <y>20</y>
-       <width>466</width>
-       <height>39</height>
-      </rect>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QPushButton" name="bikesUpdateButton">
-        <property name="text">
-         <string>Update</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="bikesAddBikeButton">
-        <property name="text">
-         <string>Add Bike</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="bikesAddTypeButton">
-        <property name="text">
-         <string>Add Type</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="BikesRemoveButton">
-        <property name="text">
-         <string>Remove</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="bikesViewButton">
-        <property name="text">
-         <string>View</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="ordersGroupBox">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>160</y>
-      <width>479</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Orders</string>
-    </property>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>1</x>
-       <y>21</y>
-       <width>372</width>
-       <height>39</height>
-      </rect>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QPushButton" name="ordersUpdateButton">
-        <property name="text">
-         <string>Update</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="ordersCreateButton">
-        <property name="text">
-         <string>Create</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="ordersRemoveButton">
-        <property name="text">
-         <string>Remove</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="ordersViewButton">
-        <property name="text">
-         <string>View</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QPushButton" name="staffUpdateButton">
+          <property name="text">
+           <string>Update</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="staffViewButton">
+          <property name="text">
+           <string>View</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -255,8 +133,8 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>1</x>
-      <y>401</y>
+      <x>10</x>
+      <y>240</y>
       <width>223</width>
       <height>39</height>
      </rect>
@@ -278,16 +156,26 @@
      </item>
     </layout>
    </widget>
-   <widget class="PieChartWidget" name="widget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>310</y>
-      <width>141</width>
-      <height>161</height>
-     </rect>
-    </property>
-   </widget>
+  </widget>
+  <widget class="PieChartWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>280</y>
+     <width>141</width>
+     <height>161</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QTableView" name="tableView">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>20</y>
+     <width>471</width>
+     <height>241</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <customwidgets>

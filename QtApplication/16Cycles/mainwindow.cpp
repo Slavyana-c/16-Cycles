@@ -73,7 +73,7 @@ void MainWindow::on_signInButton_clicked()
 
     // Prepare query to find username and password in database
     QSqlQuery query;
-    query.prepare("SELECT password,name,admin FROM staff WHERE email = '" + email + "'");
+    query.prepare("SELECT password,name FROM staff WHERE email = '" + email + "'");
 
     // Execute query
     query.exec();
@@ -104,50 +104,23 @@ void MainWindow::on_signInButton_clicked()
             lineEdit->clear();
         }
 
-        // Check for admin rights
-        if(query.value(2).toInt() == 1)
-        {
-            // Create new window
-            AdminHome adminHome;
-            adminHome.setModal(true);
-            adminHome.setGroupBoxName(query.value(1).toString());
-            adminHome.setUserEmail(email);
-            QDesktopWidget desktop;
-            QRect mainScreenSize = desktop.availableGeometry(desktop.primaryScreen());
-            adminHome.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
+        // Create new window
+        AdminHome adminHome;
+        adminHome.setModal(true);
+        adminHome.setGroupBoxName(query.value(1).toString());
+        adminHome.setUserEmail(email);
+        QDesktopWidget desktop;
+        QRect mainScreenSize = desktop.availableGeometry(desktop.primaryScreen());
+        adminHome.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
 
-            // Remove title bar
-            adminHome.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+        // Remove title bar
+        adminHome.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 
-            // Set window title
-            adminHome.setWindowTitle("16CyclesAdminHome");
+        // Set window title
+        adminHome.setWindowTitle("16CyclesAdminHome");
 
-            // Show window
-            adminHome.exec();
-        }
-
-        // Not an admin
-        else
-        {
-            // Create new window
-            Home home;
-            home.setModal(true);
-            home.setGroupBoxName(query.value(1).toString());
-            home.setUserEmail(email);
-            QDesktopWidget desktop;
-            QRect mainScreenSize = desktop.availableGeometry(desktop.primaryScreen());
-            home.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
-
-            // Remove title bar
-            home.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-
-            // Set window title
-            home.setWindowTitle("16CyclesHome");
-
-            // Show window
-            home.exec();
-        }
-
+        // Show window
+        adminHome.exec();
 
     }
 

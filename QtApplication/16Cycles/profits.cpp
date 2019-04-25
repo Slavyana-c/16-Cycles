@@ -26,33 +26,62 @@ Profits::Profits(QWidget *parent) :
     ui-> filterTwoDatesShopsComboBox-> setModel(modelShops);
     ui-> filterAllTimeShopsComboBox-> setModel(modelShops);
 
+    // Add four graphs to the plot, one for all shops then one for each shop
     ui-> plot-> addGraph();
     ui-> plot-> addGraph();
     ui-> plot-> addGraph();
     ui-> plot-> addGraph();
 
+    // Set the names
     ui-> plot-> graph(0)-> setName("All Shops");
     ui-> plot-> graph(1)-> setName("Shop 1");
     ui-> plot-> graph(2)-> setName("Shop 2");
     ui-> plot-> graph(3)-> setName("Shop 3");
 
+    // Set styles of all graphs
     ui-> plot-> graph(0)-> setLineStyle(QCPGraph::lsLine);
-//    ui-> plot-> graph(0)-> setPen(QPen(Qt::magenta));
-//    ui-> plot-> graph(0)-> setBrush(QBrush(Qt::darkMagenta));
+    ui-> plot-> graph(0)-> setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross));
+    ui-> plot-> graph(1)-> setLineStyle(QCPGraph::lsLine);
+    ui-> plot-> graph(1)-> setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross));
+    ui-> plot-> graph(2)-> setLineStyle(QCPGraph::lsLine);
+    ui-> plot-> graph(2)-> setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross));
+    ui-> plot-> graph(3)-> setLineStyle(QCPGraph::lsLine);
+    ui-> plot-> graph(3)-> setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross));
 
+    QPen pen0,pen1,pen2,pen3;
+    pen0 = ui-> plot-> graph(0)-> pen();
+    pen0.setWidth(1.5);
+    pen0.setColor(QColor(255,0,0)); //red
+    ui-> plot-> graph(0)-> setPen(pen0);
+    pen1 = ui-> plot-> graph(1)-> pen();
+    pen1.setWidth(1.5);
+    pen1.setColor(QColor(0,131,0)); //green
+    ui-> plot-> graph(1)-> setPen(pen1);
+    pen2 = ui-> plot-> graph(2)-> pen();
+    pen2.setWidth(1.5);
+    pen2.setColor(QColor(0,0,255)); //blue
+    ui-> plot-> graph(2)-> setPen(pen2);
+    pen3 = ui-> plot-> graph(3)-> pen();
+    pen3.setWidth(1.5);
+    pen3.setColor(QColor(158,0,237)); //purple
+    ui-> plot-> graph(3)-> setPen(pen3);
+
+    // Set x axis to display dates
     QSharedPointer<QCPAxisTickerDateTime> dateTicker(new QCPAxisTickerDateTime);
     dateTicker->setDateTimeFormat("yyyy/MM/dd");
     ui-> plot-> xAxis-> setTicker(dateTicker);
+
+    // Not sure if needed
     ui-> plot-> graph(0)-> rescaleAxes(true);
+    ui-> plot-> graph(1)-> rescaleAxes(true);
+    ui-> plot-> graph(2)-> rescaleAxes(true);
+    ui-> plot-> graph(3)-> rescaleAxes(true);
 
-    ui-> plot-> graph(0)-> setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross));
-
+    // Style the plot
     ui-> plot-> xAxis-> setTickLabelFont(QFont(QFont().family(),10));
     ui-> plot-> yAxis-> setTickLabelFont(QFont(QFont().family(),10));
-
     ui-> plot-> xAxis-> setLabel("Date");
     ui-> plot-> yAxis-> setLabel("profit");
-
     ui-> plot-> legend-> setVisible(true);
     ui-> plot-> legend-> setBrush(QColor(255,255,255,150));
 
@@ -206,53 +235,54 @@ void Profits::on_filterAllTimeShopsComboBox_activated(const QString &arg1)
 
 void Profits::on_graphsRefreshButton_clicked()
 {
-
-    while(!x.isEmpty())
+    // Clear existing data
+    while(!x0.isEmpty())
     {
-        x.remove(0);
+        x0.remove(0);
     }
-    while(!y.isEmpty())
+    while(!y0.isEmpty())
     {
-        y.remove(0);
+        y0.remove(0);
     }
-    ui->label->setText("started");
+    while(!x1.isEmpty())
+    {
+        x1.remove(0);
+    }
+    while(!y1.isEmpty())
+    {
+        y1.remove(0);
+    }
+    while(!x2.isEmpty())
+    {
+        x2.remove(0);
+    }
+    while(!y2.isEmpty())
+    {
+        y2.remove(0);
+    }
+    while(!x3.isEmpty())
+    {
+        x3.remove(0);
+    }
+    while(!y3.isEmpty())
+    {
+        y3.remove(0);
+    }
 
-//    QSharedPointer<QCPAxisTickerDateTime> dateTicker(new QCPAxisTickerDateTime);
-//    dateTicker->setDateTimeFormat("yyyy/MM/dd");
-//    ui-> plot-> xAxis-> setTicker(dateTicker);
-
-//    ui-> plot-> graph(0)-> setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross));
-
-//    ui-> plot-> xAxis-> setRange(x.first()-24*60*60,x.last(tring(startDate,"yyyy/MM/dd");)+24*60*60);
-//    ui-> plot-> yAxis-> setRange(0,10);
-
-
-
-
-
-//    ui-> plot-> legend-> setVisible(true);
-//    ui-> plot-> legend-> setBrush(QColor(255,255,255,150));
-
-    ui->label->setText("added graph");
-
+    // Get the dates entered
     QString startDate, endDate;
     startDate = ui-> startDateLineEdit-> text();
     endDate = ui-> endDateLineEdit-> text();
-
-    ui->label->setText("got dates as " + startDate + endDate);
 
     if(startDate.length() < 0 || endDate.length() < 0)
     {
         return;
     }
 
+    // Convert entered dates to a datetime variable
     QDateTime time1,time2;
     time1 = QDateTime::fromString(startDate,"yyyy-MM-dd");
     time2 = QDateTime::fromString(endDate,"yyyy-MM-dd");
-
-
-
-    ui->label->setText(time1.toString("yyyy/MM/dd") + time2.toString("yyyy/MM/dd"));
 
     // Open DB
     MainWindow mainWindow;
@@ -264,37 +294,99 @@ void Profits::on_graphsRefreshButton_clicked()
 
     QSqlQuery query;
 
-    for(double j = time1.toTime_t(); j + 7*24*60*60 < time2.toTime_t(); j = j + 7*24*60*60)
+    // Check radio boxes for which graphs to plot
+    if(ui-> allShopsCheckBox-> isChecked())
     {
-        QDateTime firstDate,secondDate;
-        firstDate.setTime_t(int(j));
-        secondDate.setTime_t(int((j + 7*24*60*60) - 1));
-        QString firstDateAsString = firstDate.toString("yyyy-MM-dd");
-        QString secondDateAsString = secondDate.toString("yyyy-MM-dd");
-        ui->label->setText(secondDateAsString);
+        // Loop through dates weekly until the week is not complete from start date
+        for(double j = time1.toTime_t(); j < time2.toTime_t(); j = j + 7*24*60*60)
+        {
+            // Create dates for query
+            QDateTime firstDate,secondDate;
+            firstDate.setTime_t(int(j));
+            secondDate.setTime_t(int((j + 7*24*60*60) - 1));
+            QString firstDateAsString = firstDate.toString("yyyy-MM-dd");
+            QString secondDateAsString = secondDate.toString("yyyy-MM-dd");
 
-        query.prepare("SELECT SUM(o.total_price) FROM orders o WHERE date BETWEEN '" + firstDateAsString + " 00:00:00' AND '" + secondDateAsString + " 00:00:00'");
-        query.exec();
-        query.next();
-        x.append(j);
-        y.append(query.value(0).toDouble());
+            // Execute query to get earnings for the week
+            query.prepare("SELECT SUM(o.total_price) FROM orders o WHERE date BETWEEN '" + firstDateAsString + " 00:00:00' AND '" + secondDateAsString + " 00:00:00'");
+            query.exec();
+            query.next();
+            x0.append(j);
+            y0.append(query.value(0).toDouble());
+        }
     }
 
-    QString t1string = QString::number(time1.toTime_t());
-    QString t2string = QString::number(time2.toTime_t());
+    if(ui-> shop1CheckBox-> isChecked())
+    {
+        // Loop through dates weekly until the week is not complete from start date
+        for(double j = time1.toTime_t(); j < time2.toTime_t(); j = j + 7*24*60*60)
+        {
+            // Create dates for query
+            QDateTime firstDate,secondDate;
+            firstDate.setTime_t(int(j));
+            secondDate.setTime_t(int((j + 7*24*60*60) - 1));
+            QString firstDateAsString = firstDate.toString("yyyy-MM-dd");
+            QString secondDateAsString = secondDate.toString("yyyy-MM-dd");
 
-    //ui->label->setText("yes " + t1string + " " + t2string);
+            // Execute query to get earnings for the week
+            query.prepare("SELECT SUM(o.total_price) FROM orders o INNER JOIN rented_bikes rb ON o.id = rb.id INNER JOIN bikes b ON rb.bike_id = b.id WHERE b.shop_id = '1' AND date BETWEEN '" + firstDateAsString + " 00:00:00' AND '" + secondDateAsString + " 00:00:00'");
+            query.exec();
+            query.next();
+            x1.append(j);
+            y1.append(query.value(0).toDouble());
+        }
+    }
 
-    ui-> plot-> graph(0)-> setData(x,y);
-//    ui-> plot-> xAxis-> setRange(x.first()-24*60*60,x.last()+24*60*60);
-//    ui-> plot-> yAxis-> setRange(0,y.last());
+    if(ui-> shop2CheckBox-> isChecked())
+    {
+        // Loop through dates weekly until the week is not complete from start date
+        for(double j = time1.toTime_t(); j < time2.toTime_t(); j = j + 7*24*60*60)
+        {
+            // Create dates for query
+            QDateTime firstDate,secondDate;
+            firstDate.setTime_t(int(j));
+            secondDate.setTime_t(int((j + 7*24*60*60) - 1));
+            QString firstDateAsString = firstDate.toString("yyyy-MM-dd");
+            QString secondDateAsString = secondDate.toString("yyyy-MM-dd");
+
+            // Execute query to get earnings for the week
+            query.prepare("SELECT SUM(o.total_price) FROM orders o INNER JOIN rented_bikes rb ON o.id = rb.id INNER JOIN bikes b ON rb.bike_id = b.id WHERE b.shop_id = '2' AND date BETWEEN '" + firstDateAsString + " 00:00:00' AND '" + secondDateAsString + " 00:00:00'");
+            query.exec();
+            query.next();
+            x2.append(j);
+            y2.append(query.value(0).toDouble());
+        }
+    }
+
+    if(ui-> shop3CheckBox-> isChecked())
+    {
+        // Loop through dates weekly until the week is not complete from start date
+        for(double j = time1.toTime_t(); j < time2.toTime_t(); j = j + 7*24*60*60)
+        {
+            // Create dates for query
+            QDateTime firstDate,secondDate;
+            firstDate.setTime_t(int(j));
+            secondDate.setTime_t(int((j + 7*24*60*60) - 1));
+            QString firstDateAsString = firstDate.toString("yyyy-MM-dd");
+            QString secondDateAsString = secondDate.toString("yyyy-MM-dd");
+
+            // Execute query to get earnings for the week
+            query.prepare("SELECT SUM(o.total_price) FROM orders o INNER JOIN rented_bikes rb ON o.id = rb.id INNER JOIN bikes b ON rb.bike_id = b.id WHERE b.shop_id = '3' AND date BETWEEN '" + firstDateAsString + " 00:00:00' AND '" + secondDateAsString + " 00:00:00'");
+            query.exec();
+            query.next();
+            x3.append(j);
+            y3.append(query.value(0).toDouble());
+        }
+    }
+
+    // Replot data
+    ui-> plot-> graph(0)-> setData(x0,y0);
+    ui-> plot-> graph(1)-> setData(x1,y1);
+    ui-> plot-> graph(2)-> setData(x2,y2);
+    ui-> plot-> graph(3)-> setData(x3,y3);
     ui-> plot-> rescaleAxes(true);
     ui-> plot-> replot();
     ui-> plot-> update();
-
-
-
-
 
     mainWindow.closeConnection();
 }

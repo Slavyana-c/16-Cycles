@@ -28,7 +28,7 @@ private slots:
 
 private:
     Ui::Profits *ui;
-    QVector<double> x,y;
+    QVector<double> x0,x1,x2,x3,y0,y1,y2,y3;
 };
 
 #endif // PROFITS_H

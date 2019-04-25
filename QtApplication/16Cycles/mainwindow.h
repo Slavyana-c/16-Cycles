@@ -3,7 +3,6 @@
 
 #include "simplecrypt.h"
 #include "adminhome.h"
-#include "home.h"
 #include <QMainWindow>
 #include <QDesktopWidget>
 #include <QRect>
