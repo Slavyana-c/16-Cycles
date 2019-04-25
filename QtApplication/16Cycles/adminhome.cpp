@@ -6,6 +6,7 @@
 #include "removestaff.h"
 #include "updatestaff.h"
 #include "profits.h"
+#include "hires.h"
 
 AdminHome::AdminHome(QWidget *parent) :
     QDialog(parent),
@@ -57,7 +58,7 @@ void AdminHome::on_staffViewButton_clicked()
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery *query = new QSqlQuery(mainWindow.db);
 
-    query-> prepare("SELECT * FROM staff");
+    query-> prepare("SELECT id,email,contact_number,name,address,admin,shop_id FROM staff");
     query-> exec();
     if(!query-> next())
     {
@@ -174,4 +175,21 @@ void AdminHome::on_statisticsProfitsButton_clicked()
 
     // Show window
     profitsPage.exec();
+}
+
+void AdminHome::on_statisticsHiresButton_clicked()
+{
+    Hires hiresPage;
+    QDesktopWidget desktop;
+    QRect mainScreenSize = desktop.availableGeometry(desktop.primaryScreen());
+    hiresPage.setFixedSize(mainScreenSize.width(),mainScreenSize.height());
+
+    // Remove title bar
+    hiresPage.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+
+    // Set window title
+    hiresPage.setWindowTitle("16CyclesHires");
+
+    // Show window
+    hiresPage.exec();
 }

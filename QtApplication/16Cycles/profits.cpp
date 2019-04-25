@@ -82,6 +82,11 @@ Profits::Profits(QWidget *parent) :
     ui-> plot-> yAxis-> setTickLabelFont(QFont(QFont().family(),10));
     ui-> plot-> xAxis-> setLabel("Date");
     ui-> plot-> yAxis-> setLabel("profit");
+    ui-> plot-> xAxis-> grid()-> setVisible(true);
+    ui-> plot-> xAxis-> grid()-> setPen(QPen(QColor(130,130,130),0,Qt::DotLine));
+    ui-> plot-> yAxis-> grid()-> setSubGridVisible(true);
+    ui-> plot-> yAxis-> grid()-> setPen(QPen(QColor(130,130,130),0,Qt::SolidLine));
+    ui-> plot-> yAxis-> grid()-> setSubGridPen(QPen(QColor(130,130,130),0,Qt::DotLine));
     ui-> plot-> legend-> setVisible(true);
     ui-> plot-> legend-> setBrush(QColor(255,255,255,150));
 

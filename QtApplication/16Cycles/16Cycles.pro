@@ -21,7 +21,6 @@ SOURCES += main.cpp\
     removestaff.cpp \
     resetpassword.cpp \
     profits.cpp \
-    piechartwidget.cpp \
     qcustomplot.cpp \
     hires.cpp
 
@@ -33,7 +32,6 @@ HEADERS  += mainwindow.h \
     removestaff.h \
     resetpassword.h \
     profits.h \
-    piechartwidget.h \
     qcustomplot.h \
     hires.h
 

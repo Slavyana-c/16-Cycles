@@ -7,179 +7,144 @@
     <x>0</x>
     <y>0</y>
     <width>1017</width>
-    <height>597</height>
+    <height>1163</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QGroupBox" name="home">
+   <widget class="QLabel" name="logo">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>981</width>
-      <height>561</height>
+      <width>201</width>
+      <height>231</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>10</y>
+      <width>381</width>
+      <height>231</height>
      </rect>
     </property>
     <property name="title">
-     <string/>
+     <string>Sign In</string>
     </property>
-    <widget class="QGroupBox" name="singIn">
+    <widget class="QPushButton" name="quitButton">
      <property name="geometry">
       <rect>
-       <x>290</x>
+       <x>22</x>
        <y>110</y>
-       <width>701</width>
-       <height>351</height>
+       <width>88</width>
+       <height>36</height>
       </rect>
      </property>
-     <property name="title">
-      <string/>
-     </property>
-     <widget class="QLabel" name="usernameLabel">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>112</y>
-        <width>141</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>24</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Username</string>
-      </property>
-      <property name="textFormat">
-       <enum>Qt::AutoText</enum>
-      </property>
-      <property name="scaledContents">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="passwordLabel">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>180</y>
-        <width>141</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>24</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Password</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="passwordLineEdit">
-      <property name="geometry">
-       <rect>
-        <x>200</x>
-        <y>170</y>
-        <width>471</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>24</pointsize>
-       </font>
-      </property>
-      <property name="echoMode">
-       <enum>QLineEdit::Password</enum>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>50</y>
-        <width>121</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>24</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Sign In</string>
-      </property>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>390</x>
-        <y>240</y>
-        <width>281</width>
-        <height>59</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <item>
-        <widget class="QPushButton" name="quitButton">
-         <property name="font">
-          <font>
-           <pointsize>24</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Quit</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="signInButton">
-         <property name="font">
-          <font>
-           <pointsize>24</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Log In</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QLineEdit" name="usernameLineEdit">
-      <property name="geometry">
-       <rect>
-        <x>200</x>
-        <y>106</y>
-        <width>471</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>24</pointsize>
-       </font>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QLabel" name="logo">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>160</y>
-       <width>201</width>
-       <height>231</height>
-      </rect>
+     <property name="font">
+      <font>
+       <pointsize>11</pointsize>
+      </font>
      </property>
      <property name="text">
-      <string/>
+      <string>Quit</string>
      </property>
+    </widget>
+    <widget class="QPushButton" name="signInButton">
+     <property name="geometry">
+      <rect>
+       <x>116</x>
+       <y>110</y>
+       <width>88</width>
+       <height>36</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Log In</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>22</x>
+       <y>22</y>
+       <width>213</width>
+       <height>84</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="usernameLabel">
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Username</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::AutoText</enum>
+          </property>
+          <property name="scaledContents">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="usernameLineEdit">
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="passwordLabel">
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Password</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="passwordLineEdit">
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="echoMode">
+           <enum>QLineEdit::Password</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
    </widget>
   </widget>

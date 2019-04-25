@@ -16,15 +16,15 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>10</x>
      <y>10</y>
-     <width>931</width>
-     <height>821</height>
+     <width>631</width>
+     <height>421</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>24</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="title">
@@ -33,202 +33,252 @@
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>1</x>
-      <y>131</y>
-      <width>929</width>
-      <height>411</height>
+      <x>10</x>
+      <y>70</y>
+      <width>611</width>
+      <height>161</height>
      </rect>
     </property>
     <property name="title">
      <string>Current Details</string>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QLabel" name="currentNameLabel">
      <property name="geometry">
       <rect>
-       <x>11</x>
-       <y>51</y>
-       <width>881</width>
-       <height>325</height>
+       <x>12</x>
+       <y>40</y>
+       <width>601</width>
+       <height>20</height>
       </rect>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QLabel" name="currentIDLabel">
-        <property name="text">
-         <string>ID :</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="currentNameLabel">
-        <property name="text">
-         <string>Name : </string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="currentEmailLabel">
-        <property name="text">
-         <string>Email :</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="currentContactNumberLabel">
-        <property name="text">
-         <string>Contact Number :</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="currentAddressLabel">
-        <property name="text">
-         <string>Address :</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="currentShopLabel">
-        <property name="text">
-         <string>Shop :</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="currentAdminRightsLabel">
-        <property name="text">
-         <string>Admin Rights : </string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <property name="text">
+      <string>Name : </string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="currentEmailLabel">
+     <property name="geometry">
+      <rect>
+       <x>12</x>
+       <y>60</y>
+       <width>601</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Email :</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="currentContactNumberLabel">
+     <property name="geometry">
+      <rect>
+       <x>12</x>
+       <y>80</y>
+       <width>601</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Contact Number :</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="currentAddressLabel">
+     <property name="geometry">
+      <rect>
+       <x>12</x>
+       <y>100</y>
+       <width>601</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Address :</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="currentShopLabel">
+     <property name="geometry">
+      <rect>
+       <x>12</x>
+       <y>120</y>
+       <width>601</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Shop :</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="currentAdminRightsLabel">
+     <property name="geometry">
+      <rect>
+       <x>12</x>
+       <y>140</y>
+       <width>601</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Admin Rights : </string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="currentIDLabel">
+     <property name="geometry">
+      <rect>
+       <x>12</x>
+       <y>20</y>
+       <width>601</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>ID :</string>
+     </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
      <rect>
-      <x>2</x>
-      <y>521</y>
-      <width>889</width>
-      <height>121</height>
+      <x>10</x>
+      <y>240</y>
+      <width>611</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="title">
      <string>Update Personal Details</string>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QLineEdit" name="updatePersonalDetailsLineEdit">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>50</y>
-       <width>645</width>
-       <height>59</height>
+       <x>20</x>
+       <y>20</y>
+       <width>137</width>
+       <height>36</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QLineEdit" name="updatePersonalDetailsLineEdit"/>
-      </item>
-      <item>
-       <widget class="QComboBox" name="personalDetailsComboBox">
-        <item>
-         <property name="text">
-          <string>Name</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Email</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Contact Number</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Address</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="updatePersonalDetailsButton">
-        <property name="text">
-         <string>Update</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+    </widget>
+    <widget class="QComboBox" name="personalDetailsComboBox">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>20</y>
+       <width>171</width>
+       <height>36</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>Name</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Email</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Contact Number</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Address</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QPushButton" name="updatePersonalDetailsButton">
+     <property name="geometry">
+      <rect>
+       <x>340</x>
+       <y>20</y>
+       <width>88</width>
+       <height>36</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Update</string>
+     </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_5">
     <property name="geometry">
      <rect>
-      <x>2</x>
-      <y>640</y>
-      <width>889</width>
-      <height>111</height>
+      <x>10</x>
+      <y>310</y>
+      <width>611</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="title">
      <string>Update Admin</string>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QComboBox" name="updateAdminComboBox">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>40</y>
-       <width>248</width>
-       <height>59</height>
+       <x>20</x>
+       <y>20</y>
+       <width>77</width>
+       <height>36</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QComboBox" name="updateAdminComboBox">
-        <item>
-         <property name="text">
-          <string>Yes</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>No</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="updateAdminButton">
-        <property name="text">
-         <string>Update</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <item>
+      <property name="text">
+       <string>Yes</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>No</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QPushButton" name="updateAdminButton">
+     <property name="geometry">
+      <rect>
+       <x>101</x>
+       <y>20</y>
+       <width>88</width>
+       <height>36</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Update</string>
+     </property>
     </widget>
    </widget>
    <widget class="QPushButton" name="cancelButton">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>750</y>
-      <width>110</width>
-      <height>57</height>
+      <y>380</y>
+      <width>88</width>
+      <height>36</height>
      </rect>
     </property>
     <property name="text">
      <string>Cancel</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="findButton">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>20</y>
+      <width>88</width>
+      <height>36</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Find</string>
+    </property>
+   </widget>
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>12</x>
-      <y>52</y>
-      <width>451</width>
-      <height>59</height>
+      <x>20</x>
+      <y>20</y>
+      <width>180</width>
+      <height>38</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -241,13 +291,6 @@
      </item>
      <item>
       <widget class="QLineEdit" name="emailLineEdit"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="findButton">
-       <property name="text">
-        <string>Find</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </widget>

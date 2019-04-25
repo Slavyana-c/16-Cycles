@@ -32,6 +32,8 @@ private slots:
 
     void on_statisticsProfitsButton_clicked();
 
+    void on_statisticsHiresButton_clicked();
+
 private:
     Ui::AdminHome *ui;
     QString userName;
