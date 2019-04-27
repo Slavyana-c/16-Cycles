@@ -139,13 +139,7 @@
                           {{ filterForm.submit(class="btn btn-outline-info", id="bikeSearchButton") }}
                         </div>
                     </ul>
-
-
                   </form>
-
-
-
-
               </nav>
           </div>
         </div>
@@ -192,8 +186,73 @@
   <div class="filterTagArea">
     Applied Filters:
       {% for key, value in data[5].items() %}
-          <div class="filterTag"> {{key}} : {{value}} </div>
+          <div class="filterTag">
+            {{key}} : {{value}}
+            <form method="POST" action="">
+              {% if key == "Shop" %}
+                <div class="hiddenDiv", id="delete">
+                  {{ disableForm.Shop(class="delete", id="delete") }}
+                </div>
+
+                {% elif key == "Type" %}
+                  <div class="hiddenDiv", id="delete">
+                    {{ disableForm.Type(class="delete", id="delete") }}
+                  </div>
+
+                {% elif key == "Age" %}
+                  <div class="hiddenDiv", id="delete">
+                    {{ disableForm.Age(class="delete", id="delete") }}
+                  </div>
+
+                {% elif key == "Colour" %}
+                  <div class="hiddenDiv", id="delete">
+                    {{ disableForm.Colour(class="delete", id="delete") }}
+                  </div>
+
+                {% elif key == "Brand" %}
+                  <div class="hiddenDiv", id="delete">
+                    {{ disableForm.Brand(class="delete", id="delete") }}
+                  </div>
+
+              {% endif %}
+
+            </form>
+          </div>
       {% endfor %}
+
+<script>
+// $(document).ready(function() {
+//     $('#delete').click(function() {
+//       alert(1);
+//       console.log("clicked");
+//       $.ajax({
+//           url: "/browse",
+//           type: "POST",
+//           contentType: "application/json;charset=UTF-8",
+//           dataType: "json",
+//           data: JSON.stringify({html_data: "hi"}),
+//           success: function(response) {
+//               console.log(response);
+//           },
+//       });
+//     });
+// });
+// $("div.hiddenDiv").on("click", function()
+// {
+//   console.log("clicked");
+//   $.ajax({
+//       url: "/browse",
+//       type: "POST",
+//       contentType: "application/json;charset=UTF-8",
+//       dataType: "json",
+//       data: JSON.stringify({html_data: data[5]}),
+//       success: function(response) {
+//           console.log(response);
+//       },
+//   });
+// });
+</script>
+
   </div>
 {% endif %}
 

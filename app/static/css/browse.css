@@ -548,7 +548,13 @@ body {
   padding-left: 50px;
   /*float: right;*/
 }
-
+.hiddenDiv
+{
+  display: inline-block;
+  /*//visibility: hidden;*/
+  /*//height: 0;*/
+  /*//width: 0;*/
+}
 .filterTagArea
 {
   margin-top: 5px;

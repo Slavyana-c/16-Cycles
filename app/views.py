@@ -1,14 +1,15 @@
-from flask import render_template, flash, url_for, redirect, request, abort
+from flask import render_template, flash, url_for, redirect, request, abort, session
 from app import app, db, bcrypt, admin, models, mail
 from app.models import Users,Bike_Types,Bikes,Shops,Rental_Rates,Orders,Rented_Bikes
 from .forms import (NewUserForm, LoginForm, SelectDates, AppliedFilters,
                     ExtendDate, PasswordChangeForm, RequestPasswordForm,
-                    NewPasswordForm, PaymentForm, RentButton)
+                    NewPasswordForm, PaymentForm, RentButton, DisableFilters)
 from flask_mail import Message
 from sqlalchemy import and_, or_
 
 # all imports for sending emails
 import smtplib
+import json
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -30,6 +31,11 @@ admin.add_view(ModelView(Shops, db.session))
 admin.add_view(ModelView(Rental_Rates, db.session))
 admin.add_view(ModelView(Orders, db.session))
 admin.add_view(ModelView(Rented_Bikes, db.session))
+
+def saveChoices(shopID,typeChosen,ageChosen,colourChosen,brandChosen):
+    choices = {'shop' : shopID, 'type' : typeChosen, 'age' : ageChosen,
+               'colour' : colourChosen, 'brand' : brandChosen}
+    print(choices)
 
 @app.route('/')
 def home():
@@ -63,7 +69,7 @@ def browse(startWindow=datetime.datetime.today(),
     form_a = SelectDates(prefix='a')
     # filterForm = AppliedFilters()
     form_b = AppliedFilters(prefix='b')
-    # form_c = AppliedFilters(prefix='c')
+    form_c = DisableFilters(prefix='c')
     # form_d = AppliedFilters(prefix='d')
     # form_e = AppliedFilters(prefix='e')
     # filterForm = AppliedFilters(prefix="form_b")
@@ -80,6 +86,15 @@ def browse(startWindow=datetime.datetime.today(),
     shopsByID = ["University", "Town", "Headingley"]
     #filters={} # filter dictionary, storing all selected filters
 
+# ******************************************************************************
+#
+#   .'|.                            '||''|.
+# .||.     ...   ... ..  .. .. ..    ||   ||
+#  ||    .|  '|.  ||' ''  || || ||   ||'''|.
+#  ||    ||   ||  ||      || || ||   ||    ||
+# .||.    '|..|' .||.    .|| || ||. .||...|'
+#
+# ******************************************************************************
     if form_b.submit.data:
         # shopID = request.filterForm['shop']
         shopID = form_b.shopChoice.data
@@ -87,6 +102,8 @@ def browse(startWindow=datetime.datetime.today(),
         ageChosen = form_b.ageChoice.data
         colourChosen = form_b.colourChoice.data
         brandChosen = form_b.brandChoice.data
+
+        saveChoices(shopID,typeChosen,ageChosen,colourChosen,brandChosen)
 
         # shopID = request.form.getlist("users")
         bikeTypes = Bike_Types.query.all()
@@ -107,19 +124,15 @@ def browse(startWindow=datetime.datetime.today(),
             if typeChosen!="None":
                 filters['use_type'] = typeChosen
                 filterListForDisplay['Type'] = typeChosen
-                # filterListForDisplay.append("Type")
             if ageChosen!="None":
                 filters['user_type'] = ageChosen
                 filterListForDisplay['Age'] = ageChosen
-                # filterListForDisplay.append("Age")
             if colourChosen!="None":
                 filters['colour'] = colourChosen
                 filterListForDisplay['Colour'] = colourChosen
-                # filterListForDisplay.append("Colour")
             if brandChosen!="None":
                 filters['brand'] = brandChosen
                 filterListForDisplay['Brand'] = brandChosen
-                # filterListForDisplay.append("Brand")
 
             # unpacking the argument dictionary (**filters):
             bikesFilteredOutFromBike_Types = Bike_Types.query.filter_by(**filters).all()
@@ -130,11 +143,7 @@ def browse(startWindow=datetime.datetime.today(),
                 filteredOutBikeIDs.append(bike.id)
             print(filteredOutBikeIDs)
 
-            print("EQUATING IDS IN BIKES DB")
-
             for ID in filteredOutBikeIDs:
-                # bikeExistsInShop = Bikes.query(db.exists().where(bike_type_id=ID)).scalar()
-                # print(bikeExistsInShop)
                 # if shop is not selected, then we just display all bikes matching
                 # the IDs in 'Bikes' database model:
                 if shopID == "None":
@@ -154,7 +163,6 @@ def browse(startWindow=datetime.datetime.today(),
 
             print("PRINTING BIKES THAT SHOULD BE DISPLAYED:")
             print(bikes)
-            print("ENF OF PRINTING BIKES THAT SHOULD BE DISPLAYED:")
 
             bikeTypeId = Bikes.query.filter_by(id=1).first().bike_type_id
             bikeColour = Bike_Types.query.filter_by(id=bikeTypeId).all()
@@ -163,15 +171,176 @@ def browse(startWindow=datetime.datetime.today(),
 
             for bike in bikes:
                 print (bike)
-            # bikes = Bike_Types.query.filter_by(Bike_Types.bike_type_id==Bike_Types.id).all()
-            # bikes = Bike_Types.query.join(Bikes).join(Bikes.bike_type).filter(Bike_Types.id==Bikes.bike_type_id).all()
+
         rentalRates = Rental_Rates.query.all()
         orders = Orders.query.all()
         rentedBikes = Rented_Bikes.query.all()
         print("Filters applied")
+
+# ******************************************************************************
+#
+#   .'|.                              ..|'''.|
+# .||.     ...   ... ..  .. .. ..   .|'     '
+#  ||    .|  '|.  ||' ''  || || ||  ||
+#  ||    ||   ||  ||      || || ||  '|.      .
+# .||.    '|..|' .||.    .|| || ||.  ''|....'
+#
+#
+# ******************************************************************************
+
+    # if form_c.validate_on_submit():
+    if form_c.Brand.data:
+        toRemove = form_c.data
+        print("DATA RECEIVED:")
+        print(toRemove)
+        optionToRemove = "none"
+        for tag, choice in toRemove.items():
+            if choice == True:
+                optionToRemove = tag
+                print(tag)
+        print("to remove:")
+        print(optionToRemove)
+        # data = json.loads(request.data.decode('utf-8'))
+        # data = request.GET.getlist('stat[]')
+        # data = request.get_json()
+        # print(data)
+        # print(data['html_data'])   # should print your list
+        # print("made it to here")
+        # print(data)
+        print("SESSION VARIABLES:")
+        currentFilters = session['savedChoices']
+        print(currentFilters)
+
+        if "Shop" in currentFilters:
+            shopName = currentFilters['Shop']
+            if shopName == "University":
+                shopID = "1"
+            elif shopName == "Town":
+                shopID = "2"
+            else:
+                shopID = "3"
+        else:
+            shopID = "None"
+
+        if "Type" in currentFilters:
+            typeChosen = currentFilters['Type']
+        else:
+            typeChosen = "None"
+
+        if "Age" in currentFilters:
+            ageChosen = currentFilters['Age']
+        else:
+            ageChosen = "None"
+
+        if "Colour" in currentFilters:
+            colourChosen = currentFilters['Colour']
+        else:
+            colourChosen = "None"
+
+        if "Brand" in currentFilters:
+            brandChosen = currentFilters['Brand']
+        else:
+            brandChosen = "None"
+
         print(shopID)
         print(typeChosen)
+        print(ageChosen)
+        print(colourChosen)
+        print(brandChosen)
 
+        if optionToRemove == "Shop":
+            shopID = "None"
+        elif optionToRemove == "Type":
+            typeChosen = "None"
+        elif optionToRemove == "Age":
+            ageChosen = "None"
+        elif optionToRemove == "Colour":
+            colourChosen = "None"
+        elif optionToRemove == "Brand":
+            brandChosen = "None"
+
+
+        print(optionToRemove)
+        print(shopID)
+        print(typeChosen)
+        print(ageChosen)
+        print(colourChosen)
+        print(brandChosen)
+
+        # shopID = request.form.getlist("users")
+        bikeTypes = Bike_Types.query.all()
+        bikes = []
+        if (typeChosen == "None" and ageChosen == "None"
+        and colourChosen == "None" and brandChosen == "None" and shopID != "None"):
+            print('only shop chosen')
+            # just get the bikes from the shop
+            filterListForDisplay["Shop"] = shopsByID[int(shopID)-1]
+            bikes = Bikes.query.filter_by(shop_id=shopID).all()
+        else:
+            # else if shop and something else was chosen
+            # (we have to split the shop and others because they are
+            #  stored in two different database models)
+            filters={} # filter dictionary, storing all selected filters
+
+            # bikesFilteredOutFromBike_Types = Bike_Types.query.filter_by(use_type=typeChosen,user_type=ageChosen,colour=colourChosen,brand=brandChosen).all()
+            if typeChosen!="None":
+                filters['use_type'] = typeChosen
+                filterListForDisplay['Type'] = typeChosen
+            if ageChosen!="None":
+                filters['user_type'] = ageChosen
+                filterListForDisplay['Age'] = ageChosen
+            if colourChosen!="None":
+                filters['colour'] = colourChosen
+                filterListForDisplay['Colour'] = colourChosen
+            if brandChosen!="None":
+                filters['brand'] = brandChosen
+                filterListForDisplay['Brand'] = brandChosen
+
+            # unpacking the argument dictionary (**filters):
+            bikesFilteredOutFromBike_Types = Bike_Types.query.filter_by(**filters).all()
+
+            # we keep a list of bike IDs from Bike_Type database model:
+            for bike in bikesFilteredOutFromBike_Types:
+                print(bike)
+                filteredOutBikeIDs.append(bike.id)
+            print(filteredOutBikeIDs)
+
+            for ID in filteredOutBikeIDs:
+                # if shop is not selected, then we just display all bikes matching
+                # the IDs in 'Bikes' database model:
+                if shopID == "None":
+                    oneBike = Bikes.query.filter_by(bike_type_id=ID).first()
+                else:
+                    filterListForDisplay["Shop"] = shopsByID[int(shopID)-1]
+                    oneBike = Bikes.query.filter_by(bike_type_id=ID,shop_id=shopID).first()
+                # filter out 'None' bikes
+                if oneBike is None:
+                    print("DO NOT ADD")
+                else:
+                    print(oneBike)
+                    # add to the 'bikes' list to be displated on the browse page:
+                    bikes.append(oneBike)
+                # print(bikes)
+            print("END OF EQUATING IDS IN BIKES DB")
+
+            print("PRINTING BIKES THAT SHOULD BE DISPLAYED:")
+            print(bikes)
+
+            bikeTypeId = Bikes.query.filter_by(id=1).first().bike_type_id
+            bikeColour = Bike_Types.query.filter_by(id=bikeTypeId).all()
+
+            print(bikeColour)
+
+            for bike in bikes:
+                print (bike)
+
+        rentalRates = Rental_Rates.query.all()
+        orders = Orders.query.all()
+        rentedBikes = Rented_Bikes.query.all()
+        print("Filters applied")
+
+
+# ****************************************************************************************************************************
 
     if form_a.validate_on_submit():
         startWindow = form_a.start_date.data
@@ -210,8 +379,16 @@ def browse(startWindow=datetime.datetime.today(),
     print("\nUpdated bikes")
     print(bikes)
 
+    session['savedChoices'] =filterListForDisplay
+
     # now the only bikes shown to the user are the ones they can actually rent
-    return render_template("browse.html", filterForm=form_b,form=form_a,data=[bikes,bikeTypes,rentalRates,startWindow,endWindow,filterListForDisplay]) # redirect to the bike search page, giving all the data
+    return render_template("browse.html",
+                            disableForm=form_c,
+                            filterForm=form_b,
+                            form=form_a,
+                            data=[bikes,bikeTypes,rentalRates,
+                                  startWindow,endWindow,
+                                  filterListForDisplay]) # redirect to the bike search page, giving all the data
 
 
 # OLD version of bikePage
