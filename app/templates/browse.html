@@ -52,8 +52,6 @@
                              <b>Shop</b>
                           </a>
                           <ul class="collapse list-unstyled" id="shopSubmenu">
-
-
                               {{ filterForm.hidden_tag() }}
                                   {{ filterForm.shopChoice }}
                               <!-- <div class="shopRadio">
@@ -190,8 +188,18 @@
   </div>
   <!-- //////////////////// END ROW DIV \\\\\\\\\\\\\\\\\\\\\\\ -->
 
-{# /////////////////////// BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
+{% if data[5] | length > 0 %}
+  <div class="filterTagArea">
+    Applied Filters:
+      {% for key, value in data[5].items() %}
+          <div class="filterTag"> {{key}} : {{value}} </div>
+      {% endfor %}
+  </div>
+{% endif %}
 
+
+{# /////////////////////// BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
+    {% if data[0] | length > 0 %}
       <div class="bike-grid">
          {% for bike in data[0] %}
 
@@ -224,6 +232,15 @@
          {% endfor %}
 
       </div>
+
+      {% else %}
+      <div class="notfound">
+        <p>No bikes found</p>
+        <br>
+        <p>using these filters:</p>
+      </div>
+
+    {% endif %}
 
 {# /////////////////////// END OF BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
 
