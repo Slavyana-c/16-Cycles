@@ -184,33 +184,33 @@
 
 {% if data[5] | length > 0 %}
   <div class="filterTagArea">
-    Applied Filters:
+    <p class="darkDiv">Applied Filters:</p>
       {% for key, value in data[5].items() %}
           <div class="filterTag">
             {{key}} : {{value}}
-            <form method="POST" action="">
+            <form class="hiddenDiv" method="POST" action="">
               {% if key == "Shop" %}
-                <div class="hiddenDiv", id="delete">
+                <div id="delete">
                   {{ disableForm.Shop(class="delete", id="delete") }}
                 </div>
 
                 {% elif key == "Type" %}
-                  <div class="hiddenDiv", id="delete">
+                  <div id="delete">
                     {{ disableForm.Type(class="delete", id="delete") }}
                   </div>
 
                 {% elif key == "Age" %}
-                  <div class="hiddenDiv", id="delete">
+                  <div id="delete">
                     {{ disableForm.Age(class="delete", id="delete") }}
                   </div>
 
                 {% elif key == "Colour" %}
-                  <div class="hiddenDiv", id="delete">
+                  <div id="delete">
                     {{ disableForm.Colour(class="delete", id="delete") }}
                   </div>
 
                 {% elif key == "Brand" %}
-                  <div class="hiddenDiv", id="delete">
+                  <div id="delete">
                     {{ disableForm.Brand(class="delete", id="delete") }}
                   </div>
 
@@ -266,10 +266,10 @@
 
               <div class="bike-photo-section">
                 <img class="bike-photo"
-                src={{data[1][bike.bike_type_id].image}} alt="Bicyle">
+                src={{data[1][bike.bike_type_id-1].image}} alt="Bicyle">
               <div class="vignette"></div>
               <div class="bike-price-label">
-                 {{ data[2][bike.bike_type_id].daily_rate }} / day
+                 {{ data[2][bike.bike_type_id-1].daily_rate }} / day
               </div>
 
             </div>
@@ -277,7 +277,7 @@
               <hr class="seperator">
 
               <div class="bike-name-section">
-                {{ data[1][bike.bike_type_id].brand  + " " + data[1][bike.bike_type_id].model}}
+                {{ data[1][bike.bike_type_id-1].brand  + " " + data[1][bike.bike_type_id-1].model}}
                 <!-- <button class="btn btn-details" type="submit">Details</button> -->
                 <!-- rentStartDate=data[3],rentEndDate=data[4] -->
                 <form action="{{ url_for('bikePage', brand=data[1][bike.bike_type_id].brand, model = data[1][bike.bike_type_id].model, bike_id = data[1][bike.bike_type_id].id, rentStartDate=data[3],rentEndDate=data[4] ) }}" method="post">
@@ -294,9 +294,7 @@
 
       {% else %}
       <div class="notfound">
-        <p>No bikes found</p>
-        <br>
-        <p>using these filters:</p>
+        <p>No bikes found using selected filters</p>
       </div>
 
     {% endif %}

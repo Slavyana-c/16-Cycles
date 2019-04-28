@@ -135,7 +135,10 @@ def browse(startWindow=datetime.datetime.today(),
                 filterListForDisplay['Brand'] = brandChosen
 
             # unpacking the argument dictionary (**filters):
+            print("printing the filter dict")
+            print (filters)
             bikesFilteredOutFromBike_Types = Bike_Types.query.filter_by(**filters).all()
+            # bikesFilteredOutFromBike_Types = Bike_Types.query.filter_by(brand="Boardman").all()
 
             # we keep a list of bike IDs from Bike_Type database model:
             for bike in bikesFilteredOutFromBike_Types:
@@ -155,7 +158,10 @@ def browse(startWindow=datetime.datetime.today(),
                 if oneBike is None:
                     print("DO NOT ADD")
                 else:
+                    print("{")
                     print(oneBike)
+                    print(oneBike.bike_type_id)
+                    print("}")
                     # add to the 'bikes' list to be displated on the browse page:
                     bikes.append(oneBike)
                 # print(bikes)
@@ -189,7 +195,7 @@ def browse(startWindow=datetime.datetime.today(),
 # ******************************************************************************
 
     # if form_c.validate_on_submit():
-    if form_c.Brand.data:
+    if (form_c.Brand.data) or (form_c.Colour.data) or (form_c.Age.data) or (form_c.Type.data) or (form_c.Shop.data):
         toRemove = form_c.data
         print("DATA RECEIVED:")
         print(toRemove)
@@ -317,7 +323,10 @@ def browse(startWindow=datetime.datetime.today(),
                 if oneBike is None:
                     print("DO NOT ADD")
                 else:
+                    print("{")
                     print(oneBike)
+                    print(oneBike.bike_type_id)
+                    print("}")
                     # add to the 'bikes' list to be displated on the browse page:
                     bikes.append(oneBike)
                 # print(bikes)
