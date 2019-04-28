@@ -387,16 +387,10 @@ def payForm():
 
     cards = Payment_Methods.query.filter_by(user_id=current_user.id).all()
     cardForm = SelectPaymentForm()
-    count = 1
-    choices = []
     for card in cards:
-        newChoice = (str(count), card.card_number)
+        card_num = card.card_number.split("cardname=")
+        newChoice = (str(card.id), "**** " + card_num[1])
         cardForm.paymentChoice.choices.append(newChoice)
-        count += 1
-
-    
-    
-   # cardForm.process()
 
 
     if cardForm.validate_on_submit():
@@ -424,9 +418,14 @@ def payForm():
     if form.validate_on_submit():
         # Save payment method, if selected
         if(form.save.data == True):
-            	#pwrd_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+            	
                 date = form.expDate.data.split("/")
-                payment = Payment_Methods(card_number=form.cardNumber.data, cvv=form.cvv.data, expiration_month=date[0], expiration_year=date[1], user_id=current_user.id)
+                month_hash = bcrypt.generate_password_hash(date[0]).decode('utf-8')
+                year_hash = bcrypt.generate_password_hash(date[1]).decode('utf-8')
+                card_num_pre_hash = bcrypt.generate_password_hash(form.cardNumber.data).decode('utf-8')
+                card_num_hash = card_num_pre_hash + "cardname=" + form.cardNumber.data[-4:]
+                cvv_hash = bcrypt.generate_password_hash(form.cvv.data).decode('utf-8')
+                payment = Payment_Methods(card_number=card_num_hash, cvv=cvv_hash, expiration_month=month_hash, expiration_year=year_hash, user_id=current_user.id)
                 db.session.add(payment)
                 db.session.commit()
         
