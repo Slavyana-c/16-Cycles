@@ -386,22 +386,37 @@ def payForm():
     image = data.image
 
     cards = Payment_Methods.query.filter_by(user_id=current_user.id).all()
-    
+    cardForm = SelectPaymentForm()
     count = 1
     choices = []
     for card in cards:
         newChoice = (str(count), card.card_number)
-        choices.append(newChoice)
+        cardForm.paymentChoice.choices.append(newChoice)
         count += 1
 
-    cardForm = SelectPaymentForm()
-    cardForm.paymentChoice.choices=choices
-    cardForm.process()
+    
+    
+   # cardForm.process()
 
 
     if cardForm.validate_on_submit():
         print("================")
         print(cardForm.paymentChoice.data)
+        # Save order in database
+        datetimeStart = datetime.datetime.strptime(rentStartDate, '%d/%m/%Y')
+        datetimeEnd = datetime.datetime.strptime(rentEndDate, '%d/%m/%Y')
+        
+        order = Orders(total_price=rentCost, user_id=current_user.id)
+        db.session.add(order)
+        db.session.commit()
+
+        rental = Rented_Bikes(start_date=datetimeStart, end_date=datetimeEnd, bike_id=bikeID, price=rentCost, order_id=order.id)
+        
+        db.session.add(rental)
+        db.session.commit()
+
+        qr(current_user.email, brand, model, bikeID, rentStartDate, rentEndDate, rentCost)
+        return redirect(url_for('browse'))
         
 
     form = PaymentForm()
