@@ -40,7 +40,7 @@ admin.add_view(ModelView(Users, db.session))
 admin.add_view(DetailedView(Bike_Types, db.session))
 admin.add_view(DetailedView(Bikes, db.session))
 admin.add_view(ModelView(Shops, db.session))
-admin.add_view(ModelView(Rental_Rates, db.session))
+admin.add_view(DetailedView(Rental_Rates, db.session))
 admin.add_view(ModelView(Orders, db.session))
 admin.add_view(RentedView(Rented_Bikes, db.session))
 admin.add_view(ModelView(Payment_Methods, db.session))
@@ -186,6 +186,7 @@ def browse(startWindow=datetime.datetime.today(),
     # now the only bikes shown to the user are the ones they can actually rent
     print("\nUpdated bikes")
     print(bikes)
+    print(bikes[0].bike_type_id)
 
     # now the only bikes shown to the user are the ones they can actually rent
     return render_template("browse.html", filterForm=form_b,form=form_a,data=[bikes,bikeTypes,rentalRates,startWindow,endWindow]) # redirect to the bike search page, giving all the data
@@ -217,6 +218,8 @@ def bikePage():
     print(thisRentalRate)
     data = Bike_Types.query.filter(and_(Bike_Types.brand == brand, Bike_Types.model == model)).first()
     image = data.image
+    bike = Bikes.query.filter_by(id=itemId).first()
+    shop = Shops.query.filter_by(id=bike.shop_id).first()
 
     numberOfDays = (rentEndDate-rentStartDate).days
     bikeRentPrice = calculateRentPrice(numberOfDays,thisRentalRate)
@@ -225,7 +228,7 @@ def bikePage():
     if form.validate_on_submit():
         payForm()
         return redirect(url_for('payForm(bikeId)'))
-    return render_template("bikePage.html", data=data, form=form, rentStart=rentStartDate, rentEnd=rentEndDate, rentInfo=[bikeRentPrice,thisRentalRate,numberOfDays]) # redirect to the bike search page
+    return render_template("bikePage.html", data=data, shop=shop, form=form, rentStart=rentStartDate, rentEnd=rentEndDate, itemId = itemId, rentInfo=[bikeRentPrice,thisRentalRate,numberOfDays]) # redirect to the bike search page
 
 @app.route('/account')
 @login_required
@@ -240,19 +243,16 @@ def account():
     
     for order in user_orders:
         rented_bike = order.rented_bikes[0]
-        bike_item = Bikes.query.filter_by(id=rented_bike.id).first()
-        
-        if(bike_item != None):
-            bike_type = Bike_Types.query.filter_by(id=bike_item.bike_type_id).first()
+        bike_item = Bikes.query.filter_by(id=rented_bike.bike_id).first()
+        print(bike_item.bike_type_id)
+        bike_type = Bike_Types.query.filter_by(id=bike_item.bike_type_id).first()
             
         if rented_bike.end_date >= today:
             current_rentals.append(rented_bike)
-            if(bike_item != None):
-                current_types.append(bike_type)
+            current_types.append(bike_type)
         else:
             past_rentals.append(rented_bike)
-            if(bike_item != None):
-                past_types.append(bike_type)
+            past_types.append(bike_type)
 
 
     return render_template("account.html", len_curr_rentals=len(current_rentals), len_past_rentals=len(past_rentals),
@@ -408,6 +408,7 @@ def payForm():
     rentEnd = request.args.get('rentDateEnd', default=datetime.datetime.today()+timedelta(days=1), type = None)
     rentDays = request.args.get('rentDays', type = int)
     rentCost = request.args.get('rentCost')
+    itemId = request.args.get('itemId', default = 'item_id', type = str)
     bikeID = request.args.get('bike_id', default = 'bike_id', type = str)
     rentStartDate = str(rentStart.day) + "/" + str(rentStart.month) + "/" + str(rentStart.year)
     rentEndDate = rentEnd[8:] + "/" + rentEnd[5:7] + "/" + rentEnd[0:4]
@@ -418,6 +419,7 @@ def payForm():
 
     cards = Payment_Methods.query.filter_by(user_id=current_user.id).all()
 
+    print(itemId)
     cardForm = SelectPaymentForm()
     for card in cards:
         card_num = card.card_number.split("##cardname=")
@@ -434,7 +436,7 @@ def payForm():
         db.session.add(order)
         db.session.commit()
 
-        rental = Rented_Bikes(start_date=datetimeStart, end_date=datetimeEnd, bike_id=bikeID, price=rentCost, order_id=order.id)
+        rental = Rented_Bikes(start_date=datetimeStart, end_date=datetimeEnd, bike_id=itemId, price=rentCost, order_id=order.id)
         
         db.session.add(rental)
         user = Users.query.filter_by(id=current_user.id).first()
@@ -469,7 +471,8 @@ def payForm():
         db.session.add(order)
         db.session.commit()
 
-        rental = Rented_Bikes(start_date=datetimeStart, end_date=datetimeEnd, bike_id=bikeID, price=rentCost, order_id=order.id)
+
+        rental = Rented_Bikes(start_date=datetimeStart, end_date=datetimeEnd, bike_id=itemId, price=rentCost, order_id=order.id)
         
         db.session.add(rental)
         user = Users.query.filter_by(id=current_user.id).first()
