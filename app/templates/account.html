@@ -54,12 +54,12 @@
     <h2> Current Rentals </h2>
     <div class="details-box">
         <div class="details">
-            {% for n in range(10) %}
+            {% for n in range(len_curr_rentals) %}
             <div class="record">
-                {{ "Start date | " }}
-                {{ "End date |" }}
-                {{ "Bike name |" }}
-                {{ "Bike type" }}
+                {{current_rentals[n].start_date.strftime('%d-%m-%Y') + " |"}}
+                {{current_rentals[n].end_date.strftime('%d-%m-%Y') + " |"}}
+                {{current_types[n].brand + " |"}}
+                {{current_types[n].model + " |"}}
             </div>
             <div class="dateselection-box">
 
@@ -76,15 +76,17 @@
     <h2> Previous Rentals </h2>
     <div class="details-box">
         <div class="details">
-            {% for n in range(10) %}
+            {% for n in range(len_past_rentals) %}
             <div class="record">
-                {{ "Start date | " }}
-                {{ "End date |" }}
-                {{ "Bike name |" }}
-                {{ "Bike type" }}
-            </div>
+                {{past_rentals[n].start_date.strftime('%d-%m-%Y') + " |"}}
+                {{past_rentals[n].end_date.strftime('%d-%m-%Y') + " |"}}
+                {{past_types[n].brand + " |"}}
+                {{past_types[n].model + " |"}}
+                
+                </div>
             <div class="dateselection-box">
-                {{ "PRICE PAID" }}
+                {{ past_rentals[n].price}} 
+                {{" GBP"}}
             </div>
             {% endfor %}
 

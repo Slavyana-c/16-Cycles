@@ -29,12 +29,16 @@ from flask_login import login_user, logout_user, current_user, login_required
 class RentedView(ModelView):
     column_display_pk = True # optional, but I like to see the IDs in the list
     column_hide_backrefs = False
-    column_list = ('id', 'start_date', 'end_date', 'price', 'bike_id')
+    column_list = ('id', 'start_date', 'end_date', 'price', 'bike_id', 'order_id')
+
+class DetailedView(ModelView):
+    column_display_pk = True # optional, but I like to see the IDs in the list
+    column_hide_backrefs = False
 
 
 admin.add_view(ModelView(Users, db.session))
-admin.add_view(ModelView(Bike_Types, db.session))
-admin.add_view(ModelView(Bikes, db.session))
+admin.add_view(DetailedView(Bike_Types, db.session))
+admin.add_view(DetailedView(Bikes, db.session))
 admin.add_view(ModelView(Shops, db.session))
 admin.add_view(ModelView(Rental_Rates, db.session))
 admin.add_view(ModelView(Orders, db.session))
@@ -203,6 +207,7 @@ def bikePage():
     rentStart = request.args.get('rentStartDate', default=datetime.datetime.today(),type = None)
     rentEnd   = request.args.get('rentEndDate', default=datetime.datetime.today()+timedelta(days=1),type = None)
     bikeId = request.args.get('bike_id', default = 'bike_id', type = str)
+    itemId = request.args.get('item_id', default = 'item_id', type = str)
     print("\nThis printout")
     print(request.args)
     rentStartDate = datetime.date(int(rentStart.split("-")[0]),int(rentStart.split("-")[1]),int(rentStart.split("-")[2][:2]))
@@ -216,7 +221,7 @@ def bikePage():
     numberOfDays = (rentEndDate-rentStartDate).days
     bikeRentPrice = calculateRentPrice(numberOfDays,thisRentalRate)
 
-    form = RentButton();
+    form = RentButton()
     if form.validate_on_submit():
         payForm()
         return redirect(url_for('payForm(bikeId)'))
@@ -225,12 +230,38 @@ def bikePage():
 @app.route('/account')
 @login_required
 def account():
-    form = ExtendDate();
-    return render_template("account.html", form=form) # redirect to the account page
+    form = ExtendDate()
+    user_orders = Orders.query.filter_by(user_id=current_user.id).all()
+    today = datetime.datetime.today()
+    current_rentals = []
+    past_rentals = []
+    current_types = []
+    past_types = []
+    
+    for order in user_orders:
+        rented_bike = order.rented_bikes[0]
+        bike_item = Bikes.query.filter_by(id=rented_bike.id).first()
+        
+        if(bike_item != None):
+            bike_type = Bike_Types.query.filter_by(id=bike_item.bike_type_id).first()
+            
+        if rented_bike.end_date >= today:
+            current_rentals.append(rented_bike)
+            if(bike_item != None):
+                current_types.append(bike_type)
+        else:
+            past_rentals.append(rented_bike)
+            if(bike_item != None):
+                past_types.append(bike_type)
+
+
+    return render_template("account.html", len_curr_rentals=len(current_rentals), len_past_rentals=len(past_rentals),
+     form=form, past_rentals=past_rentals, 
+     current_rentals=current_rentals, current_types=current_types, past_types=past_types) # redirect to the account page
 
 @app.route('/changePassword')
 def changePassword():
-    form = PasswordChangeForm();
+    form = PasswordChangeForm()
     return render_template("changePassword.html", form=form) # redirect to the change password page
 
 @app.route('/sign_up', methods=['GET', 'POST'])
@@ -386,16 +417,15 @@ def payForm():
     image = data.image
 
     cards = Payment_Methods.query.filter_by(user_id=current_user.id).all()
+
     cardForm = SelectPaymentForm()
     for card in cards:
-        card_num = card.card_number.split("cardname=")
+        card_num = card.card_number.split("##cardname=")
         newChoice = (str(card.id), "**** " + card_num[1])
         cardForm.paymentChoice.choices.append(newChoice)
 
 
     if cardForm.validate_on_submit():
-        print("================")
-        print(cardForm.paymentChoice.data)
         # Save order in database
         datetimeStart = datetime.datetime.strptime(rentStartDate, '%d/%m/%Y')
         datetimeEnd = datetime.datetime.strptime(rentEndDate, '%d/%m/%Y')
@@ -407,6 +437,8 @@ def payForm():
         rental = Rented_Bikes(start_date=datetimeStart, end_date=datetimeEnd, bike_id=bikeID, price=rentCost, order_id=order.id)
         
         db.session.add(rental)
+        user = Users.query.filter_by(id=current_user.id).first()
+        user.times_rented += 1
         db.session.commit()
 
         qr(current_user.email, brand, model, bikeID, rentStartDate, rentEndDate, rentCost)
@@ -423,7 +455,7 @@ def payForm():
                 month_hash = bcrypt.generate_password_hash(date[0]).decode('utf-8')
                 year_hash = bcrypt.generate_password_hash(date[1]).decode('utf-8')
                 card_num_pre_hash = bcrypt.generate_password_hash(form.cardNumber.data).decode('utf-8')
-                card_num_hash = card_num_pre_hash + "cardname=" + form.cardNumber.data[-4:]
+                card_num_hash = card_num_pre_hash + "##cardname=" + form.cardNumber.data[-4:]
                 cvv_hash = bcrypt.generate_password_hash(form.cvv.data).decode('utf-8')
                 payment = Payment_Methods(card_number=card_num_hash, cvv=cvv_hash, expiration_month=month_hash, expiration_year=year_hash, user_id=current_user.id)
                 db.session.add(payment)
@@ -440,6 +472,8 @@ def payForm():
         rental = Rented_Bikes(start_date=datetimeStart, end_date=datetimeEnd, bike_id=bikeID, price=rentCost, order_id=order.id)
         
         db.session.add(rental)
+        user = Users.query.filter_by(id=current_user.id).first()
+        user.times_rented += 1
         db.session.commit()
 
         qr(form.email.data, brand, model, bikeID, rentStartDate, rentEndDate, rentCost)
@@ -448,12 +482,7 @@ def payForm():
     email = current_user.email
     form.email.default = email
     form.process()
-    return render_template("payment.html", cardForm=cardForm, form=form, data=data, image=image, rentCost=rentCost, rentDays=rentDays, rentStart=rentStartDate, rentEnd=rentEndDate)
-
-@app.route('/success/<choice>', methods=['GET', 'POST'])
-def success(choice):
-    print("CARD: " + choice)
-    return redirect(url_for('account'))
+    return render_template("payment.html", number_of_cards=len(cards), cardForm=cardForm, form=form, data=data, image=image, rentCost=rentCost, rentDays=rentDays, rentStart=rentStartDate, rentEnd=rentEndDate)
 
 
 @app.route('/qr', methods=['GET', 'POST'])
