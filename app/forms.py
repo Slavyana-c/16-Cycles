@@ -102,5 +102,10 @@ class PaymentForm(FlaskForm):
 	save = BooleanField('Save payment information')
 	submit = SubmitField('Submit')
 
+class SelectPaymentForm(FlaskForm):
+	paymentChoice = RadioField('Payment', choices=[])
+	submit = SubmitField('Pay Now', validators=[DataRequired()])
+
+
 class RentButton(FlaskForm):
 	submit = SubmitField('RENT', validators=[DataRequired()])

@@ -3,7 +3,7 @@ from app import app, db, bcrypt, admin, models, mail
 from app.models import Users,Bike_Types,Bikes,Shops,Rental_Rates,Orders,Rented_Bikes,Payment_Methods
 from .forms import (NewUserForm, LoginForm, SelectDates, AppliedFilters,
                     ExtendDate, PasswordChangeForm, RequestPasswordForm,
-                    NewPasswordForm, PaymentForm, RentButton)
+                    NewPasswordForm, PaymentForm, RentButton, SelectPaymentForm)
 from flask_mail import Message
 from sqlalchemy import and_, or_
 
@@ -385,11 +385,28 @@ def payForm():
     data = Bike_Types.query.filter(and_(Bike_Types.brand == brand, Bike_Types.model == model)).first()
     image = data.image
 
+    cards = Payment_Methods.query.filter_by(user_id=current_user.id).all()
+    
+    count = 1
+    choices = []
+    for card in cards:
+        newChoice = (str(count), card.card_number)
+        choices.append(newChoice)
+        count += 1
+
+    cardForm = SelectPaymentForm()
+    cardForm.paymentChoice.choices=choices
+    cardForm.process()
+
+
+    if cardForm.validate_on_submit():
+        print("================")
+        print(cardForm.paymentChoice.data)
+        
+
     form = PaymentForm()
 
-
     if form.validate_on_submit():
-
         # Save payment method, if selected
         if(form.save.data == True):
             	#pwrd_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -401,7 +418,13 @@ def payForm():
         # Save order in database
         datetimeStart = datetime.datetime.strptime(rentStartDate, '%d/%m/%Y')
         datetimeEnd = datetime.datetime.strptime(rentEndDate, '%d/%m/%Y')
-        rental = Rented_Bikes(start_date=datetimeStart, end_date=datetimeEnd, bike_id=bikeID, price=rentCost, order_id=1)
+        
+        order = Orders(total_price=rentCost, user_id=current_user.id)
+        db.session.add(order)
+        db.session.commit()
+
+        rental = Rented_Bikes(start_date=datetimeStart, end_date=datetimeEnd, bike_id=bikeID, price=rentCost, order_id=order.id)
+        
         db.session.add(rental)
         db.session.commit()
 
@@ -411,7 +434,13 @@ def payForm():
     email = current_user.email
     form.email.default = email
     form.process()
-    return render_template("payment.html", form=form, data=data, image=image, rentCost=rentCost, rentDays=rentDays, rentStart=rentStartDate, rentEnd=rentEndDate)
+    return render_template("payment.html", cardForm=cardForm, form=form, data=data, image=image, rentCost=rentCost, rentDays=rentDays, rentStart=rentStartDate, rentEnd=rentEndDate)
+
+@app.route('/success/<choice>', methods=['GET', 'POST'])
+def success(choice):
+    print("CARD: " + choice)
+    return redirect(url_for('account'))
+
 
 @app.route('/qr', methods=['GET', 'POST'])
 def qr(receivingAddress, bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDate, rentCost):
