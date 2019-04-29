@@ -605,7 +605,7 @@ def makeBikeRentalsTable(databaseOutput):
   <td>""" + bike[1] + """</span></td>
   <td>""" + bike[3] + """</span></td>
   <td>""" + bike[4] + """</span></td>
-  <td>""" + bike[5] + """</span></td>
+  <td>""" + bike[5] + """ GBP</span></td>
 </tr>
 """
     return output
@@ -613,11 +613,15 @@ def makeBikeRentalsTable(databaseOutput):
 def makeCheckoutTable(databaseOutput):
     output = ""
     titles = ["UserName","Date","Time","User ID","Total Price"]
-    for i in range(len(titles)):
+    for i in range(len(titles) - 1):
         output += """  <tr>
     <th>""" + titles[i] + """</th>
     <td>""" + str(databaseOutput[i]) + """</td>
   </tr> """
+    output += """  <tr>
+    <th>Total Price</th>
+    <td>""" + str(databaseOutput[4]) + """ GBP</td>
+    </tr> """
 
     return output
 
@@ -732,9 +736,16 @@ def qr(receivingAddress, bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDat
     url = pyqrcode.create('https://ksassets.timeincuk.net/wp/uploads/sites/55/2016/07/2015_PeepShow_Mark2_Press_111115-920x610.jpg')
     url.png('app/qrCode.png', scale=2) # nice and big
 
+    userRecord = Users.query.filter_by(id=current_user.id).first()
+    username = userRecord.email.split("@")
+    currentDay = str(datetime.datetime.today())
+    dateSplit = currentDay.split()
+    date = dateSplit[0]
+    timeSplit = dateSplit[1].split(":")
+    time = timeSplit[0] + ":" + timeSplit[1]
     # we take this dummy database output for use in the emails
     order = [(bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDate, rentCost)]
-    dummyRecieptOutput = ["Jonathan Alderson", "27/02/19","15:36:23","5437289","76.8"]
+    reciept = [username[0], date, time, current_user.id, rentCost]
 
 
     # setting up email things
@@ -760,7 +771,7 @@ def qr(receivingAddress, bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDat
         Please find attached below your recipt
         <br/><br/><br/><br/><br/>
         <table  align="left" border="0" cellpadding="5" cellspacing="1" style="width:800px, text-align:center, cellpadding:100px" >
-        """ + makeCheckoutTable(dummyRecieptOutput) + """
+        """ + makeCheckoutTable(reciept) + """
         </table>
         <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
         <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
