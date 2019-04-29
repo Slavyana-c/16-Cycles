@@ -36,14 +36,14 @@ class DetailedView(ModelView):
     column_hide_backrefs = False
 
 
-admin.add_view(ModelView(Users, db.session))
+admin.add_view(DetailedView(Users, db.session))
 admin.add_view(DetailedView(Bike_Types, db.session))
 admin.add_view(DetailedView(Bikes, db.session))
-admin.add_view(ModelView(Shops, db.session))
+admin.add_view(DetailedView(Shops, db.session))
 admin.add_view(DetailedView(Rental_Rates, db.session))
-admin.add_view(ModelView(Orders, db.session))
-admin.add_view(RentedView(Rented_Bikes, db.session))
-admin.add_view(ModelView(Payment_Methods, db.session))
+admin.add_view(DetailedView(Orders, db.session))
+admin.add_view(DetailedView(Rented_Bikes, db.session))
+admin.add_view(DetailedView(Payment_Methods, db.session))
 
 @app.route('/')
 def home():
@@ -441,6 +441,14 @@ def payForm():
         db.session.add(rental)
         user = Users.query.filter_by(id=current_user.id).first()
         user.times_rented += 1
+
+        bike = Bikes.query.filter_by(id=itemId).first()
+        bike.times_rented += 1
+        bike.days_used += rentDays
+        
+        bike_type = Bike_Types.query.filter_by(id=bikeID).first()
+        bike_type.times_rented += 1
+
         db.session.commit()
 
         qr(current_user.email, brand, model, bikeID, rentStartDate, rentEndDate, rentCost)
@@ -464,6 +472,7 @@ def payForm():
                 db.session.commit()
         
         # Save order in database
+        # Save order in database
         datetimeStart = datetime.datetime.strptime(rentStartDate, '%d/%m/%Y')
         datetimeEnd = datetime.datetime.strptime(rentEndDate, '%d/%m/%Y')
         
@@ -471,12 +480,19 @@ def payForm():
         db.session.add(order)
         db.session.commit()
 
-
         rental = Rented_Bikes(start_date=datetimeStart, end_date=datetimeEnd, bike_id=itemId, price=rentCost, order_id=order.id)
         
         db.session.add(rental)
         user = Users.query.filter_by(id=current_user.id).first()
         user.times_rented += 1
+
+        bike = Bikes.query.filter_by(id=itemId).first()
+        bike.times_rented += 1
+        bike.days_used += rentDays
+        
+        bike_type = Bike_Types.query.filter_by(id=bikeID).first()
+        bike_type.times_rented += 1
+
         db.session.commit()
 
         qr(form.email.data, brand, model, bikeID, rentStartDate, rentEndDate, rentCost)
