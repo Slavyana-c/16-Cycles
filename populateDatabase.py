@@ -224,8 +224,9 @@ def addUsersAndRentals():
 
             # add the order for the customer
             print("i = " + str(i) + " Adding order " + str(year) + "/" + str(month) + "/" + str(day) + ": " + str(price))
-            print("Renting bikeID: " + str(bikeID) + " with rental rates " + str(rentalRate.daily_rate) + ":" + str(rentalRate.weekly_rate) + ":" + str(rentalRate.monthly_rate))
+            print("Renting bikeID: " + str(bikeID) + " with rental rates " + str(thisRentalRate.daily_rate) + ":" + str(thisRentalRate.weekly_rate) + ":" + str(thisRentalRate.monthly_rate))
             print("For " + str(daysToRent) + " days")
+            print("bikeTypeID: " + str(bikeTypeID))
 
             # add the order
             newOrder = models.Orders(date=startDate,

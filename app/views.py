@@ -392,7 +392,8 @@ def browse(startWindow=datetime.datetime.today(),
     # remove the bikes that will be rented in the given time
     i = 0
     while(i < len(bikes)):
-        if(bikes[i].bike_type_id in bikesToRemove):
+        # bikes[i].bike_type_id changed to bikes[i].id
+        if(bikes[i].id in bikesToRemove):
             bikes = bikes[:i] + bikes[i+1:]
         else:
             i+=1
