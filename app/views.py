@@ -76,9 +76,20 @@ def meetOurStaff():
 #            endWindow=datetime.datetime.now()+timedelta(days=1),
 #            shopID = 1):
 
-def browse(startWindow=datetime.datetime.today(),
-           endWindow=datetime.datetime.today()+timedelta(days=1),
-           shopID = 1):
+# def browse(startWindow=datetime.datetime.today(),
+#            endWindow=datetime.datetime.today()+timedelta(days=1),
+#            shopID = 1):
+# ******************************************************************************************************************************************
+#
+# '||
+#  || ...  ... ..    ...   ... ... ...  ....    ....
+#  ||'  ||  ||' '' .|  '|.  ||  ||  |  ||. '  .|...||
+#  ||    |  ||     ||   ||   ||| |||   . '|.. ||
+#  '|...'  .||.     '|..|'    |   |    |'..|'  '|...'
+#
+#
+# ******************************************************************************************************************************************
+def browse():
     form_a = SelectDates(prefix='a')
     # filterForm = AppliedFilters()
     form_b = AppliedFilters(prefix='b')
@@ -88,6 +99,7 @@ def browse(startWindow=datetime.datetime.today(),
     # filterForm = AppliedFilters(prefix="form_b")
 
     bikeTypes = Bike_Types.query.all()
+    defaultflag = False
 
     bikes = Bikes.query.all() # if no shop was chosen, we display all bikes
     rentalRates = Rental_Rates.query.all()
@@ -98,6 +110,49 @@ def browse(startWindow=datetime.datetime.today(),
     filterListForDisplay = {} # filter list to be displayed in the website
     shopsByID = ["University", "Town", "Headingley"]
     #filters={} # filter dictionary, storing all selected filters
+
+    try:
+        print("TRY CONDITION")
+        bufferStart = session['savedStartDate']
+        bufferEnd = session['savedEndDate']
+
+
+        print(bufferStart)
+        print(bufferEnd)
+
+        try:
+            print("try1")
+            startWindow = datetime.datetime.strptime(bufferStart, '%Y-%m-%d %H:%M:%S.%f')
+            endWindow = datetime.datetime.strptime(bufferEnd, '%Y-%m-%d %H:%M:%S.%f')
+        except:
+            try:
+                print("try2")
+                bufferStart = bufferStart.date()
+                startWindow = datetime.datetime.strptime(bufferStart, '%Y-%m-%d %H:%M:%S.%f')
+                endWindow = datetime.datetime.strptime(bufferEnd, '%Y-%m-%d %H:%M:%S.%f')
+            except:
+                print("try3")
+                bufferEnd = bufferEnd.date()
+                startWindow = datetime.datetime.strptime(bufferStart, '%Y-%m-%d %H:%M:%S.%f')
+                endWindow = datetime.datetime.strptime(bufferEnd, '%Y-%m-%d %H:%M:%S.%f')
+        # startWindow = datetime.strptime(session['savedStartDate'], '%b %d %Y %I:%M%p')
+        # endWindow = datetime.strptime(session['savedEndDate'], '%b %d %Y %I:%M%p')
+        # startWindow = session['savedStartDate'] #.strptime('%m/%d/%Y')
+        # endWindow = session['savedEndDate'] #.strptime('%m/%d/%Y')
+        print("\n")
+        print(startWindow)
+        print(type(startWindow))
+        print(endWindow)
+        print(type(endWindow))
+        print("\n")
+    except:
+        print("EXCEPT CONDITION")
+        startWindow=datetime.datetime.today()
+        endWindow=datetime.datetime.today()+timedelta(days=1)
+        print(startWindow)
+        print(type(startWindow))
+        print(endWindow)
+        print(type(endWindow))
 
 # ******************************************************************************
 #
@@ -122,7 +177,7 @@ def browse(startWindow=datetime.datetime.today(),
         bikeTypes = Bike_Types.query.all()
         bikes = []
         if (typeChosen == "None" and ageChosen == "None"
-        and colourChosen == "None" and brandChosen == "None"):
+        and colourChosen == "None" and brandChosen == "None" and shopID != "None"):
             print('only shop chosen')
             # just get the bikes from the shop
             filterListForDisplay["Shop"] = shopsByID[int(shopID)-1]
@@ -158,7 +213,9 @@ def browse(startWindow=datetime.datetime.today(),
                 print(bike)
                 filteredOutBikeIDs.append(bike.id)
             print(filteredOutBikeIDs)
-
+            # Set the default shop:
+            if shopID == "None":
+                shopID = "1"
             for ID in filteredOutBikeIDs:
                 # if shop is not selected, then we just display all bikes matching
                 # the IDs in 'Bikes' database model:
@@ -209,6 +266,7 @@ def browse(startWindow=datetime.datetime.today(),
 
     # if form_c.validate_on_submit():
     if (form_c.Brand.data) or (form_c.Colour.data) or (form_c.Age.data) or (form_c.Type.data) or (form_c.Shop.data):
+        defaultflag = False
         toRemove = form_c.data
         print("DATA RECEIVED:")
         print(toRemove)
@@ -230,16 +288,19 @@ def browse(startWindow=datetime.datetime.today(),
         currentFilters = session['savedChoices']
         print(currentFilters)
 
+
         if "Shop" in currentFilters:
             shopName = currentFilters['Shop']
             if shopName == "University":
                 shopID = "1"
             elif shopName == "Town":
                 shopID = "2"
+                defaultflag = False
             else:
                 shopID = "3"
+                defaultflag = False
         else:
-            shopID = "None"
+            shopID = "1" # Set the default shop
 
         if "Type" in currentFilters:
             typeChosen = currentFilters['Type']
@@ -362,15 +423,76 @@ def browse(startWindow=datetime.datetime.today(),
         print("Filters applied")
 
 
-# ****************************************************************************************************************************
 
-    if form_a.validate_on_submit():
+# ****************************************************************************************************************************************
+#
+#   .'|.                                |
+# .||.     ...   ... ..  .. .. ..      |||
+#  ||    .|  '|.  ||' ''  || || ||    |  ||
+#  ||    ||   ||  ||      || || ||   .''''|.
+# .||.    '|..|' .||.    .|| || ||. .|.  .||.
+#
+#
+# ****************************************************************************************************************************************
+
+    if form_a.validate_on_submit() and form_a.submit.data:
+        defaultflag = False
+        print("form_a validated")
         startWindow = form_a.start_date.data
         print(type(startWindow))
         # startWindow = startWindow.date()
         endWindow = form_a.end_date.data
         print(type(endWindow))
         # endWindow = endWindow.date()
+
+        # session['savedStartDate'] = startWindow
+        # session['savedEndDate'] = endWindow
+        # savedate
+        session['savedStartDate'] = startWindow.strftime("%Y-%m-%d %H:%M:%S.%f")
+        session['savedEndDate'] = endWindow.strftime("%Y-%m-%d %H:%M:%S.%f")
+
+        print("SAVED DATES:")
+        print(session['savedStartDate'])
+        print(type(session['savedStartDate']))
+        print(session['savedEndDate'])
+        print(type(session['savedEndDate']))
+
+
+    try:
+        print("TRY CONDITION2")
+        print(session['savedStartDate'])
+        print(session['savedEndDate'])
+
+        startWindow = datetime.datetime.strptime(session['savedStartDate'], '%Y-%m-%d %H:%M:%S.%f')
+        savedEndDate = datetime.datetime.strptime(session['savedEndDate'], '%Y-%m-%d %H:%M:%S.%f')
+        print("\n")
+        print(startWindow)
+        print(type(startWindow))
+        print(endWindow)
+        print(type(endWindow))
+        print("\n")
+        if type(startWindow) != type(endWindow):
+            print("try2if")
+            try:
+                endWindow = endWindow.date()
+            except:
+                startWindow = startWindow.date()
+            print("\n")
+            print(startWindow)
+            print(type(startWindow))
+            print(endWindow)
+            print(type(endWindow))
+            print("\n")
+    except:
+        print("EXCEPT CONDITION2")
+        getToday=datetime.datetime.today()
+        getTomorrow=datetime.datetime.today()+timedelta(days=1)
+        endWindow=getToday.date()
+        startWindow=getTomorrow.date()
+        print(startWindow)
+        print(type(startWindow))
+        print(endWindow)
+        print(type(endWindow))
 
     i = 0
     while(i < len(rentedBikes)):
@@ -385,8 +507,15 @@ def browse(startWindow=datetime.datetime.today(),
                 bikesToRemove.append(rentedBikes[i].bike_id)
         i += 1
 
+    if not form_b.submit.data :
+        bikes = Bikes.query.filter_by(shop_id="1").all()
+        defaultflag = True
+
     # if the start date is bigger than the end date, then no bikes should
     # be shown to the user
+    print("before checking dates:")
+    print(startWindow)
+    print(endWindow)
     if(startWindow > endWindow):
         bikes = []
     # remove the bikes that will be rented in the given time
@@ -405,6 +534,7 @@ def browse(startWindow=datetime.datetime.today(),
 
     session['savedChoices'] =filterListForDisplay
 
+
     # now the only bikes shown to the user are the ones they can actually rent
     return render_template("browse.html",
                             disableForm=form_c,
@@ -412,7 +542,8 @@ def browse(startWindow=datetime.datetime.today(),
                             form=form_a,
                             data=[bikes,bikeTypes,rentalRates,
                                   startWindow,endWindow,
-                                  filterListForDisplay]) # redirect to the bike search page, giving all the data
+                                  filterListForDisplay,
+                                  defaultflag]) # redirect to the bike search page, giving all the data
 
 
 # OLD version of bikePage
@@ -422,8 +553,16 @@ def browse(startWindow=datetime.datetime.today(),
 #     data = Bike_Types.query.all()[0]#(brand='Voodoo')
 #     return render_template("bikePage.html", form=form) # redirect to the bike search page
 
-
-
+# ****************************************************************************************************************************************
+#
+# '||       ||  '||              '||''|.
+#  || ...  ...   ||  ..    ....   ||   ||  ....     ... .   ....
+#  ||'  ||  ||   || .'   .|...||  ||...|' '' .||   || ||  .|...||
+#  ||    |  ||   ||'|.   ||       ||      .|' ||    |''   ||
+#  '|...'  .||. .||. ||.  '|...' .||.     '|..'|'  '||||.  '|...'
+#                                                 .|....'
+#
+# ****************************************************************************************************************************************
 @app.route('/bikePage/',methods=['GET', 'POST'])
 def bikePage():
     brand = request.args.get('brand', default = 'BRAND', type = str)
