@@ -267,7 +267,7 @@ body {
   .sidebar {padding-top: 15px;}
   .sidebar a {font-size: 18px;}
 }
-=======
+
 @media screen and (min-width: 100px) and (max-width: 1240px)
 {
   .left-side-box {
@@ -489,6 +489,7 @@ a:hover
 
 /* --------------------------------------------------- BIKE BOX STYLES END ----------------*/
 
+/* --------------------------------------------------- BROWSE PAGE STYLES START -----------*/
 body {
   font-family: "Lato", sans-serif;
 }
@@ -547,6 +548,83 @@ body {
   padding-left: 50px;
   /*float: right;*/
 }
+.hiddenDiv
+{
+  display: inline-block;
+  /*//visibility: hidden;*/
+  /*//height: 0;*/
+  /*//width: 0;*/
+}
+
+.delete
+{
+  /*background-color: #FFFFFF; /* Green */
+  background-color: rgba(34,34,34,1);
+  border: none;
+  color: white;
+  border-radius: 5px;
+  vertical-align: text-bottom;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.filterTagArea
+{
+  margin-top: 5px;
+  /*padding: 5px;
+  background-color: #ff7f00;*/
+}
+/* darDivs are used for the filter tags and the 'displaying x bikes' areas */
+.darkDiv
+{
+  padding: 5px;
+  background-color: rgba(34,34,34,1);
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+  display: inline-block;
+  vertical-align: bottom;
+  text-align: center;
+}
+
+.darkDiv2
+{
+  padding: 5px;
+  background-color: rgba(34,34,34,1);
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+  display: inline-block;
+  vertical-align: text-top;
+  text-align: center;
+}
+
+.filterTag
+{
+  display: inline-block;
+  vertical-align: middle;
+  margin: 10px 0;
+  /*display: inline-block;*/
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #ff7f00;
+}
+
+.notfound /*for the display message when no bike was found given the chosen filters */
+{
+  font-size: 30px;
+  top: 350px;
+  left: 36%;
+  position: absolute;
+}
+
+/* --------------------------------------------------- BROWSE PAGE STYLES END -----------*/
 
 /* ---------------------------------------- INDIVIDUAL BIKE PAGE STYLES ----------------------------------- */
 

@@ -52,8 +52,6 @@
                              <b>Shop</b>
                           </a>
                           <ul class="collapse list-unstyled" id="shopSubmenu">
-
-
                               {{ filterForm.hidden_tag() }}
                                   {{ filterForm.shopChoice }}
                               <!-- <div class="shopRadio">
@@ -141,13 +139,7 @@
                           {{ filterForm.submit(class="btn btn-outline-info", id="bikeSearchButton") }}
                         </div>
                     </ul>
-
-
                   </form>
-
-
-
-
               </nav>
           </div>
         </div>
@@ -190,8 +182,88 @@
   </div>
   <!-- //////////////////// END ROW DIV \\\\\\\\\\\\\\\\\\\\\\\ -->
 
-{# /////////////////////// BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
+{% if data[5] | length > 0 %}
+  <div class="filterTagArea">
+    <p class="darkDiv">Applied Filters:</p>
+      {% for key, value in data[5].items() %}
+          <div class="filterTag">
+            {{key}} : {{value}}
+            <form class="hiddenDiv" method="POST" action="">
+              {% if key == "Shop" %}
+                <div id="delete">
+                  {{ disableForm.Shop(class="delete", id="delete") }}
+                </div>
 
+                {% elif key == "Type" %}
+                  <div id="delete">
+                    {{ disableForm.Type(class="delete", id="delete") }}
+                  </div>
+
+                {% elif key == "Age" %}
+                  <div id="delete">
+                    {{ disableForm.Age(class="delete", id="delete") }}
+                  </div>
+
+                {% elif key == "Colour" %}
+                  <div id="delete">
+                    {{ disableForm.Colour(class="delete", id="delete") }}
+                  </div>
+
+                {% elif key == "Brand" %}
+                  <div id="delete">
+                    {{ disableForm.Brand(class="delete", id="delete") }}
+                  </div>
+
+              {% endif %}
+
+            </form>
+          </div>
+      {% endfor %}
+
+<script>
+// $(document).ready(function() {
+//     $('#delete').click(function() {
+//       alert(1);
+//       console.log("clicked");
+//       $.ajax({
+//           url: "/browse",
+//           type: "POST",
+//           contentType: "application/json;charset=UTF-8",
+//           dataType: "json",
+//           data: JSON.stringify({html_data: "hi"}),
+//           success: function(response) {
+//               console.log(response);
+//           },
+//       });
+//     });
+// });
+// $("div.hiddenDiv").on("click", function()
+// {
+//   console.log("clicked");
+//   $.ajax({
+//       url: "/browse",
+//       type: "POST",
+//       contentType: "application/json;charset=UTF-8",
+//       dataType: "json",
+//       data: JSON.stringify({html_data: data[5]}),
+//       success: function(response) {
+//           console.log(response);
+//       },
+//   });
+// });
+</script>
+
+  </div>
+{% endif %}
+
+
+{# /////////////////////// BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
+    {% if data[0] | length > 0 %}
+      {% if data[0] | length == 1 %}
+          <p class="darkDiv2">Displaying {{data[0] | length}} bicycle:</p>
+        {% else %}
+          <p class="darkDiv2">Displaying {{data[0] | length}} bicycles:</p>
+      {% endif %}
       <div class="bike-grid">
          {% for bike in data[0] %}
 
@@ -224,6 +296,13 @@
          {% endfor %}
 
       </div>
+
+      {% else %}
+      <div class="notfound">
+        <p>No bikes found using selected filters</p>
+      </div>
+
+    {% endif %}
 
 {# /////////////////////// END OF BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
 
