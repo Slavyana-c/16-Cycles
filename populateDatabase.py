@@ -93,24 +93,28 @@ def addShops():
 def addIndividualBikes():
     print("Now Adding invididual bikes")
     numOfBikesToAdd = 72 # so we get one of every bike in the store
-    numberOfShops = 3
+    numberOfShops = 3  # every store we have
+
+    # get all ID's
     bikeIDs = []
     allBikes = models.Bike_Types.query.all()
     for bike in allBikes:
         bikeIDs.append(bike.id)
 
+    # get all shops
     shopIDs = []
     allShops = models.Shops.query.all()
     for shop in allShops:
         shopIDs.append(shop.id)
 
+    # create the initial bikes, simulating how many times they have been rented in the past
     for shopID in range(numberOfShops):
         for i in range(numOfBikesToAdd):
             daysUsed = random.randint(10,100)
             timesRented = int(daysUsed / (random.randint(1,5)))
             timesRepaired = random.randint(0,10)
             newBike = models.Bikes(days_used=daysUsed,times_rented=timesRented,times_repaired=timesRepaired,available=True,bike_type_id=bikeIDs[i],shop_id=shopIDs[shopID])
-            print("Adding Bike: ",bikeIDs[i],",",shopIDs[shopID],"...")
+            print("Adding Bike: " + str(bikeIDs[i]) + "," + str(shopIDs[shopID]))
             db.session.add(newBike)
 
     db.session.commit()
@@ -150,7 +154,7 @@ def addStaff():
     addresses = ["70 Royal Park Road","The Tannery Flat 31","Charles Morris","Leodis","Liberty Dock","Wokefield"]
 
     for i in range(len(names)):
-        print("Adding staff member" + names[i] + " " + secondNames[i])
+        print("Adding staff member " + names[i] + " " + secondNames[i])
         # adding all the members of staff with a hashed password, they are all the same for testing
         # purposes. All members of staff are people from our project
         newStaff = models.Staff(email=names[i] + secondNames[i] + "@gmail.com",
@@ -169,30 +173,29 @@ def addUsersAndRentals():
     # add all the users
     numberOfUsers = 72*3 # one user for each bike
 
-    names = ["Tom","Alice","Peter","Gabriel","Tohfah","Della","June","Matthew","Conor","Thomas","James","Stephen","Jane","Richard","Lisa","Paul","Allen","Sam","Jennifer","Jane","Imogen","Rowena"]
-    secondNames = ["Alderson","Carey","Yates","Robinson","Faucher","Fuhn","Amis","McNiel","Hacket","Calle","Court","Smith","Birch","Parkes","Dilys","Liddle","King","Hearne","Thor"]
+    names = ["Tom","Alice","Peter","Gabriel","Tohfah","Della","June","Matthew","Conor","Thomas","James","Stephen","Max","Mac","Clarissa","Jane","Richard","Lisa","Paul","Allen","Sam","Jennifer","Jane","Imogen","Rowena"]
+    secondNames = ["Alderson","Carey","Yates","Robinson","Faucher","Acaster","Brimm","Gunn","DeMarco","Beckett","Fuhn","Amis","McNiel","Hacket","Calle","Court","Smith","Birch","Parkes","Dilys","Liddle","King","Hearne","Thor"]
     for i in range(numberOfUsers):
         firstName = random.choice(names)
         secondName = random.choice(secondNames)
-        print("Adding " + firstName + " " + secondName)
+        print("i = " + str(i) + " Adding " + firstName + " " + secondName)
         newUser = models.Users(email=firstName + secondName + str(random.randint(0,10000)) + "@gmail.com",
                               password=bcrypt.generate_password_hash("password").decode('utf-8'),
                               contact_number="07" + str(random.randint(100000000,999999999)),
                               times_rented=random.randint(0,10))
         db.session.add(newUser)
-        db.session.commit()
 
         # add a random payment method to each user
-        newPaymentMethod = models.Payment_Methods(  card_number = bcrypt.generate_password_hash(str(random.randint(1111111111111111,9999999999999999)).decode('utf-8'),
-                                                    expiration_month = bcrypt.generate_password_hash(str(random.randint(1,12))).decode('utf-8'),
-                                                    expiration_year = bcrypt.generate_password_hash(str(random.randint(2019,2023))).decode('utf-8'),
+        newPaymentMethod = models.Payment_Methods(  card_number = bcrypt.generate_password_hash(str(random.randint(1111111111111111,9999999999999999))).decode('utf-8'),
+                                                    expiration_month = str(random.randint(1,12)),
+                                                    expiration_year = str(random.randint(2019,2023)),
                                                     cvv = bcrypt.generate_password_hash(str(random.randint(111,999))).decode('utf-8'),
                                                     user_id = i+1)
         db.session.add(newPaymentMethod)
-        db.session.commit()
+    db.session.commit()
     time.sleep(2)
 
-    allBikes = models.Bike_Types.query.all()
+    allBikes = models.Bikes.query.all()
     allRentalRates = models.Rental_Rates.query.all()
     numberOfBikes = 72*3
 
@@ -210,17 +213,19 @@ def addUsersAndRentals():
 
             # find the price of the order from the rental rates
             bikeID = allBikes[i].id
+            bikeTypeID = allBikes[i].bike_type_id
+
             thisRentalRate = -1
             for rentalRate in allRentalRates:
-                if(rentalRate.bike_type_id == bikeID):
+                if(rentalRate.bike_type_id == bikeTypeID):
                     thisRentalRate = rentalRate
 
             price = calculateRentPrice(daysToRent,thisRentalRate)
 
             # add the order for the customer
-            print("Adding order " + str(year) + "/" + str(month) + "/" + str(day) + ": " + str(price))
-            print("Renting bikeID: " + bikeID + " with rental rates " + rentalRate.daily_rate + ":" + rentalRate.weekly_rate + ":" + rentalRate.monthly_rate)
-            print("For " + daysToRent + " days")
+            print("i = " + str(i) + " Adding order " + str(year) + "/" + str(month) + "/" + str(day) + ": " + str(price))
+            print("Renting bikeID: " + str(bikeID) + " with rental rates " + str(rentalRate.daily_rate) + ":" + str(rentalRate.weekly_rate) + ":" + str(rentalRate.monthly_rate))
+            print("For " + str(daysToRent) + " days")
 
             # add the order
             newOrder = models.Orders(date=startDate,
