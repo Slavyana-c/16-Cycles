@@ -90,6 +90,19 @@ class AppliedFilters(FlaskForm):
 	brandChoice  = RadioField('Brand', choices=[('Apollo','Apollo'),('Boardman','Boardman'),('Carrera','Carrera'),('Elswick','Elswick'),('Gtech','Gtech'),('Pendleton','Pendleton'),('Raleigh','Raleigh'),('Voodoo','Voodoo')])
 	submit = SubmitField('Apply Filters')
 
+class DisableFilters(FlaskForm):
+	# shopChoice = RadioField('Extend Date', validators=[DataRequired()])
+	# Shop   = RadioField('Shop', choices=[('shop','shop')], default='shop')
+	# Type   = RadioField('Type', choices=[('type','type')])
+	# Age    = RadioField('Age', choices=[('age','age')])
+	# Colour = RadioField('Colour', choices=[('colour','colour')])
+	# Brand  = RadioField('Brand', choices=[('brand','brand')])
+	Shop = SubmitField('X')
+	Type = SubmitField('X')
+	Age = SubmitField('X')
+	Colour = SubmitField('X')
+	Brand = SubmitField('X')
+
 class ExtendDate(FlaskForm):
 	new_end_date = DateField('Extend Date', validators=[DataRequired()])
 	submit = SubmitField('Update Date')
