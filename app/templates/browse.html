@@ -259,6 +259,11 @@
 
 {# /////////////////////// BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
     {% if data[0] | length > 0 %}
+      {% if data[0] | length == 1 %}
+          <p class="darkDiv2">Displaying {{data[0] | length}} bicycle:</p>
+        {% else %}
+          <p class="darkDiv2">Displaying {{data[0] | length}} bicycles:</p>
+      {% endif %}
       <div class="bike-grid">
          {% for bike in data[0] %}
 

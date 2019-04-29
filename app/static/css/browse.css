@@ -580,7 +580,7 @@ ul {
   /*padding: 5px;
   background-color: #ff7f00;*/
 }
-
+/* darDivs are used for the filter tags and the 'displaying x bikes' areas */
 .darkDiv
 {
   padding: 5px;
@@ -590,6 +590,18 @@ ul {
   color: white;
   display: inline-block;
   vertical-align: bottom;
+  text-align: center;
+}
+
+.darkDiv2
+{
+  padding: 5px;
+  background-color: rgba(34,34,34,1);
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+  display: inline-block;
+  vertical-align: text-top;
   text-align: center;
 }
 
