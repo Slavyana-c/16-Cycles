@@ -63,7 +63,7 @@
 
       <div class="bike-name-section">
           <h2>16 Cycles</h2>
-          <form action="{{ url_for('payForm', brand=data.brand, model = data.model, bike_id = data.id, rentDays = rentInfo[2], rentCost = rentInfo[0], rentDateStart = rentStart, rentDateEnd = rentEnd) }}" method="post">
+          <form action="{{ url_for('payForm', brand=data.brand, model = data.model, bike_id = data.id, rentDays = rentInfo[2], rentCost = rentInfo[0], rentDateStart = rentStart, rentDateEnd = rentEnd, itemId=itemId) }}" method="post">
                 <input class="btn btn-details" type="submit" value="RENT" />
           </form>
       </div>
@@ -133,6 +133,10 @@
         <tr>
             <th>Days To Rent</th>
             <td>{{rentInfo[2]}}</td>
+        </tr>
+        <tr>
+            <th>Shop</th>
+            <td>{{shop.location_name}}</td>
         </tr>
         <tr>
         </tr>

@@ -148,7 +148,7 @@
         {# ----------------------------  SORT MENU -------------------------- #}
         <div class="sort-box">
 
-          {# <form method="POST" action="{{ url_for('browse', start=data[1][bike.bike_type_id].brand, end=data[1][bike.bike_type_id].model,id = bike.id) }}"> #}
+          {# <form method="POST" action="{{ url_for('browse', start=data[1][bike.bike_type_id - 1].brand, end=data[1][bike.bike_type_id - 1].model,id = bike.id) }}"> #}
           <form method="POST" action="">
                   {{ form.hidden_tag() }}
             <div class="form-group">
@@ -266,10 +266,10 @@
 
               <div class="bike-photo-section">
                 <img class="bike-photo"
-                src={{data[1][bike.bike_type_id-1].image}} alt="Bicyle">
+                src={{data[1][bike.bike_type_id - 1].image}} alt="Bicyle">
               <div class="vignette"></div>
               <div class="bike-price-label">
-                 {{ data[2][bike.bike_type_id-1].daily_rate }} / day
+                 {{ data[2][bike.bike_type_id - 1].daily_rate }} / day
               </div>
 
             </div>
@@ -277,10 +277,10 @@
               <hr class="seperator">
 
               <div class="bike-name-section">
-                {{ data[1][bike.bike_type_id-1].brand  + " " + data[1][bike.bike_type_id-1].model}}
+                {{ data[1][bike.bike_type_id - 1].brand  + " " + data[1][bike.bike_type_id - 1].model}}
                 <!-- <button class="btn btn-details" type="submit">Details</button> -->
                 <!-- rentStartDate=data[3],rentEndDate=data[4] -->
-                <form action="{{ url_for('bikePage', brand=data[1][bike.bike_type_id].brand, model = data[1][bike.bike_type_id].model, bike_id = data[1][bike.bike_type_id].id, rentStartDate=data[3],rentEndDate=data[4] ) }}" method="post">
+                <form action="{{ url_for('bikePage', brand=data[1][bike.bike_type_id - 1].brand, model = data[1][bike.bike_type_id - 1].model, bike_id = data[1][bike.bike_type_id - 1].id, item_id = bike.id, rentStartDate=data[3],rentEndDate=data[4] ) }}" method="post">
                       <input class="btn btn-details" type="submit" value="Details" />
                 </form>
 
