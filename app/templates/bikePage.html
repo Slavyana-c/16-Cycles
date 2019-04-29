@@ -71,7 +71,8 @@
     </div>
 
     <div class="bike-description">
-        <h2>{{data.brand + " " + data.model}}</h2><br>
+      <h2>{{data.brand + " " + data.model}}</h2><br>
+      <div class="bike-description-table">
         <h3> Bike Infomation</h3>
         <table style="width:100%">
         <tr>
@@ -107,7 +108,9 @@
             <td>{{data.times_rented}}</td>
         </tr>
         </table>
+      </div>
 
+      <div class="bike-description-table">
         <h3> Rental Info</h3>
         <table  style="width:100%">
         <tr>
@@ -145,6 +148,7 @@
             <td>{{rentInfo[0]}}</td>
         </tr>
         </table>
+      </div>
     </div>
 
 {# /////////////////////// END OF INDIVIDUAL BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}

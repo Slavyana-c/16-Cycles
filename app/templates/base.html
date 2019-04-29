@@ -34,13 +34,15 @@
           <li><a href="{{ url_for('home') }}">Home</a></li>
           <li><a href="{{ url_for('about') }}">About</a></li>
           <li><a href="{{ url_for('browse') }}">Bikes</a></li>
+          <li><a href="{{ url_for('about', _anchor='map') }}">Locations</a></li>
+
         </ul>
         <ul class="nav navbar-nav navbar-right">
 					{% if current_user.is_authenticated %}
 						<li><a href="{{ url_for('account') }}"><span class="glyphicon glyphicon-cog"></span> Account</a></li>
 						<li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
 					{% else %}
-	          <li><a href="{{ url_for('sign_up') }}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+	          <li><a href="{{ url_for('signUp') }}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
 	          <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 					{% endif %}
 				</ul>

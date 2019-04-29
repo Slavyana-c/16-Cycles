@@ -1,9 +1,13 @@
-@media screen and (min-width: 100px) and (max-width: 1240px)
+@media screen and (max-width: 1240px)
 {
   .left-side-box {
     top: 260px;
     background-color: rgba(255,0,0,0.2);
   }
+  .row, .button {
+    width: 100%;
+  }
+
 }
 
 /* --------------------------------------------------- MENU STYLES ----------------*/
@@ -12,30 +16,50 @@
     2. Filter Menu Styles
  */
 
-/* ------------------ Sort Menu Styles ------------- */
-.sort-label{
-  float: left;
-  padding-right: 25px;
-}
+ /* ------------------ Sort Menu Styles ------------- */
+ .sort-label{
+   float: left;
+   padding-right: 25px;
+ }
 
-.row{
-  background-color: rgba(0,0,0,0.2);
-}
+ .row{
+   color: lightgrey;
+   background-color: rgba(34,34,34,1);
+   width: auto;
+ }
 
-.dateselection{
-  float: left;
-  padding: 10px;
-}
+ .dateselection{
+   float: left;
+   padding: 10px;
+ }
 
-.form-group{
-  float: left;
-  padding-right: 25px;
-}
+ .form-group{
+   float: left;
+   padding-right: 25px;
+ }
 
-.center{
-  margin-top: 25px;  /*centers the submit button for bike search*/
-}
-/* ------------------ Sort Menu Styles END ------------- */
+ .btn-outline-info
+ {
+   background-color: #ff7f00; /* orange button */
+
+   border: none;
+   color: white; /* TEXT colour */
+   text-align: center;
+   text-decoration: none;
+   display: inline-block;
+   font-size: 14px;
+   border-radius: 0 !important;
+ }
+
+ a:hover
+ {
+     text-decoration: none;
+ }
+
+ .center{
+   margin-top: 25px;  /*centers the submit button for bike search*/
+ }
+ /* ------------------ Sort Menu Styles END ------------- */
 
 
 
@@ -80,7 +104,6 @@
 
   margin-left: 0;
   padding: 10px;
-  padding-left: 50px;
   outline:none;
   transition: 0.5s;
 }
@@ -198,9 +221,6 @@
 
 /* --------------------------------------------------- BIKE BOX STYLES END ----------------*/
 
-body {
-  font-family: "Roboto", sans-serif;
-}
 
 .sidebar {
   height: 100%;
@@ -263,9 +283,13 @@ body {
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
+@media screen and (max-height: 450px) and (max-width: 450px) {
   .sidebar {padding-top: 15px;}
   .sidebar a {font-size: 18px;}
+  .form-group{width: 100%;}
+  .dateselection{width: 10%;}
+  .menu-toggle{width:100%;}
+
 }
 =======
 @media screen and (min-width: 100px) and (max-width: 1240px)
@@ -283,50 +307,7 @@ body {
     3. Individual Bike Page Styles (/browseBikes)
  */
 
-/* ------------------ Sort Menu Styles ------------- */
-.sort-label{
-  float: left;
-  padding-right: 25px;
-}
 
-.row{
-  color: lightgrey;
-  background-color: rgba(34,34,34,1);
-  width: auto;
-}
-
-.dateselection{
-  float: left;
-  padding: 10px;
-}
-
-.form-group{
-  float: left;
-  padding-right: 25px;
-}
-
-.btn-outline-info
-{
-  background-color: #ff7f00; /* orange button */
-
-  border: none;
-  color: white; /* TEXT colour */
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 14px;
-  border-radius: 0 !important;
-}
-
-a:hover
-{
-    text-decoration: none;
-}
-
-.center{
-  margin-top: 25px;  /*centers the submit button for bike search*/
-}
-/* ------------------ Sort Menu Styles END ------------- */
 
 
 
@@ -365,13 +346,9 @@ a:hover
 .menu-toggle{
   float: left;
   flex-wrap: wrap;
-
   width: 250px;
   height: 60px;
-
-  margin-left: 0;
   padding: 10px;
-  padding-left: 50px;
   outline:none;
   transition: 0.5s;
 }
@@ -489,9 +466,7 @@ a:hover
 
 /* --------------------------------------------------- BIKE BOX STYLES END ----------------*/
 
-body {
-  font-family: "Lato", sans-serif;
-}
+
 
 .sidebar {
   height: 100%;
@@ -662,15 +637,19 @@ body {
   .sidebar a {font-size: 18px;}
   .row {width: fit-content;}
   .individual-bike-photo{width: 10%}
+  .bike-description{width: 100%;}
+  .bike-description-table{width: 100%;}
 }
 
-@media screen and (max-width: 1300px), screen and (max-device-width: 1300px)
+@media screen and (max-width: 1000px), screen and (max-device-width: 1000px)
 {
   .bike-description
   {
     float: left;
-    margin-left: 20px;
+    margin: 10px;
   }
+  .bike-description{width: 100%;}
+  .bike-description-table{width: 100%;}
   .individual-bike-box
   {
     width: -webkit-fill-available;

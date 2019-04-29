@@ -240,13 +240,13 @@ def account():
     past_rentals = []
     current_types = []
     past_types = []
-    
+
     for order in user_orders:
         rented_bike = order.rented_bikes[0]
         bike_item = Bikes.query.filter_by(id=rented_bike.bike_id).first()
         print(bike_item.bike_type_id)
         bike_type = Bike_Types.query.filter_by(id=bike_item.bike_type_id).first()
-            
+
         if rented_bike.end_date >= today:
             current_rentals.append(rented_bike)
             current_types.append(bike_type)
@@ -256,7 +256,7 @@ def account():
 
 
     return render_template("account.html", len_curr_rentals=len(current_rentals), len_past_rentals=len(past_rentals),
-     form=form, past_rentals=past_rentals, 
+     form=form, past_rentals=past_rentals,
      current_rentals=current_rentals, current_types=current_types, past_types=past_types) # redirect to the account page
 
 @app.route('/changePassword')
@@ -264,8 +264,8 @@ def changePassword():
     form = PasswordChangeForm()
     return render_template("changePassword.html", form=form) # redirect to the change password page
 
-@app.route('/sign_up', methods=['GET', 'POST'])
-def sign_up():
+@app.route('/signUp', methods=['GET', 'POST'])
+def signUp():
 	if current_user.is_authenticated:
 		return redirect(url_for('home'))
 	form = NewUserForm()
@@ -279,7 +279,7 @@ def sign_up():
 		flash('Account created. You are now able to log in', 'success')
 		return redirect(url_for('login'))
 
-	return render_template("sign_up.html", form=form)
+	return render_template("signUp.html", form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -431,13 +431,13 @@ def payForm():
         # Save order in database
         datetimeStart = datetime.datetime.strptime(rentStartDate, '%d/%m/%Y')
         datetimeEnd = datetime.datetime.strptime(rentEndDate, '%d/%m/%Y')
-        
+
         order = Orders(total_price=rentCost, user_id=current_user.id)
         db.session.add(order)
         db.session.commit()
 
         rental = Rented_Bikes(start_date=datetimeStart, end_date=datetimeEnd, bike_id=itemId, price=rentCost, order_id=order.id)
-        
+
         db.session.add(rental)
         user = Users.query.filter_by(id=current_user.id).first()
         user.times_rented += 1
@@ -445,7 +445,7 @@ def payForm():
         bike = Bikes.query.filter_by(id=itemId).first()
         bike.times_rented += 1
         bike.days_used += rentDays
-        
+
         bike_type = Bike_Types.query.filter_by(id=bikeID).first()
         bike_type.times_rented += 1
 
@@ -453,14 +453,14 @@ def payForm():
 
         qr(current_user.email, brand, model, bikeID, rentStartDate, rentEndDate, rentCost)
         return redirect(url_for('browse'))
-        
+
 
     form = PaymentForm()
 
     if form.validate_on_submit():
         # Save payment method, if selected
         if(form.save.data == True):
-            	
+
                 date = form.expDate.data.split("/")
                 month_hash = bcrypt.generate_password_hash(date[0]).decode('utf-8')
                 year_hash = bcrypt.generate_password_hash(date[1]).decode('utf-8')
@@ -470,18 +470,18 @@ def payForm():
                 payment = Payment_Methods(card_number=card_num_hash, cvv=cvv_hash, expiration_month=month_hash, expiration_year=year_hash, user_id=current_user.id)
                 db.session.add(payment)
                 db.session.commit()
-        
+
         # Save order in database
         # Save order in database
         datetimeStart = datetime.datetime.strptime(rentStartDate, '%d/%m/%Y')
         datetimeEnd = datetime.datetime.strptime(rentEndDate, '%d/%m/%Y')
-        
+
         order = Orders(total_price=rentCost, user_id=current_user.id)
         db.session.add(order)
         db.session.commit()
 
         rental = Rented_Bikes(start_date=datetimeStart, end_date=datetimeEnd, bike_id=itemId, price=rentCost, order_id=order.id)
-        
+
         db.session.add(rental)
         user = Users.query.filter_by(id=current_user.id).first()
         user.times_rented += 1
@@ -489,7 +489,7 @@ def payForm():
         bike = Bikes.query.filter_by(id=itemId).first()
         bike.times_rented += 1
         bike.days_used += rentDays
-        
+
         bike_type = Bike_Types.query.filter_by(id=bikeID).first()
         bike_type.times_rented += 1
 

@@ -5,7 +5,7 @@
 	<form method="POST" action="">
 		{{ form.hidden_tag() }}
 		<fieldset class="form-group">
-			<legend class="border-bottom mb-4">Log In</legend>
+			<legend class="border-bottom mb-4">Sign Up</legend>
 
 			<div class="form-group">
 				{{ form.email.label(class="form-control-label") }}
@@ -18,6 +18,21 @@
 					</div>
 				{% else %}
 					{{ form.email(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
+
+			<div class="form-group">
+				{{ form.contact_number.label(class="form-control-label") }}
+
+				{% if form.contact_number.errors %}
+					{{ form.contact_number(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.contact_number.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% else %}
+					{{ form.contact_number(class="form-control form-control-lg") }}
 				{% endif %}
 			</div>
 
@@ -35,25 +50,28 @@
 				{% endif %}
 			</div>
 
-
+			<div class="form-group">
+				{{ form.confirm_password.label(class="form-control-label") }}
+				{% if form.confirm_password.errors %}
+					{{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.confirm_password.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% else %}
+					{{ form.confirm_password(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
 		</fieldset>
-		<div class="form-check" style="margin-bottom: 10px;">
-			{{ form.remember(class="form-check-input") }}
-			{{ form.remember.label(class="form-check-label") }}
-		</div>
 		<div class="form-group">
 			{{ form.submit(class="btn btn-outline-info") }}
-			<small class="text-muted ml-2">
-			</small>
 		</div>
 	</form>
 	<div class="border-top pt-3">
 		<small class="text-muted">
-			<a href="{{ url_for('resetPassword') }}">Forgot Password?</a></br></br>
-
-			Don't have an account? <a class="ml-2" href="{{ url_for('signUp') }}">Register Here!</a>
+			Already have an account? <a class="ml-2" href="{{ url_for('login') }}">Log In</a>
 	</div>
-
 </div>
 
 {% endblock %}
