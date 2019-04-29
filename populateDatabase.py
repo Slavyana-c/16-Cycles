@@ -1,10 +1,34 @@
 from config import SQLALCHEMY_DATABASE_URI
-from app import db, models
+from app import db, models, bcrypt
 import os.path
 import random
 import datetime
 from datetime import timedelta
 import time
+
+
+def calculateRentPrice(numberOfDays,rentalRates):
+    # we have a start date
+    # and an end date
+    # so we can find out the number of days
+    # we have a a daily rate, weekly rate and monthly rate
+
+    # we round the rental rate to the nearest 10p
+    # so it isn't as bad for the user
+
+    # less than a week case
+    if(numberOfDays < 7):
+        # return the number of days * the weekly raet
+        return rentalRates.daily_rate * numberOfDays
+
+    # less than a month case
+    if(numberOfDays < 28):
+        # we divide the weekly rate by seven and multiply my number of days
+        return round((rentalRates.weekly_rate/7) * numberOfDays,1)
+
+    # more than a month
+    # so we take the monthly rate / 28 and multiply by number of days
+    return round((rentalRates.monthly_rate/28) * numberOfDays,1)
 
 
 def readFromCSV():
@@ -55,9 +79,8 @@ def addShops():
     names = ["Leeds University Union","Headingley","City Centre"]
     addresses = ["Lifton Place, Leeds, LS2 9JZ","2 St Michael's Road, Leeds LS6 3AW","Unit 1, New Station St, Leeds LS1 5DE"]
     numbers = ["01133801400","01132785836","01132469132"]
-    latitudes = [53.807348,53.8193,53.7956]
-    longitudes = [-1.558362,-1.5773,-1.5444]
-
+    latitudes = ["53.806576","53.789944","53.796104"]
+    longitudes = ["-1.555882","-1.560632","-1.547351"]
     for i in range(3):
         print("Adding Shop: ",names[i])
         newShop = models.Shops(location_name=names[i],
@@ -71,7 +94,8 @@ def addShops():
 
 def addIndividualBikes():
     print("Now Adding invididual bikes")
-
+    numOfBikesToAdd = 72 # so we get one of every bike in the store
+    numberOfShops = 3
     bikeIDs = []
     allBikes = models.Bike_Types.query.all()
     for bike in allBikes:
@@ -82,9 +106,14 @@ def addIndividualBikes():
     for shop in allShops:
         shopIDs.append(shop.id)
 
-    for i in range(10):
-        newBike = models.Bikes(days_used=0,times_rented=0,times_repaired=0,available=True,bike_type_id=random.choice(bikeIDs),shop_id=random.choice(shopIDs))
-        db.session.add(newBike)
+    for shopID in range(numberOfShops):
+        for i in range(numOfBikesToAdd):
+            daysUsed = random.randint(10,100)
+            timesRented = int(daysUsed / (random.randint(1,5)))
+            timesRepaired = random.randint(0,10)
+            newBike = models.Bikes(days_used=daysUsed,times_rented=timesRented,times_repaired=timesRepaired,available=True,bike_type_id=bikeIDs[i],shop_id=shopIDs[shopID])
+            print("Adding Bike: ",bikeIDs[i],",",shopIDs[shopID],"...")
+            db.session.add(newBike)
 
     db.session.commit()
     time.sleep(2)
@@ -116,37 +145,100 @@ def addRentalRates():
     db.session.commit()
     time.sleep(2)
 
-def addRentedBikes():
+def addStaff():
 
-    # first of all add a user
-    #newUser = models.Users(email="jonathancharlesalderson@gmail.com",
-    #                       password="pass",
-    #                       contact_number="99",
-    #                       times_rented=0)
-    #db.session.add(newUser)
-    #db.session.commit()
-    #newRental = models.Rented_Bikes(start_date)
+    names = ["Jonathan","Matthew","Slavyana","Domantas","Ciaran","Andy"]
+    secondNames = ["Alderson","Cumber","Chervenkondeva","Dilys","Brennan","Parkes"]
+    addresses = ["70 Royal Park Road","The Tannery Flat 31","Charles Morris","Leodis","Liberty Dock","Wokefield"]
 
-
-    # then give the user an order
-    #newOrder = models.Orders(date=datetime.datetime.now(),
-    #                         total_price=50,
-    #                         user_id=1,
-    #                        )
-    #db.session.add(newOrder)
-    #db.session.commit()
-
-
-    print(datetime.datetime.now())
-    start = datetime.datetime(2019,3,26,1,1,1,1)
-    end = datetime.datetime(2019,3,29,1,1,1,1)
-
-    newRental = models.Rented_Bikes(start_date = start, end_date= end,price = 45,bike_id=4,order_id=1)
-    db.session.add(newRental)
+    for i in range(len(names)):
+        print("Adding staff member" + names[i] + " " + secondNames[i])
+        # adding all the members of staff with a hashed password, they are all the same for testing
+        # purposes. All members of staff are people from our project
+        newStaff = models.Staff(email=names[i] + secondNames[i] + "@gmail.com",
+                              password= bcrypt.generate_password_hash("password").decode('utf-8'),
+                              contact_number="07" + str(random.randint(100000000,999999999)),
+                              name=names[i] + " " + secondNames[i],
+                              address = addresses[i],
+                              admin=True,
+                              shop_id = (i+2)//2)
+        db.session.add(newStaff)
     db.session.commit()
+    time.sleep(2)
+
+def addUsersAndRentals():
+
+    # add all the users
+    numberOfUsers = 72*3 # one user for each bike
+
+    names = ["Tom","Alice","Peter","Gabriel","Tohfah","Della","June","Matthew","Conor","Thomas","James","Stephen","Jane","Richard","Lisa","Paul","Allen","Sam","Jennifer","Jane","Imogen","Rowena"]
+    secondNames = ["Alderson","Carey","Yates","Robinson","Faucher","Fuhn","Amis","McNiel","Hacket","Calle","Court","Smith","Birch","Parkes","Dilys","Liddle","King","Hearne","Thor"]
+    for i in range(numberOfUsers):
+        firstName = random.choice(names)
+        secondName = random.choice(secondNames)
+        print("Adding " + firstName + " " + secondName)
+        newUser = models.Users(email=firstName + secondName + str(random.randint(0,10000)) + "@gmail.com",
+                              password=bcrypt.generate_password_hash("password").decode('utf-8'),
+                              contact_number="07" + str(random.randint(100000000,999999999)),
+                              times_rented=random.randint(0,10))
+        db.session.add(newUser)
+        db.session.commit()
+    time.sleep(2)
+
+    allBikes = models.Bike_Types.query.all()
+    allRentalRates = models.Rental_Rates.query.all()
+    numberOfBikes = 72*3
+
+    # making it so that every user has one 'order' in the system.
+    # that one order contains exactly one bike.
+    # this is so that the system is full of users and we can make
+    # graphs.
+    for i in range(numberOfUsers):
+            year = 2019 # this year, so we can see how changing the dates effect things
+            month = random.randint(1,12)
+            day = random.randint(1,27)
+            startDate = datetime.date(year,month,day)
+            daysToRent = random.randint(5,70)
+            endDate = startDate + timedelta(days=daysToRent)
+
+            # find the price of the order from the rental rates
+            bikeID = allBikes[i].id
+            thisRentalRate = -1
+            for rentalRate in allRentalRates:
+                if(rentalRate.bike_type_id == bikeID):
+                    thisRentalRate = rentalRate
+
+            price = calculateRentPrice(daysToRent,thisRentalRate)
+
+            # add the order for the customer
+            print("Adding order " + str(year) + "/" + str(month) + "/" + str(day) + ": " + str(price))
+            print("Renting bikeID: " + bikeID + " with rental rates " + rentalRate.daily_rate + ":" + rentalRate.weekly_rate + ":" + rentalRate.monthly_rate)
+            print("For " + daysToRent + " days")
+
+            # add the order
+            newOrder = models.Orders(date=startDate,
+                                    total_price=price,
+                                    user_id=i+1,)
+
+            db.session.add(newOrder)
+
+            # add the rental for the customer
+            newRental = models.Rented_Bikes(start_date = startDate,
+                                            end_date= endDate,
+                                            price = price,
+                                            bike_id=bikeID,
+                                            order_id=i+1)
+            db.session.add(newRental)
+
+
+    db.session.commit()
+    time.sleep(2)
+
+
 
 addShops()
 addBikeTypes()
 addIndividualBikes()
 addRentalRates()
-addRentedBikes()
+addUsersAndRentals()
+addStaff()
