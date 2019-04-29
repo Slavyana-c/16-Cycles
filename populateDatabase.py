@@ -30,7 +30,6 @@ def calculateRentPrice(numberOfDays,rentalRates):
     # so we take the monthly rate / 28 and multiply by number of days
     return round((rentalRates.monthly_rate/28) * numberOfDays,1)
 
-
 def readFromCSV():
     bikeData = open("bikeSpreadsheet.csv").read()  # read from the database
     bikeData = bikeData.split(",") # split by commas
@@ -72,7 +71,6 @@ def addBikeTypes():
 
     db.session.commit()
     time.sleep(2)
-
 
 def addShops():
     # this function creates all the details for the stores
@@ -182,6 +180,15 @@ def addUsersAndRentals():
                               contact_number="07" + str(random.randint(100000000,999999999)),
                               times_rented=random.randint(0,10))
         db.session.add(newUser)
+        db.session.commit()
+
+        # add a random payment method to each user
+        newPaymentMethod = models.Payment_Methods(  card_number = bcrypt.generate_password_hash(str(random.randint(1111111111111111,9999999999999999)).decode('utf-8'),
+                                                    expiration_month = bcrypt.generate_password_hash(str(random.randint(1,12))).decode('utf-8'),
+                                                    expiration_year = bcrypt.generate_password_hash(str(random.randint(2019,2023))).decode('utf-8'),
+                                                    cvv = bcrypt.generate_password_hash(str(random.randint(111,999))).decode('utf-8'),
+                                                    user_id = i+1)
+        db.session.add(newPaymentMethod)
         db.session.commit()
     time.sleep(2)
 
