@@ -6,3 +6,4 @@ app/*.pyc
 .idea/workspace.xml
 /QtApplication/*/*.o
 app.db
+.~lock.*

@@ -595,14 +595,21 @@ ul {
 
 .darkDiv2
 {
+  margin-right: 5px;
   padding: 5px;
   background-color: rgba(34,34,34,1);
   border-radius: 5px;
   font-weight: bold;
   color: white;
-  display: inline-block;
+  display: inline;
   vertical-align: text-top;
   text-align: center;
+}
+
+.boldtext
+{
+  font-weight: bold;
+  display: inline;
 }
 
 .filterTag
@@ -623,6 +630,7 @@ ul {
   left: 36%;
   position: absolute;
 }
+
 
 /* --------------------------------------------------- BROWSE PAGE STYLES END -----------*/
 

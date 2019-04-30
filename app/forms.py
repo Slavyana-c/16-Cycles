@@ -73,9 +73,9 @@ class NewPasswordForm(FlaskForm):
 
 # form in the newTask.html
 class SelectDates(FlaskForm):
-	start_date = DateField('Rent Start Date', validators=[DataRequired()], default=datetime.datetime.now())
-	end_date = DateField('Rent End Date', validators=[DataRequired()], default=datetime.datetime.now()+timedelta(days=1))
-	submit = SubmitField('Search')
+	start_date = DateField('Rent Start Date', validators=[DataRequired()])
+	end_date = DateField('Rent End Date', validators=[DataRequired()])
+	submit = SubmitField('Select Date')
 	# VALIDATION DOESN'T WORK :(
 	def validate_date(form, end_date, start_date):
 	    if end_date.data < start_date.data:
@@ -83,7 +83,7 @@ class SelectDates(FlaskForm):
 
 class AppliedFilters(FlaskForm):
 	# shopChoice = RadioField('Extend Date', validators=[DataRequired()])
-	shopChoice   = RadioField('Shop', choices=[(1,'University'),(2,'Town'),(3,'Headingley')])
+	shopChoice   = RadioField('Shop', choices=[(1,'University'),(2,'Town'),(3,'Headingley')], default=1)
 	typeChoice   = RadioField('Type', choices=[('Road','Road'),('Mountain','Mountain'),('Hybrid','Hybrid'),('Electric','Electric')])
 	ageChoice    = RadioField('Age', choices=[('Adult','Adult'),('Child','Child')])
 	colourChoice = RadioField('Colour', choices=[('Blue','Blue'),('Red','Red'),('Grey','Grey'),('Black','Black'),('White','White'),('Brown','Brown')])

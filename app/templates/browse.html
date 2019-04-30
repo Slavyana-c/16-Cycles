@@ -165,6 +165,7 @@
                 <div class="dateselection center">
                   <!-- <button type="button" onclick="refreshBrowse();" name="search" id="bikeSearchButton">Search</button> -->
                   {{ form.submit(class="btn btn-outline-info", id="bikeSearchButton") }}
+                  <p class="bold small"> (resets the filters)</p>
 		            </div>
 
                 <!-- <div class="form-group">
@@ -220,39 +221,6 @@
           </div>
       {% endfor %}
 
-<script>
-// $(document).ready(function() {
-//     $('#delete').click(function() {
-//       alert(1);
-//       console.log("clicked");
-//       $.ajax({
-//           url: "/browse",
-//           type: "POST",
-//           contentType: "application/json;charset=UTF-8",
-//           dataType: "json",
-//           data: JSON.stringify({html_data: "hi"}),
-//           success: function(response) {
-//               console.log(response);
-//           },
-//       });
-//     });
-// });
-// $("div.hiddenDiv").on("click", function()
-// {
-//   console.log("clicked");
-//   $.ajax({
-//       url: "/browse",
-//       type: "POST",
-//       contentType: "application/json;charset=UTF-8",
-//       dataType: "json",
-//       data: JSON.stringify({html_data: data[5]}),
-//       success: function(response) {
-//           console.log(response);
-//       },
-//   });
-// });
-</script>
-
   </div>
 {% endif %}
 
@@ -260,9 +228,16 @@
 {# /////////////////////// BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
     {% if data[0] | length > 0 %}
       {% if data[0] | length == 1 %}
-          <p class="darkDiv2">Displaying {{data[0] | length}} bicycle:</p>
+          <p class="darkDiv2"> {{data[0] | length}} bicycle available </p>
         {% else %}
-          <p class="darkDiv2">Displaying {{data[0] | length}} bicycles:</p>
+          <p class="darkDiv2"> {{data[0] | length}} bicycles available </p>
+      {% endif %}
+      <div class="filterTag">
+        from <p class="boldtext">{{ data[3].strftime('%d/%m/%Y')}}</p>
+        to <p class="boldtext">{{data[4].strftime('%d/%m/%Y')}} </p>
+      </div>
+      {% if data[6] %}
+        <p class="darkDiv2"> in the University Union (selected by default, click on the Filter Menu to change filters) </p>
       {% endif %}
       <div class="bike-grid">
          {% for bike in data[0] %}
