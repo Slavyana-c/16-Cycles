@@ -638,8 +638,6 @@ def payForm():
     bikeID = request.args.get('bike_id', default = 'bike_id', type = str)
     rentStartDate = str(rentStart.day) + "/" + str(rentStart.month) + "/" + str(rentStart.year)
     rentEndDate = rentEnd[8:] + "/" + rentEnd[5:7] + "/" + rentEnd[0:4]
-    print("\n\n\n\nWe got to here")
-    print(request.args)
     data = Bike_Types.query.filter(and_(Bike_Types.brand == brand, Bike_Types.model == model)).first()
     image = data.image
 
