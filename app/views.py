@@ -633,7 +633,7 @@ def sign_up():
 	form = NewUserForm()
 	if form.validate_on_submit():
 		pwrd_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-		user = Users(email=form.email.data.lower(),
+		user = Users(email=form.email.data,
 		 			 password=pwrd_hash,
 					 contact_number=form.contact_number.data.lower())
 		db.session.add(user)
