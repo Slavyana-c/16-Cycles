@@ -598,6 +598,8 @@ def account():
     form = ExtendDate()
     user_orders = Orders.query.filter_by(user_id=current_user.id).all()
     today = datetime.datetime.today()
+    current_dates = []
+    past_dates = []
     current_rentals = []
     past_rentals = []
     current_types = []
@@ -606,20 +608,23 @@ def account():
     for order in user_orders:
         rented_bike = order.rented_bikes[0]
         bike_item = Bikes.query.filter_by(id=rented_bike.bike_id).first()
-        print(bike_item.bike_type_id)
         bike_type = Bike_Types.query.filter_by(id=bike_item.bike_type_id).first()
+        date = order.date.strftime("%d-%m-%Y %H:%M")
 
         if rented_bike.end_date >= today:
+            current_dates.append(date)
             current_rentals.append(rented_bike)
             current_types.append(bike_type)
         else:
+            past_dates.append(date)
             past_rentals.append(rented_bike)
             past_types.append(bike_type)
 
 
     return render_template("account.html", len_curr_rentals=len(current_rentals), len_past_rentals=len(past_rentals),
      form=form, past_rentals=past_rentals,
-     current_rentals=current_rentals, current_types=current_types, past_types=past_types) # redirect to the account page
+     current_rentals=current_rentals, current_types=current_types, past_types=past_types,
+     current_dates=current_dates, past_dates=past_dates) # redirect to the account page
 
 @app.route('/changePassword')
 def changePassword():

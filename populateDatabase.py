@@ -77,8 +77,8 @@ def addShops():
     names = ["Leeds University Union","Headingley","City Centre"]
     addresses = ["Lifton Place, Leeds, LS2 9JZ","2 St Michael's Road, Leeds LS6 3AW","Unit 1, New Station St, Leeds LS1 5DE"]
     numbers = ["01133801400","01132785836","01132469132"]
-    latitudes = ["53.806576","53.789944","53.796104"]
-    longitudes = ["-1.555882","-1.560632","-1.547351"]
+    latitudes = ["53.807348","53.819343","53.795557"]
+    longitudes = ["-1.558362","-1.577345","-1.544413"]
     for i in range(3):
         print("Adding Shop: ",names[i])
         newShop = models.Shops(location_name=names[i],
@@ -185,15 +185,7 @@ def addUsersAndRentals():
                               times_rented=random.randint(0,10))
         db.session.add(newUser)
 
-        # add a random payment method to each user
-        newPaymentMethod = models.Payment_Methods(  card_number = bcrypt.generate_password_hash(str(random.randint(1111111111111111,9999999999999999))).decode('utf-8'),
-                                                    expiration_month = str(random.randint(1,12)),
-                                                    expiration_year = str(random.randint(2019,2023)),
-                                                    cvv = bcrypt.generate_password_hash(str(random.randint(111,999))).decode('utf-8'),
-                                                    user_id = i+1)
-        db.session.add(newPaymentMethod)
     db.session.commit()
-    time.sleep(2)
 
     allBikes = models.Bikes.query.all()
     allRentalRates = models.Rental_Rates.query.all()
@@ -253,5 +245,5 @@ addShops()
 addBikeTypes()
 addIndividualBikes()
 addRentalRates()
-addUsersAndRentals()
+#addUsersAndRentals()
 addStaff()

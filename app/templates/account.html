@@ -62,11 +62,8 @@
                 {{current_types[n].model + " |"}}
             </div>
             <div class="dateselection-box">
-
-              {{ form.new_end_date.label(class="form-control-label")}}
-              {{ form.new_end_date(class="form-control form-control-lg")}}
-
-              {{ form.submit(class="btn btn-outline-info") }}
+                    {{ current_rentals[n].price}} GBP </br>
+                    {{ current_dates[n]}}
             </div>
             {% endfor %}
 
@@ -83,10 +80,10 @@
                 {{past_types[n].brand + " |"}}
                 {{past_types[n].model + " |"}}
                 
-                </div>
+            </div>
             <div class="dateselection-box">
-                {{ past_rentals[n].price}} 
-                {{" GBP"}}
+                {{ past_rentals[n].price}} GBP </br>
+                {{ past_dates[n] }}
             </div>
             {% endfor %}
 
