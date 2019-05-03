@@ -83,7 +83,7 @@ class SelectDates(FlaskForm):
 
 class AppliedFilters(FlaskForm):
 	# shopChoice = RadioField('Extend Date', validators=[DataRequired()])
-	shopChoice   = RadioField('Shop', choices=[(1,'University'),(2,'Town'),(3,'Headingley')], default=1)
+	shopChoice   = RadioField('Shop', choices=[(1,'University'),(2,'Headingley'),(3,'Town')], default=1)
 	typeChoice   = RadioField('Type', choices=[('Road','Road'),('Mountain','Mountain'),('Hybrid','Hybrid'),('Electric','Electric')])
 	ageChoice    = RadioField('Age', choices=[('Adult','Adult'),('Child','Child')])
 	colourChoice = RadioField('Colour', choices=[('Blue','Blue'),('Red','Red'),('Grey','Grey'),('Black','Black'),('White','White'),('Brown','Brown')])
@@ -116,7 +116,7 @@ class PaymentForm(FlaskForm):
 	submit = SubmitField('Submit')
 
 class SelectPaymentForm(FlaskForm):
-	paymentChoice = RadioField('Payment', choices=[])
+	paymentChoice = RadioField('Payment', choices=[('0', 'cash')])
 	submit = SubmitField('Pay Now')
 
 

@@ -108,7 +108,7 @@ def browse():
     bikesToRemove = [] # stores the ID's of bikes we need to remove
     filteredOutBikeIDs = []
     filterListForDisplay = {} # filter list to be displayed in the website
-    shopsByID = ["University", "Town", "Headingley"]
+    shopsByID = ["University", "Headingley", "Town"]
     #filters={} # filter dictionary, storing all selected filters
 
     try:
@@ -932,8 +932,6 @@ def qr(receivingAddress, bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDat
 
     # Add the HTML
     emailBody = MIMEText(html, 'html')
-
-
 
     # adds the qr image
     fp = open('app/qrCode.png','rb')
