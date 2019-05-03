@@ -685,6 +685,7 @@ ul {
   padding: 20px;
   margin-left: 70%;
   margin-top: 20px;
+  margin-bottom: 100px;
 }
 
 /* BICYCLE PHOTO GALLERY STYLES:*/
@@ -741,6 +742,15 @@ ul {
   transition: margin-left .5s;
   padding: 16px;
 }
+
+
+#map
+{
+  height: 200px;
+  width: 100%;
+  margin-top: 20px;
+}
+
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {

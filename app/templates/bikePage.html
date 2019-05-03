@@ -145,12 +145,65 @@
             <td>{{rentInfo[0]}}</td>
         </tr>
         </table>
-    </div>
 
+
+    <div id="map"></div>
+
+    </div>
 {# /////////////////////// END OF INDIVIDUAL BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
+
+
+<script>
+
+function initMap() {
+  var map = new google.maps.Map(document.getElementById('map'), {
+    center: new google.maps.LatLng('{{shop.latitude}}', '{{shop.longitude}}'),
+    zoom: 13
+  });
+
+    var name = '{{shop.location_name}}'
+    var address = '{{shop.address}}'
+    var number = '{{shop.contact_number}}'
+    var latitude = '{{shop.latitude}}'
+    var longitude = '{{shop.longitude}}'
+    var myLatLng = new google.maps.LatLng(parseFloat(latitude),parseFloat(longitude));
+
+
+    var infowindow = new google.maps.InfoWindow({
+        content: "<h4>"+ name +"</h4>" +
+                  "<b>Address: </b>" + address + "</br>" +
+                  "<b>Phone: </b>" + number + "</br>"
+    });
+
+     var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+        title: name
+      });
+      var prev_infowindow =false;
+
+      google.maps.event.addListener(marker,'click', (function(marker,infowindow){
+          return function() {
+            if( prev_infowindow ) {
+              prev_infowindow.close();
+            }
+
+            prev_infowindow = infowindow;
+            infowindow.open(map,marker);
+          };
+      })(marker, infowindow));
+
+  }
+
+</script>
+
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCY36qrgn3bctMLfK9BUiOBm7nP2rSPygo&callback=initMap">
+</script>
+
 
 </div>
 <!-- //////////////////// END CONTAINER DIV \\\\\\\\\\\\\\\\\\\\\\\ -->
-
 
 {% endblock %}
