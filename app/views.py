@@ -819,7 +819,8 @@ def payForm():
         db.session.commit()
 
         qr(current_user.email, brand, model, bikeID, rentStartDate, rentEndDate, rentCost)
-        return redirect(url_for('browse'))
+        flash('Order made successfully.', 'success')
+        return redirect(url_for('account'))
 
 
     form = PaymentForm()
@@ -838,7 +839,6 @@ def payForm():
                 db.session.add(payment)
                 db.session.commit()
 
-        # Save order in database
         # Save order in database
         datetimeStart = datetime.datetime.strptime(rentStartDate, '%d/%m/%Y')
         datetimeEnd = datetime.datetime.strptime(rentEndDate, '%d/%m/%Y')
@@ -863,7 +863,8 @@ def payForm():
         db.session.commit()
 
         qr(form.email.data, brand, model, bikeID, rentStartDate, rentEndDate, rentCost)
-        return redirect(url_for('browse'))
+        flash('Order made successfully.', 'success')
+        return redirect(url_for('account'))
 
     email = current_user.email
     form.email.default = email

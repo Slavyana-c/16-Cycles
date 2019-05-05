@@ -53,13 +53,12 @@ class Bikes(db.Model):
     days_used = db.Column(db.Integer, default=0)
     times_rented = db.Column(db.Integer, default=0)
     times_repaired = db.Column(db.Integer, default=0)
-    # If it is booked/sent for repairs
-    available = db.Column(db.Boolean, default=True)
+    available = db.Column(db.Boolean, default=True)  # If it is booked/sent for repairs
     # Foreign keys
     bike_type_id = db.Column(db.Integer, db.ForeignKey('bike_types.id'), nullable=False)
     shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
-    # Relationship to Bookings and repairs
-    #bookings = db.relationship('Bookings', backref='bike', lazy=True)
+    # Relationship to Rented Bikes and repairs
+    #rented_bikes = db.relationship('Rented_Bikes', backref='bike', lazy=True)
     repairs = db.relationship('Repairs', backref='bike', lazy=True)
 
 # The Bike_Types database model
@@ -130,7 +129,6 @@ class Orders(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     total_price = db.Column(db.Float, default=0.0)
-    #barcode = Something for the barcode here ...*
     # Foreign keys
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     # Relationship to Rented_Bikes
@@ -146,5 +144,4 @@ class Payment_Methods(db.Model):
     expiration_year = db.Column(db.String)
     cvv = db.Column(db.String)
     # Foreign keys
-    #User is null if payment method is not saved
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))

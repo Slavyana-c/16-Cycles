@@ -36,9 +36,6 @@
 		<div class="form-group">
 			{{ cardForm.paymentChoice }}
 			<div class="invalid-feedback">
-				{% for error in cardForm.paymentChoice.errors %}
-				<span>{{ error }}</span>
-				{% endfor %}
 				<h5>Please select a payment method</h5>
 			</div>
 		</div>
