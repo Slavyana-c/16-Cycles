@@ -172,7 +172,15 @@ def browse():
         brandChosen = form_b.brandChoice.data
 
         saveChoices(shopID,typeChosen,ageChosen,colourChosen,brandChosen)
-
+# ******************************************************************************
+#                                                                 .
+#                               ....    ... .  ... ...   ....   .||.    ....
+#                             .|...|| .'   ||   ||  ||  '' .||   ||   .|...||
+#                             ||      |.   ||   ||  ||  .|' ||   ||   ||
+#                              '|...' '|..'||   '|..'|. '|..'|'  '|.'  '|...'
+#                                          ||
+#                                         ''''
+# ******************************************************************************
         # shopID = request.form.getlist("users")
         bikeTypes = Bike_Types.query.all()
         bikes = []
@@ -252,6 +260,17 @@ def browse():
         orders = Orders.query.all()
         rentedBikes = Rented_Bikes.query.all()
         print("Filters applied")
+# ************************************************************************************************************************
+#
+#                                                   '||  '||''''|                              .    ||
+#                               ....  .. ...      .. ||   ||  .      ... .  ... ...   ....   .||.  ...  .. ...     ... .
+#                             .|...||  ||  ||   .'  '||   ||''|    .'   ||   ||  ||  '' .||   ||    ||   ||  ||   || ||
+#                             ||       ||  ||   |.   ||   ||       |.   ||   ||  ||  .|' ||   ||    ||   ||  ||    |''
+#                              '|...' .||. ||.  '|..'||. .||.....| '|..'||   '|..'|. '|..'|'  '|.' .||. .||. ||.  '||||.
+#                                                                       ||                                       .|....'
+#                                                                      ''''
+
+# ************************************************************************************************************************
 
 # ******************************************************************************
 #
@@ -277,13 +296,7 @@ def browse():
                 print(tag)
         print("to remove:")
         print(optionToRemove)
-        # data = json.loads(request.data.decode('utf-8'))
-        # data = request.GET.getlist('stat[]')
-        # data = request.get_json()
-        # print(data)
-        # print(data['html_data'])   # should print your list
-        # print("made it to here")
-        # print(data)
+
         print("SESSION VARIABLES:")
         currentFilters = session['savedChoices']
         print(currentFilters)
@@ -329,7 +342,7 @@ def browse():
         print(brandChosen)
 
         if optionToRemove == "Shop":
-            shopID = "None"
+            shopID = "1"
         elif optionToRemove == "Type":
             typeChosen = "None"
         elif optionToRemove == "Age":
@@ -346,6 +359,16 @@ def browse():
         print(ageChosen)
         print(colourChosen)
         print(brandChosen)
+
+# ******************************************************************************
+#                                                                 .
+#                               ....    ... .  ... ...   ....   .||.    ....
+#                             .|...|| .'   ||   ||  ||  '' .||   ||   .|...||
+#                             ||      |.   ||   ||  ||  .|' ||   ||   ||
+#                              '|...' '|..'||   '|..'|. '|..'|'  '|.'  '|...'
+#                                          ||
+#                                         ''''
+# ******************************************************************************
 
         # shopID = request.form.getlist("users")
         bikeTypes = Bike_Types.query.all()
@@ -376,6 +399,7 @@ def browse():
                 filters['brand'] = brandChosen
                 filterListForDisplay['Brand'] = brandChosen
 
+            print(filters)
             # unpacking the argument dictionary (**filters):
             bikesFilteredOutFromBike_Types = Bike_Types.query.filter_by(**filters).all()
 
@@ -421,7 +445,17 @@ def browse():
         orders = Orders.query.all()
         rentedBikes = Rented_Bikes.query.all()
         print("Filters applied")
+# ************************************************************************************************************************
+#
+#                                                   '||  '||''''|                              .    ||
+#                               ....  .. ...      .. ||   ||  .      ... .  ... ...   ....   .||.  ...  .. ...     ... .
+#                             .|...||  ||  ||   .'  '||   ||''|    .'   ||   ||  ||  '' .||   ||    ||   ||  ||   || ||
+#                             ||       ||  ||   |.   ||   ||       |.   ||   ||  ||  .|' ||   ||    ||   ||  ||    |''
+#                              '|...' .||. ||.  '|..'||. .||.....| '|..'||   '|..'|. '|..'|'  '|.' .||. .||. ||.  '||||.
+#                                                                       ||                                       .|....'
+#                                                                      ''''
 
+# ************************************************************************************************************************
 
 
 # ****************************************************************************************************************************************
@@ -456,6 +490,18 @@ def browse():
         print(type(session['savedStartDate']))
         print(session['savedEndDate'])
         print(type(session['savedEndDate']))
+
+
+# ****************************************************************************************************************************************
+#
+#   .'|.                                |
+# .||.     ...   ... ..  .. .. ..      |||
+#  ||    .|  '|.  ||' ''  || || ||    |  ||
+#  ||    ||   ||  ||      || || ||   .''''|.
+# .||.    '|..|' .||.    .|| || ||. .|.  .||.
+#
+#
+# ****************************************************************************************************************************************
 
 
     try:
@@ -507,9 +553,17 @@ def browse():
                 bikesToRemove.append(rentedBikes[i].bike_id)
         i += 1
 
-    if not form_b.submit.data :
+    if not form_b.submit.data and (not form_c.Brand.data) and (not form_c.Colour.data) and (not form_c.Age.data) and (not form_c.Type.data) and (not form_c.Shop.data):
         bikes = Bikes.query.filter_by(shop_id="1").all()
         defaultflag = True
+
+    if not form_a.submit.data:
+        print("FORM DID NOT SUBMIT ANYTHING")
+        if startWindow > endWindow:
+            # swap the dates in case they are backwards in a new session:
+            temp = startWindow
+            startWindow = endWindow
+            endWindow = temp
 
     # if the start date is bigger than the end date, then no bikes should
     # be shown to the user

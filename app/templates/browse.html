@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 {% block content %}
 
@@ -191,9 +192,9 @@
             {{key}} : {{value}}
             <form class="hiddenDiv" method="POST" action="">
               {% if key == "Shop" %}
-                <div id="delete">
+                <!-- <div id="delete">
                   {{ disableForm.Shop(class="delete", id="delete") }}
-                </div>
+                </div> -->
 
                 {% elif key == "Type" %}
                   <div id="delete">
