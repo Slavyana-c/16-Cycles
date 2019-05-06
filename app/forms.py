@@ -116,7 +116,7 @@ class PaymentForm(FlaskForm):
 	submit = SubmitField('Submit')
 
 class SelectPaymentForm(FlaskForm):
-	paymentChoice = RadioField('Payment', choices=[('0', 'cash')])
+	paymentChoice = RadioField('Payment', choices=[])
 	submit = SubmitField('Pay Now')
 
 

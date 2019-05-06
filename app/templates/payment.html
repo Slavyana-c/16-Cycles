@@ -27,6 +27,8 @@
 		</tbody>
 	</table>
 
+	{% if number_of_cards > 0 %}
+
 	<form method="POST" action="">
 		{{ cardForm.hidden_tag() }}
 		<legend class="border-bottom mb-4">Select Payment Method</legend>
@@ -41,7 +43,10 @@
 				{{ cardForm.submit(class="btn btn-outline-info") }}
 		</div>
 	</form>
-	
+
+	{% endif %}
+
+
 	<form method="POST" action="">
 		{{ form.hidden_tag() }}
 		<legend class="border-bottom mb-4">Add New Payment Method</legend>
