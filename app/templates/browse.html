@@ -55,15 +55,6 @@
                           <ul class="collapse list-unstyled" id="shopSubmenu">
                               {{ filterForm.hidden_tag() }}
                                   {{ filterForm.shopChoice }}
-                              <!-- <div class="shopRadio">
-                                <input type="radio" name="shop" checked id="option1" value=1> University  </input>
-                              </div>
-                              <div class="shopRadio">
-                                <input type="radio" name="shop" id="option2" value=2> Town </input>
-                              </div>
-                              <div class="shopRadio">
-                                <input type="radio" name="shop" id="option3" value=3> Headingley  </input>
-                              </div> -->
                           </ul>
                       </li>
 
@@ -76,10 +67,6 @@
                             </a>
                             <ul class="collapse list-unstyled" id="bikeTypeSubmenu">
                               {{ filterForm.typeChoice }}
-                                <!-- <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Road     </div>
-                                <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Mountain </div>
-                                <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Hybrid   </div>
-                                <div class="bikeTypeRadio"><input type="radio" name="bikeType"        > Electric </div> -->
                             </ul>
                         </li>
 
@@ -92,8 +79,6 @@
                             </a>
                             <ul class="collapse list-unstyled" id="userTypeSubmenu">
                               {{ filterForm.ageChoice }}
-                                <!-- <div class="userTypeRadio"><input type="radio" name="userType"        > Adult     </div>
-                                <div class="userTypeRadio"><input type="radio" name="userType"        > Child     </div> -->
                             </ul>
                         </li>
 
@@ -106,13 +91,6 @@
                             </a>
                             <ul class="collapse list-unstyled" id="colourSubmenu">
                               {{ filterForm.colourChoice }}
-                                <!-- <div class="colourRadio"><input type="radio" name="colour"        > Blue     </div>
-                                <div class="colourRadio"><input type="radio" name="colour"        > Red     </div>
-                                <div class="colourRadio"><input type="radio" name="colour"        > Grey     </div>
-                                <div class="colourRadio"><input type="radio" name="colour"        > Black     </div>
-                                <div class="colourRadio"><input type="radio" name="colour"        > White     </div>
-                                <div class="colourRadio"><input type="radio" name="colour"        > Brown     </div>
-                                <div class="colourRadio"><input type="radio" name="colour"        > Red     </div> -->
                             </ul>
                         </li>
 
@@ -125,14 +103,6 @@
                             </a>
                             <ul class="collapse list-unstyled" id="brandSubmenu">
                               {{ filterForm.brandChoice }}
-                                <!-- <div class="brandRadio"><input type="radio" name="brand"        > Apollo      </div>
-                                <div class="brandRadio"><input type="radio" name="brand"        > Boardman    </div>
-                                <div class="brandRadio"><input type="radio" name="brand"        > Carrera     </div>
-                                <div class="brandRadio"><input type="radio" name="brand"        > Elswick     </div>
-                                <div class="brandRadio"><input type="radio" name="brand"        > Gtech       </div>
-                                <div class="brandRadio"><input type="radio" name="brand"        > Pendleton   </div>
-                                <div class="brandRadio"><input type="radio" name="brand"        > Raleigh     </div>
-                                <div class="brandRadio"><input type="radio" name="brand"        > Voodoo      </div> -->
                             </ul>
                         </li>
                         <div class="dateselection center">
@@ -146,7 +116,7 @@
         </div>
         {# ----------------------------  FILTER DROP DOWN MENU END -------------------------- #}
 
-        {# ----------------------------  SORT MENU -------------------------- #}
+        {# ----------------------------  DATE SELECTION MENU -------------------------- #}
         <div class="sort-box">
 
           {# <form method="POST" action="{{ url_for('browse', start=data[1][bike.bike_type_id - 1].brand, end=data[1][bike.bike_type_id - 1].model,id = bike.id) }}"> #}
@@ -164,18 +134,11 @@
                 </div>
 
                 <div class="dateselection center">
-                  <!-- <button type="button" onclick="refreshBrowse();" name="search" id="bikeSearchButton">Search</button> -->
                   {{ form.submit(class="btn btn-outline-info", id="bikeSearchButton") }}
                   <p class="bold small"> (resets the filters)</p>
 		            </div>
-
-                <!-- <div class="form-group">
-                {{ form.submit(class="btn btn-outline-light")}}
-                </div> -->
-
-                <div></div>
-
             </div>
+
           </form>
 
         </div>
@@ -194,8 +157,8 @@
               {% if key == "Shop" %}
                 <!-- <div id="delete">
                   {{ disableForm.Shop(class="delete", id="delete") }}
+                  CANNOT DISABLE SHOP FILTER
                 </div> -->
-
                 {% elif key == "Type" %}
                   <div id="delete">
                     {{ disableForm.Type(class="delete", id="delete") }}
@@ -215,9 +178,7 @@
                   <div id="delete">
                     {{ disableForm.Brand(class="delete", id="delete") }}
                   </div>
-
               {% endif %}
-
             </form>
           </div>
       {% endfor %}
@@ -227,6 +188,7 @@
 
 
 {# /////////////////////// BIKE BOX TEMPLATE \\\\\\\\\\\\\\\\\\\\\\   #}
+<!-- ************************* DISPLAYING FILTER TAGS ***************************** -->
     {% if data[0] | length > 0 %}
       {% if data[0] | length == 1 %}
           <p class="darkDiv2"> {{data[0] | length}} bicycle available </p>
@@ -240,6 +202,7 @@
       {% if data[6] %}
         <p class="darkDiv2"> in the University Union (selected by default, click on the Filter Menu to change filters) </p>
       {% endif %}
+
       <div class="bike-grid">
          {% for bike in data[0] %}
 
@@ -266,7 +229,6 @@
                 </form>
 
               </div>
-
             </div>
 
          {% endfor %}
