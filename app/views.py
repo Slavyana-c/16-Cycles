@@ -839,7 +839,7 @@ def payForm():
 @app.route('/qr', methods=['GET', 'POST'])
 def qr(receivingAddress, bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDate, rentCost):
     # generating the QR code
-    url = pyqrcode.create('https://ksassets.timeincuk.net/wp/uploads/sites/55/2016/07/2015_PeepShow_Mark2_Press_111115-920x610.jpg')
+    url = pyqrcode.create("\n16 Cycles Rental Reciept\n----------------\nRenting: " + str(bikeBrand) + " " + str(bikeModel) + "\nFrom: " + str(rentStartDate) + "\nTo: " + str(rentEndDate) + "\nBikeID: " + str(bikeID) + "\n----------------")
     url.png('app/qrCode.png', scale=2) # nice and big
 
     userRecord = Users.query.filter_by(id=current_user.id).first()
@@ -851,7 +851,7 @@ def qr(receivingAddress, bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDat
     time = timeSplit[0] + ":" + timeSplit[1]
     # we take this dummy database output for use in the emails
     order = [(bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDate, rentCost)]
-    reciept = [username[0], date, time, current_user.id, rentCost]
+    reciept = [(current_user.email).split("@")[0], date, time, current_user.id, rentCost]
 
 
     # setting up email things
