@@ -29,31 +29,16 @@
                 Contact Us
           </li>
     </a>
-{#        #}
-{#        <div class="button-area">#}
-{#        <form action="/changePassword">#}
-{#           <input class="btn btn-details custom-button" type="submit" value="Change Password" />#}
-{#        </form>#}
-{#        </div>#}
-{##}
-{#        <div class="button-area">#}
-{#        <form action="/deleteAccount">#}
-{#           <input class="btn btn-details custom-button" type="submit" value="Delete Account" />#}
-{#        </form>#}
-{#        </div>#}
-{##}
-{#        <div class="button-area">#}
-{#        <form action="/contactUs">#}
-{#           <input class="btn btn-details custom-button" type="submit" value="Contact Us" />#}
-{#        </form>#}
-{#        </div>#}
-
     </div>
-
 
     <h2> Current Rentals </h2>
     <div class="details-box">
         <div class="details">
+          {% if len_curr_rentals == 0 %}
+          <div class="record">
+            No current rentals
+          </div>
+          {% endif %}
             {% for n in range(len_curr_rentals) %}
             <div class="record">
                 {{current_rentals[n].start_date.strftime('%d-%m-%Y') + " |"}}
@@ -73,13 +58,18 @@
     <h2> Previous Rentals </h2>
     <div class="details-box">
         <div class="details">
+          {% if len_past_rentals == 0 %}
+          <div class="record">
+            No previous rentals
+          </div>
+          {% endif %}
             {% for n in range(len_past_rentals) %}
             <div class="record">
                 {{past_rentals[n].start_date.strftime('%d-%m-%Y') + " |"}}
                 {{past_rentals[n].end_date.strftime('%d-%m-%Y') + " |"}}
                 {{past_types[n].brand + " |"}}
                 {{past_types[n].model + " |"}}
-                
+
             </div>
             <div class="dateselection-box">
                 {{ past_rentals[n].price}} GBP </br>

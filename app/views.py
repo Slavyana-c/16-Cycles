@@ -825,7 +825,7 @@ def payForm():
     form.process()
     return render_template("payment.html", number_of_cards=len(cards), cardForm=cardForm, form=form, data=data, image=image, rentCost=rentCost, rentDays=rentDays, rentStart=rentStartDate, rentEnd=rentEndDate)
 
-def processPayment():
+
     # Save order in database
     datetimeStart = datetime.datetime.strptime(rentStartDate, '%d/%m/%Y')
     datetimeEnd = datetime.datetime.strptime(rentEndDate, '%d/%m/%Y')
@@ -852,7 +852,6 @@ def processPayment():
     qr(current_user.email, brand, model, bikeID, rentStartDate, rentEndDate, rentCost)
     flash('Order made successfully.', 'success')
     return redirect(url_for('account'))
-
 
 # ****************************************************************************************************************************************
 #
