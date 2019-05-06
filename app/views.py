@@ -50,8 +50,17 @@ admin.add_view(DetailedView(Payment_Methods, db.session))
 def saveChoices(shopID,typeChosen,ageChosen,colourChosen,brandChosen):
     choices = {'shop' : shopID, 'type' : typeChosen, 'age' : ageChosen,
                'colour' : colourChosen, 'brand' : brandChosen}
-    print(choices)
 
+# ******************************************************************************************************************************************
+#
+#   .                               '||            .
+# .||.    ....  .. .. ..   ... ...   ||   ....   .||.    ....   ....
+#  ||   .|...||  || || ||   ||'  ||  ||  '' .||   ||   .|...|| ||. '
+#  ||   ||       || || ||   ||    |  ||  .|' ||   ||   ||      . '|..
+#  '|.'  '|...' .|| || ||.  ||...'  .||. '|..'|'  '|.'  '|...' |'..|'
+#                           ||
+#                          ''''                                       
+# ******************************************************************************************************************************************
 @app.route('/')
 def home():
     return render_template("home.html")
@@ -70,15 +79,6 @@ def about():
 def meetOurStaff():
     return render_template("meetOurStaff.html") # redirect to the about page
 
-@app.route('/browse',methods=['GET','POST'])
-# lots of default arguments given here
-# def browse(startWindow=datetime.datetime.now(),
-#            endWindow=datetime.datetime.now()+timedelta(days=1),
-#            shopID = 1):
-
-# def browse(startWindow=datetime.datetime.today(),
-#            endWindow=datetime.datetime.today()+timedelta(days=1),
-#            shopID = 1):
 # ******************************************************************************************************************************************
 #
 # '||
@@ -89,14 +89,13 @@ def meetOurStaff():
 #
 #
 # ******************************************************************************************************************************************
+# Domantas and Jonathan worked on this template
+@app.route('/browse',methods=['GET','POST'])
 def browse():
+    # There are three forms we have
     form_a = SelectDates(prefix='a')
-    # filterForm = AppliedFilters()
     form_b = AppliedFilters(prefix='b')
-    form_c = DisableFilters(prefix='c')
-    # form_d = AppliedFilters(prefix='d')
-    # form_e = AppliedFilters(prefix='e')
-    # filterForm = AppliedFilters(prefix="form_b")
+    form_c = DisableFilters(prefix='c') # remove filters by clicking on them (on the 'X' button)
 
     bikeTypes = Bike_Types.query.all()
     defaultflag = False
@@ -106,54 +105,35 @@ def browse():
     orders = Orders.query.all()
     rentedBikes = Rented_Bikes.query.all()
     bikesToRemove = [] # stores the ID's of bikes we need to remove
-    filteredOutBikeIDs = []
+    filteredOutBikeIDs = [] # bikes filtered from the 'Bike_Types' model
     filterListForDisplay = {} # filter list to be displayed in the website
     shopsByID = ["University", "Town", "Headingley"]
-    #filters={} # filter dictionary, storing all selected filters
 
+    # the following code tries to get the saved start and end dates of the selected range
+    # (it can fail if it is a new session, hence must be put in a try-catch statement)
     try:
-        print("TRY CONDITION")
         bufferStart = session['savedStartDate']
         bufferEnd = session['savedEndDate']
-
-
-        print(bufferStart)
-        print(bufferEnd)
-
+        # the following code converts string date to datetime.datetime type,
+        # which is the type we work with later:
         try:
-            print("try1")
             startWindow = datetime.datetime.strptime(bufferStart, '%Y-%m-%d %H:%M:%S.%f')
             endWindow = datetime.datetime.strptime(bufferEnd, '%Y-%m-%d %H:%M:%S.%f')
         except:
             try:
-                print("try2")
                 bufferStart = bufferStart.date()
                 startWindow = datetime.datetime.strptime(bufferStart, '%Y-%m-%d %H:%M:%S.%f')
                 endWindow = datetime.datetime.strptime(bufferEnd, '%Y-%m-%d %H:%M:%S.%f')
             except:
-                print("try3")
                 bufferEnd = bufferEnd.date()
                 startWindow = datetime.datetime.strptime(bufferStart, '%Y-%m-%d %H:%M:%S.%f')
                 endWindow = datetime.datetime.strptime(bufferEnd, '%Y-%m-%d %H:%M:%S.%f')
-        # startWindow = datetime.strptime(session['savedStartDate'], '%b %d %Y %I:%M%p')
-        # endWindow = datetime.strptime(session['savedEndDate'], '%b %d %Y %I:%M%p')
-        # startWindow = session['savedStartDate'] #.strptime('%m/%d/%Y')
-        # endWindow = session['savedEndDate'] #.strptime('%m/%d/%Y')
-        print("\n")
-        print(startWindow)
-        print(type(startWindow))
-        print(endWindow)
-        print(type(endWindow))
-        print("\n")
     except:
-        print("EXCEPT CONDITION")
+        # if there is no saved date, we set the default dates (today and tomorrow)
         startWindow=datetime.datetime.today()
         endWindow=datetime.datetime.today()+timedelta(days=1)
-        print(startWindow)
-        print(type(startWindow))
-        print(endWindow)
-        print(type(endWindow))
 
+# form_b is the 'AppliedFilters' form:
 # ******************************************************************************
 #
 #   .'|.                            '||''|.
@@ -164,7 +144,6 @@ def browse():
 #
 # ******************************************************************************
     if form_b.submit.data:
-        # shopID = request.filterForm['shop']
         shopID = form_b.shopChoice.data
         typeChosen = form_b.typeChoice.data
         ageChosen = form_b.ageChoice.data
@@ -172,13 +151,21 @@ def browse():
         brandChosen = form_b.brandChoice.data
 
         saveChoices(shopID,typeChosen,ageChosen,colourChosen,brandChosen)
+# ******************************************************************************
+#                                                                 .
+#                               ....    ... .  ... ...   ....   .||.    ....
+#                             .|...|| .'   ||   ||  ||  '' .||   ||   .|...||
+#                             ||      |.   ||   ||  ||  .|' ||   ||   ||
+#                              '|...' '|..'||   '|..'|. '|..'|'  '|.'  '|...'
+#                                          ||
+#                                         ''''
+# ******************************************************************************
 
-        # shopID = request.form.getlist("users")
+        # first of all, we get all the bicycles from Bike_Types:
         bikeTypes = Bike_Types.query.all()
-        bikes = []
+        bikes = [] # these are the bikes to be shown after filtering
         if (typeChosen == "None" and ageChosen == "None"
         and colourChosen == "None" and brandChosen == "None" and shopID != "None"):
-            print('only shop chosen')
             # just get the bikes from the shop
             filterListForDisplay["Shop"] = shopsByID[int(shopID)-1]
             bikes = Bikes.query.filter_by(shop_id=shopID).all()
@@ -187,8 +174,6 @@ def browse():
             # (we have to split the shop and others because they are
             #  stored in two different database models)
             filters={} # filter dictionary, storing all selected filters
-
-            # bikesFilteredOutFromBike_Types = Bike_Types.query.filter_by(use_type=typeChosen,user_type=ageChosen,colour=colourChosen,brand=brandChosen).all()
             if typeChosen!="None":
                 filters['use_type'] = typeChosen
                 filterListForDisplay['Type'] = typeChosen
@@ -203,19 +188,16 @@ def browse():
                 filterListForDisplay['Brand'] = brandChosen
 
             # unpacking the argument dictionary (**filters):
-            print("printing the filter dict")
-            print (filters)
             bikesFilteredOutFromBike_Types = Bike_Types.query.filter_by(**filters).all()
-            # bikesFilteredOutFromBike_Types = Bike_Types.query.filter_by(brand="Boardman").all()
 
             # we keep a list of bike IDs from Bike_Type database model:
             for bike in bikesFilteredOutFromBike_Types:
-                print(bike)
                 filteredOutBikeIDs.append(bike.id)
-            print(filteredOutBikeIDs)
             # Set the default shop:
             if shopID == "None":
                 shopID = "1"
+
+            # Now we equate the bicycles from Bike_Types to Bikes
             for ID in filteredOutBikeIDs:
                 # if shop is not selected, then we just display all bikes matching
                 # the IDs in 'Bikes' database model:
@@ -225,33 +207,24 @@ def browse():
                     filterListForDisplay["Shop"] = shopsByID[int(shopID)-1]
                     oneBike = Bikes.query.filter_by(bike_type_id=ID,shop_id=shopID).first()
                 # filter out 'None' bikes
-                if oneBike is None:
-                    print("DO NOT ADD")
-                else:
-                    print("{")
-                    print(oneBike)
-                    print(oneBike.bike_type_id)
-                    print("}")
+                if not (oneBike is None):
                     # add to the 'bikes' list to be displated on the browse page:
                     bikes.append(oneBike)
-                # print(bikes)
-            print("END OF EQUATING IDS IN BIKES DB")
-
-            print("PRINTING BIKES THAT SHOULD BE DISPLAYED:")
-            print(bikes)
-
-            bikeTypeId = Bikes.query.filter_by(id=1).first().bike_type_id
-            bikeColour = Bike_Types.query.filter_by(id=bikeTypeId).all()
-
-            print(bikeColour)
-
-            for bike in bikes:
-                print (bike)
 
         rentalRates = Rental_Rates.query.all()
         orders = Orders.query.all()
         rentedBikes = Rented_Bikes.query.all()
-        print("Filters applied")
+# ************************************************************************************************************************
+#
+#                                                   '||  '||''''|                              .    ||
+#                               ....  .. ...      .. ||   ||  .      ... .  ... ...   ....   .||.  ...  .. ...     ... .
+#                             .|...||  ||  ||   .'  '||   ||''|    .'   ||   ||  ||  '' .||   ||    ||   ||  ||   || ||
+#                             ||       ||  ||   |.   ||   ||       |.   ||   ||  ||  .|' ||   ||    ||   ||  ||    |''
+#                              '|...' .||. ||.  '|..'||. .||.....| '|..'||   '|..'|. '|..'|'  '|.' .||. .||. ||.  '||||.
+#                                                                       ||                                       .|....'
+#                                                                      ''''
+
+# ************************************************************************************************************************
 
 # ******************************************************************************
 #
@@ -268,27 +241,14 @@ def browse():
     if (form_c.Brand.data) or (form_c.Colour.data) or (form_c.Age.data) or (form_c.Type.data) or (form_c.Shop.data):
         defaultflag = False
         toRemove = form_c.data
-        print("DATA RECEIVED:")
-        print(toRemove)
         optionToRemove = "none"
         for tag, choice in toRemove.items():
             if choice == True:
                 optionToRemove = tag
-                print(tag)
-        print("to remove:")
-        print(optionToRemove)
-        # data = json.loads(request.data.decode('utf-8'))
-        # data = request.GET.getlist('stat[]')
-        # data = request.get_json()
-        # print(data)
-        # print(data['html_data'])   # should print your list
-        # print("made it to here")
-        # print(data)
-        print("SESSION VARIABLES:")
+
         currentFilters = session['savedChoices']
-        print(currentFilters)
 
-
+        # Code for clearing one filter which was clicked on to be removed:
         if "Shop" in currentFilters:
             shopName = currentFilters['Shop']
             if shopName == "University":
@@ -322,14 +282,8 @@ def browse():
         else:
             brandChosen = "None"
 
-        print(shopID)
-        print(typeChosen)
-        print(ageChosen)
-        print(colourChosen)
-        print(brandChosen)
-
         if optionToRemove == "Shop":
-            shopID = "None"
+            shopID = "1"
         elif optionToRemove == "Type":
             typeChosen = "None"
         elif optionToRemove == "Age":
@@ -339,20 +293,20 @@ def browse():
         elif optionToRemove == "Brand":
             brandChosen = "None"
 
+# ******************************************************************************
+#                                                                 .
+#                               ....    ... .  ... ...   ....   .||.    ....
+#                             .|...|| .'   ||   ||  ||  '' .||   ||   .|...||
+#                             ||      |.   ||   ||  ||  .|' ||   ||   ||
+#                              '|...' '|..'||   '|..'|. '|..'|'  '|.'  '|...'
+#                                          ||
+#                                         ''''
+# ******************************************************************************
 
-        print(optionToRemove)
-        print(shopID)
-        print(typeChosen)
-        print(ageChosen)
-        print(colourChosen)
-        print(brandChosen)
-
-        # shopID = request.form.getlist("users")
         bikeTypes = Bike_Types.query.all()
         bikes = []
         if (typeChosen == "None" and ageChosen == "None"
         and colourChosen == "None" and brandChosen == "None" and shopID != "None"):
-            print('only shop chosen')
             # just get the bikes from the shop
             filterListForDisplay["Shop"] = shopsByID[int(shopID)-1]
             bikes = Bikes.query.filter_by(shop_id=shopID).all()
@@ -361,8 +315,6 @@ def browse():
             # (we have to split the shop and others because they are
             #  stored in two different database models)
             filters={} # filter dictionary, storing all selected filters
-
-            # bikesFilteredOutFromBike_Types = Bike_Types.query.filter_by(use_type=typeChosen,user_type=ageChosen,colour=colourChosen,brand=brandChosen).all()
             if typeChosen!="None":
                 filters['use_type'] = typeChosen
                 filterListForDisplay['Type'] = typeChosen
@@ -381,9 +333,8 @@ def browse():
 
             # we keep a list of bike IDs from Bike_Type database model:
             for bike in bikesFilteredOutFromBike_Types:
-                print(bike)
                 filteredOutBikeIDs.append(bike.id)
-            print(filteredOutBikeIDs)
+
 
             for ID in filteredOutBikeIDs:
                 # if shop is not selected, then we just display all bikes matching
@@ -394,34 +345,24 @@ def browse():
                     filterListForDisplay["Shop"] = shopsByID[int(shopID)-1]
                     oneBike = Bikes.query.filter_by(bike_type_id=ID,shop_id=shopID).first()
                 # filter out 'None' bikes
-                if oneBike is None:
-                    print("DO NOT ADD")
-                else:
-                    print("{")
-                    print(oneBike)
-                    print(oneBike.bike_type_id)
-                    print("}")
-                    # add to the 'bikes' list to be displated on the browse page:
+                if not(oneBike is None):
                     bikes.append(oneBike)
-                # print(bikes)
-            print("END OF EQUATING IDS IN BIKES DB")
-
-            print("PRINTING BIKES THAT SHOULD BE DISPLAYED:")
-            print(bikes)
-
-            bikeTypeId = Bikes.query.filter_by(id=1).first().bike_type_id
-            bikeColour = Bike_Types.query.filter_by(id=bikeTypeId).all()
-
-            print(bikeColour)
-
-            for bike in bikes:
-                print (bike)
+                    # add to the 'bikes' list to be displated on the browse page:
 
         rentalRates = Rental_Rates.query.all()
         orders = Orders.query.all()
         rentedBikes = Rented_Bikes.query.all()
-        print("Filters applied")
+# ************************************************************************************************************************
+#
+#                                                   '||  '||''''|                              .    ||
+#                               ....  .. ...      .. ||   ||  .      ... .  ... ...   ....   .||.  ...  .. ...     ... .
+#                             .|...||  ||  ||   .'  '||   ||''|    .'   ||   ||  ||  '' .||   ||    ||   ||  ||   || ||
+#                             ||       ||  ||   |.   ||   ||       |.   ||   ||  ||  .|' ||   ||    ||   ||  ||    |''
+#                              '|...' .||. ||.  '|..'||. .||.....| '|..'||   '|..'|. '|..'|'  '|.' .||. .||. ||.  '||||.
+#                                                                       ||                                       .|....'
+#                                                                      ''''
 
+# ************************************************************************************************************************
 
 
 # ****************************************************************************************************************************************
@@ -437,62 +378,43 @@ def browse():
 
     if form_a.validate_on_submit() and form_a.submit.data:
         defaultflag = False
-        print("form_a validated")
         startWindow = form_a.start_date.data
-        print(type(startWindow))
-        # startWindow = startWindow.date()
         endWindow = form_a.end_date.data
-        print(type(endWindow))
-        # endWindow = endWindow.date()
 
-        # session['savedStartDate'] = startWindow
-        # session['savedEndDate'] = endWindow
-        # savedate
+        # get the start and end dates from the saved session variables
         session['savedStartDate'] = startWindow.strftime("%Y-%m-%d %H:%M:%S.%f")
         session['savedEndDate'] = endWindow.strftime("%Y-%m-%d %H:%M:%S.%f")
 
-        print("SAVED DATES:")
-        print(session['savedStartDate'])
-        print(type(session['savedStartDate']))
-        print(session['savedEndDate'])
-        print(type(session['savedEndDate']))
+# ****************************************************************************************************************************************
+#
+#   .'|.                                |
+# .||.     ...   ... ..  .. .. ..      |||
+#  ||    .|  '|.  ||' ''  || || ||    |  ||
+#  ||    ||   ||  ||      || || ||   .''''|.
+# .||.    '|..|' .||.    .|| || ||. .|.  .||.
+#
+#
+# ****************************************************************************************************************************************
 
-
+    # the following code tries to get the saved start and end dates of the selected range
+    # (it can fail if it is a new session, hence must be put in a try-catch statement)
     try:
-        print("TRY CONDITION2")
-        print(session['savedStartDate'])
-        print(session['savedEndDate'])
-
+        # the following code converts string date to datetime.datetime type,
+        # which is the type we work with later:
         startWindow = datetime.datetime.strptime(session['savedStartDate'], '%Y-%m-%d %H:%M:%S.%f')
         savedEndDate = datetime.datetime.strptime(session['savedEndDate'], '%Y-%m-%d %H:%M:%S.%f')
-        print("\n")
-        print(startWindow)
-        print(type(startWindow))
-        print(endWindow)
-        print(type(endWindow))
-        print("\n")
+
         if type(startWindow) != type(endWindow):
-            print("try2if")
             try:
                 endWindow = endWindow.date()
             except:
                 startWindow = startWindow.date()
-            print("\n")
-            print(startWindow)
-            print(type(startWindow))
-            print(endWindow)
-            print(type(endWindow))
-            print("\n")
     except:
-        print("EXCEPT CONDITION2")
+        # if there is no saved date, we set the default dates (today and tomorrow)
         getToday=datetime.datetime.today()
         getTomorrow=datetime.datetime.today()+timedelta(days=1)
         endWindow=getToday.date()
         startWindow=getTomorrow.date()
-        print(startWindow)
-        print(type(startWindow))
-        print(endWindow)
-        print(type(endWindow))
 
     i = 0
     while(i < len(rentedBikes)):
@@ -507,33 +429,34 @@ def browse():
                 bikesToRemove.append(rentedBikes[i].bike_id)
         i += 1
 
-    if not form_b.submit.data :
+    if not form_b.submit.data and (not form_c.Brand.data) and (not form_c.Colour.data) and (not form_c.Age.data) and (not form_c.Type.data) and (not form_c.Shop.data):
         bikes = Bikes.query.filter_by(shop_id="1").all()
         defaultflag = True
 
-    # if the start date is bigger than the end date, then no bikes should
-    # be shown to the user
-    print("before checking dates:")
-    print(startWindow)
-    print(endWindow)
+    if not form_a.submit.data:
+        # if we refresh and date is not set (in a new session)
+        if startWindow > endWindow:
+            # swap the dates in case they are backwards in a new session:
+            temp = startWindow
+            startWindow = endWindow
+            endWindow = temp
+
+    # if the start date is bigger than the end date,
+    # then no bikes should be shown to the user
     if(startWindow > endWindow):
         bikes = []
     # remove the bikes that will be rented in the given time
     i = 0
     while(i < len(bikes)):
-        # bikes[i].bike_type_id changed to bikes[i].id
         if(bikes[i].id in bikesToRemove):
             bikes = bikes[:i] + bikes[i+1:]
         else:
             i+=1
 
     # now the only bikes shown to the user are the ones they can actually rent
-    print("\nUpdated bikes")
-    print(bikes)
-    # print(bikes[0].bike_type_id)
 
+    # save the selected choices as session variable
     session['savedChoices'] =filterListForDisplay
-
 
     # now the only bikes shown to the user are the ones they can actually rent
     return render_template("browse.html",
@@ -544,14 +467,6 @@ def browse():
                                   startWindow,endWindow,
                                   filterListForDisplay,
                                   defaultflag]) # redirect to the bike search page, giving all the data
-
-
-# OLD version of bikePage
-# @app.route('/bikePage')
-# def bikePage():
-#     form = SelectDates();
-#     data = Bike_Types.query.all()[0]#(brand='Voodoo')
-#     return render_template("bikePage.html", form=form) # redirect to the bike search page
 
 # ****************************************************************************************************************************************
 #
@@ -571,13 +486,12 @@ def bikePage():
     rentEnd   = request.args.get('rentEndDate', default=datetime.datetime.today()+timedelta(days=1),type = None)
     bikeId = request.args.get('bike_id', default = 'bike_id', type = str)
     itemId = request.args.get('item_id', default = 'item_id', type = str)
-    print("\nThis printout")
-    print(request.args)
+
     rentStartDate = datetime.date(int(rentStart.split("-")[0]),int(rentStart.split("-")[1]),int(rentStart.split("-")[2][:2]))
     rentEndDate = datetime.date(int(rentEnd.split("-")[0]),int(rentEnd.split("-")[1]),int(rentEnd.split("-")[2][:2]))
 
     thisRentalRate = Rental_Rates.query.filter(Rental_Rates.bike_type_id == bikeId).first()
-    print(thisRentalRate)
+
     data = Bike_Types.query.filter(and_(Bike_Types.brand == brand, Bike_Types.model == model)).first()
     image = data.image
     bike = Bikes.query.filter_by(id=itemId).first()
@@ -591,6 +505,15 @@ def bikePage():
         payForm()
         return redirect(url_for('payForm(bikeId)'))
     return render_template("bikePage.html", data=data, shop=shop, form=form, rentStart=rentStartDate, rentEnd=rentEndDate, itemId = itemId, rentInfo=[bikeRentPrice,thisRentalRate,numberOfDays]) # redirect to the bike search page
+
+# ****************************************************************************************************************************************
+#                                                     .
+#  ....     ....    ....    ...   ... ...  .. ...   .||.
+# '' .||  .|   '' .|   '' .|  '|.  ||  ||   ||  ||   ||
+# .|' ||  ||      ||      ||   ||  ||  ||   ||  ||   ||
+# '|..'|'  '|...'  '|...'  '|..|'  '|..'|. .||. ||.  '|.'
+#
+# ****************************************************************************************************************************************
 
 @app.route('/account')
 @login_required
@@ -606,7 +529,6 @@ def account():
     for order in user_orders:
         rented_bike = order.rented_bikes[0]
         bike_item = Bikes.query.filter_by(id=rented_bike.bike_id).first()
-        print(bike_item.bike_type_id)
         bike_type = Bike_Types.query.filter_by(id=bike_item.bike_type_id).first()
 
         if rented_bike.end_date >= today:
@@ -620,7 +542,16 @@ def account():
     return render_template("account.html", len_curr_rentals=len(current_rentals), len_past_rentals=len(past_rentals),
      form=form, past_rentals=past_rentals,
      current_rentals=current_rentals, current_types=current_types, past_types=past_types) # redirect to the account page
-
+# ****************************************************************************************************************************************
+#
+#                                 '||'                       ||           |''||''|                     '||
+# ... ...   ....    ....  ... ..   ||         ...     ... . ...  .. ...      ||    .. .. ..   ... ...   ||   ....
+#  ||  ||  ||. '  .|...||  ||' ''  ||       .|  '|.  || ||   ||   ||  ||     ||     || || ||   ||'  ||  ||  ||. '
+#  ||  ||  . '|.. ||       ||      ||       ||   ||   |''    ||   ||  ||     ||     || || ||   ||    |  ||  . '|..
+#  '|..'|. |'..|'  '|...' .||.    .||.....|  '|..|'  '||||. .||. .||. ||.   .||.   .|| || ||.  ||...'  .||. |'..|'
+#                                                   .|....'                                    ||
+#                                                                                             ''''
+# ****************************************************************************************************************************************
 @app.route('/changePassword')
 def changePassword():
     form = PasswordChangeForm()
@@ -709,7 +640,15 @@ def resetToken(token):
         flash('Your password has been updated.', 'success')
         return redirect(url_for('login'))
     return render_template('resetToken.html', title='Reset Password', form=form)
-
+# ****************************************************************************************************************************************
+#
+#                 '||          '||''|.                      .   '||''|.           ||
+#   ....   ....    ||    ....   ||   ||    ....  .. ...   .||.   ||   || ... ..  ...    ....    ....
+# .|   '' '' .||   ||  .|   ''  ||''|'   .|...||  ||  ||   ||    ||...|'  ||' ''  ||  .|   '' .|...||
+# ||      .|' ||   ||  ||       ||   |.  ||       ||  ||   ||    ||       ||      ||  ||      ||
+#  '|...' '|..'|' .||.  '|...' .||.  '|'  '|...' .||. ||.  '|.' .||.     .||.    .||.  '|...'  '|...'
+#                                                                                                                                                                                                                                                                                ''''
+# ****************************************************************************************************************************************
 def calculateRentPrice(numberOfDays,rentalRates):
     # we have a start date
     # and an end date
@@ -718,10 +657,6 @@ def calculateRentPrice(numberOfDays,rentalRates):
 
     # we round the rental rate to the nearest 10p
     # so it isn't as bad for the user
-
-    print("\nRental Rate")
-    print(numberOfDays)
-    print(rentalRates.daily_rate,rentalRates.weekly_rate,rentalRates.monthly_rate)
 
     # less than a week case
     if(numberOfDays < 7):
@@ -736,7 +671,16 @@ def calculateRentPrice(numberOfDays,rentalRates):
     # more than a month
     # so we take the monthly rate / 28 and multiply by number of days
     return round((rentalRates.monthly_rate/28) * numberOfDays,1)
-
+# ****************************************************************************************************************************************
+#
+#                    '||              '||''|.                      .           '||  |''||''|         '||      '||
+# .. .. ..    ....    ||  ..    ....   ||   ||    ....  .. ...   .||.   ....    ||     ||     ....    || ...   ||    ....
+#  || || ||  '' .||   || .'   .|...||  ||''|'   .|...||  ||  ||   ||   '' .||   ||     ||    '' .||   ||'  ||  ||  .|...||
+#  || || ||  .|' ||   ||'|.   ||       ||   |.  ||       ||  ||   ||   .|' ||   ||     ||    .|' ||   ||    |  ||  ||
+# .|| || ||. '|..'|' .||. ||.  '|...' .||.  '|'  '|...' .||. ||.  '|.' '|..'|' .||.   .||.   '|..'|'  '|...'  .||.  '|...'
+#
+#                                                                                                                                                                                                                                                                                              ''''
+# ****************************************************************************************************************************************
 def makeBikeRentalsTable(databaseOutput):
     output = ""
     for bike in databaseOutput:
@@ -764,7 +708,15 @@ def makeCheckoutTable(databaseOutput):
     </tr> """
 
     return output
-
+# ****************************************************************************************************************************************
+#                                                         .   '||''''|
+# ... ...   ....   .... ... .. .. ..     ....  .. ...   .||.   ||  .     ...   ... ..  .. .. ..
+#  ||'  || '' .||   '|.  |   || || ||  .|...||  ||  ||   ||    ||''|   .|  '|.  ||' ''  || || ||
+#  ||    | .|' ||    '|.|    || || ||  ||       ||  ||   ||    ||      ||   ||  ||      || || ||
+#  ||...'  '|..'|'    '|    .|| || ||.  '|...' .||. ||.  '|.' .||.      '|..|' .||.    .|| || ||.
+#  ||              .. |
+# ''''              ''                                                                                                                                                                                                                                                                                                                                                                  ''''
+# ****************************************************************************************************************************************
 @app.route('/paymentform', methods=['GET', 'POST'])
 @login_required
 def payForm():
@@ -783,7 +735,6 @@ def payForm():
 
     cards = Payment_Methods.query.filter_by(user_id=current_user.id).all()
 
-    print(itemId)
     cardForm = SelectPaymentForm()
     for card in cards:
         card_num = card.card_number.split("##cardname=")
@@ -867,6 +818,16 @@ def payForm():
     form.process()
     return render_template("payment.html", number_of_cards=len(cards), cardForm=cardForm, form=form, data=data, image=image, rentCost=rentCost, rentDays=rentDays, rentStart=rentStartDate, rentEnd=rentEndDate)
 
+# ****************************************************************************************************************************************
+#
+#                    ..|'''.|              '||
+#   ... .  ... ..  .|'     '    ...      .. ||    ....
+# .'   ||   ||' '' ||         .|  '|.  .'  '||  .|...||
+# |.   ||   ||     '|.      . ||   ||  |.   ||  ||
+# '|..'||  .||.     ''|....'   '|..|'  '|..'||.  '|...'
+#      ||
+#     ''''                                                                                                                                                                                                                                                                                                                          #    ''''
+# ****************************************************************************************************************************************
 
 @app.route('/qr', methods=['GET', 'POST'])
 def qr(receivingAddress, bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDate, rentCost):
@@ -937,8 +898,6 @@ def qr(receivingAddress, bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDat
     # Add the HTML
     emailBody = MIMEText(html, 'html')
 
-
-
     # adds the qr image
     fp = open('app/qrCode.png','rb')
     msgImage = MIMEImage(fp.read())
@@ -967,3 +926,12 @@ def qr(receivingAddress, bikeBrand, bikeModel, bikeID, rentStartDate, rentEndDat
 
     # display webpage saying it worked
     return render_template("qr.html")
+# ****************************************************************************************************************************************
+
+# '||''''|   ..|''||   '||''''|
+#  ||  .    .|'    ||   ||  .
+#  ||''|    ||      ||  ||''|
+#  ||       '|.     ||  ||
+# .||.....|  ''|...|'  .||.
+                                                                                                                                                                                                                                                                       #    ''''
+# ****************************************************************************************************************************************
