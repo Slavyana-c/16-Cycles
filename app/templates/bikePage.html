@@ -23,34 +23,19 @@
           <div id="gallery-wrapper">
             <div id="gallery">
                 {#  This will later loop through bike photos in database, now just 10 times #}
-               {% for n in range(10) %}
                    <!--
                     *    The following divider was made with the help of Codepen picture gallery tutorial
                     *    Title: Pure CSS Image Gallery with Next and Previous Buttons
                     *    Author: Tiffany Ong
                     *    Date: 2015
                     *    Availability: https://codepen.io/ongtiffany/pen/PPbPyB
-                    -->
+                  -->
 
-                    <div id="pic{{ n+1 }}">
-                      {% if loop.index is divisibleby(2) %}
-                        <a class="previous" href="#pic{{ n }}">«</a>
-                        <a class="next" href="#pic{{ n + 2 }}">»</a>
-                        <img class="individual-bike-photo"
-                             src="http://www.arrowcycles.co.uk/images/spec/187197.jpg?maxheight=1200" width="100%" alt="Image 1">
-
-                      {% else %}
-                        <a class="previous" href="#pic{{ n }}">«</a>
-                        <a class="next" href="#pic{{ n + 2 }}">»</a>
+                    <div id="pic">
                         <img class="individual-bike-photo"
                              src="{{data.image}}" width="100%" alt="Image 1">
-                      {% endif %}
                     </div>
-
-               {% endfor %}
-
             </div>
-
           </div>
 
         <div class="bike-price-label">

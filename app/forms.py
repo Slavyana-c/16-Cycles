@@ -27,7 +27,6 @@ class NewUserForm(FlaskForm):
 								  'an account.\nPlease log in or choose a '
 								  'different one')
 
-
 class LoginForm(FlaskForm):
 
 	email = StringField('Email',
@@ -36,7 +35,6 @@ class LoginForm(FlaskForm):
 							validators=[DataRequired(), Length(min=5, max=25)])
 	remember = BooleanField('Remember Me')
 	submit = SubmitField('Sign In')
-
 
 class PasswordChangeForm(FlaskForm):
 
@@ -47,7 +45,6 @@ class PasswordChangeForm(FlaskForm):
 	repeatPassword = PasswordField('Repeat Password',
 							validators=[DataRequired(), Length(min=5, max=25)])
 	submit = SubmitField('Submit')
-
 
 class RequestPasswordForm(FlaskForm):
 
@@ -60,7 +57,6 @@ class RequestPasswordForm(FlaskForm):
 		if user is None:
 			raise ValidationError('No account with that email exists')
 
-
 class NewPasswordForm(FlaskForm):
 
 	password = PasswordField('Password',
@@ -70,19 +66,13 @@ class NewPasswordForm(FlaskForm):
 												EqualTo('password')])
 	submit = SubmitField('Change Password')
 
-
 # form in the newTask.html
 class SelectDates(FlaskForm):
 	start_date = DateField('Rent Start Date', validators=[DataRequired()])
 	end_date = DateField('Rent End Date', validators=[DataRequired()])
 	submit = SubmitField('Select Date')
-	# VALIDATION DOESN'T WORK :(
-	def validate_date(form, end_date, start_date):
-	    if end_date.data < start_date.data:
-	        raise ValidationError('End date must be later than start date')
 
 class AppliedFilters(FlaskForm):
-	# shopChoice = RadioField('Extend Date', validators=[DataRequired()])
 	shopChoice   = RadioField('Shop', choices=[(1,'University'),(2,'Headingley'),(3,'Town')], default=1)
 	typeChoice   = RadioField('Type', choices=[('Road','Road'),('Mountain','Mountain'),('Hybrid','Hybrid'),('Electric','Electric')])
 	ageChoice    = RadioField('Age', choices=[('Adult','Adult'),('Child','Child')])
@@ -91,12 +81,6 @@ class AppliedFilters(FlaskForm):
 	submit = SubmitField('Apply Filters')
 
 class DisableFilters(FlaskForm):
-	# shopChoice = RadioField('Extend Date', validators=[DataRequired()])
-	# Shop   = RadioField('Shop', choices=[('shop','shop')], default='shop')
-	# Type   = RadioField('Type', choices=[('type','type')])
-	# Age    = RadioField('Age', choices=[('age','age')])
-	# Colour = RadioField('Colour', choices=[('colour','colour')])
-	# Brand  = RadioField('Brand', choices=[('brand','brand')])
 	Shop = SubmitField('X')
 	Type = SubmitField('X')
 	Age = SubmitField('X')
@@ -118,7 +102,6 @@ class PaymentForm(FlaskForm):
 class SelectPaymentForm(FlaskForm):
 	paymentChoice = RadioField('Payment', choices=[])
 	submit = SubmitField('Pay Now')
-
 
 class RentButton(FlaskForm):
 	submit = SubmitField('RENT', validators=[DataRequired()])
