@@ -58,7 +58,7 @@ class Bikes(db.Model):
     bike_type_id = db.Column(db.Integer, db.ForeignKey('bike_types.id'), nullable=False)
     shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
     # Relationship to Rented Bikes and repairs
-    #rented_bikes = db.relationship('Rented_Bikes', backref='bike', lazy=True)
+    rented_bikes = db.relationship('Rented_Bikes', backref='bike', lazy=True)
     repairs = db.relationship('Repairs', backref='bike', lazy=True)
 
 # The Bike_Types database model
