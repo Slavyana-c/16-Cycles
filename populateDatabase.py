@@ -185,6 +185,18 @@ def addUsersAndRentals():
                               times_rented=random.randint(0,10))
         db.session.add(newUser)
 
+        # add a random payment method to each user
+        cardNumber = str(random.randint(1111111111111111,9999999999999999))
+        lastFourDigits = cardNumber[-4:] # the last four digits
+        cardNumber = bcrypt.generate_password_hash(cardNumber).decode('utf-8') + "##cardname=" + lastFourDigits # so we have something to show to the user
+        print("Card number = ",cardNumber)
+        newPaymentMethod = models.Payment_Methods(  card_number = cardNumber,
+                                                    expiration_month = str(random.randint(1,12)),
+                                                    expiration_year = str(random.randint(2019,2023)),
+                                                    cvv = bcrypt.generate_password_hash(str(random.randint(111,999))).decode('utf-8'),
+                                                    user_id = i+1)
+        db.session.add(newPaymentMethod)
+
     db.session.commit()
 
     allBikes = models.Bikes.query.all()
