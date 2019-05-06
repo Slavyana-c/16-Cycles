@@ -825,6 +825,34 @@ def payForm():
     form.process()
     return render_template("payment.html", number_of_cards=len(cards), cardForm=cardForm, form=form, data=data, image=image, rentCost=rentCost, rentDays=rentDays, rentStart=rentStartDate, rentEnd=rentEndDate)
 
+
+    # Save order in database
+    datetimeStart = datetime.datetime.strptime(rentStartDate, '%d/%m/%Y')
+    datetimeEnd = datetime.datetime.strptime(rentEndDate, '%d/%m/%Y')
+
+    order = Orders(total_price=rentCost, user_id=current_user.id)
+    db.session.add(order)
+    db.session.commit()
+
+    rental = Rented_Bikes(start_date=datetimeStart, end_date=datetimeEnd, bike_id=itemId, price=rentCost, order_id=order.id)
+
+    db.session.add(rental)
+    user = Users.query.filter_by(id=current_user.id).first()
+    user.times_rented += 1
+
+    bike = Bikes.query.filter_by(id=itemId).first()
+    bike.times_rented += 1
+    bike.days_used += rentDays
+
+    bike_type = Bike_Types.query.filter_by(id=bikeID).first()
+    bike_type.times_rented += 1
+
+    db.session.commit()
+
+    qr(current_user.email, brand, model, bikeID, rentStartDate, rentEndDate, rentCost)
+    flash('Order made successfully.', 'success')
+    return redirect(url_for('account'))
+
 # ****************************************************************************************************************************************
 #
 #                    ..|'''.|              '||
