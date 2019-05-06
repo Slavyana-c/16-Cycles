@@ -2,7 +2,7 @@ import os
 import unittest
 from app import db, models
 addUser = models.Users(email="testemail@gmail.com", password="Password", contact_number="3784748433")
-addStaff = models.Staff(email="testemail@gmail.com", password="Password", contact_number="47832917438", name="John Smith", address="23 fakelane, leeds", shop_id=0)
+addStaff = models.Staff(email="testemail@gmail.com", password="Password", contact_number="47832917438", name="John Smith", address="23 fakelane, leeds", shop_id=1)
 addBikeType = models.Bike_Types(gears=7, weight=17.5, brand="test brand", model="test model", colour="blue", user_type="adult", use_type="manual")
 addBike = models.Bikes(bike_type_id=0, shop_id=1)
 
@@ -39,9 +39,9 @@ def addBike(gears, weight, brand, model, colour, user_type, use_type):
         db.session.rollback()
         return True
 
-def addStaffMem(user, password, number, name, address, shopID):
-    if user and password and number and name and address and shopID:
-        for users in models.Users.query.all():
+def addStaffMem(user, password, number, name, address):
+    if user and password and number and name and address:
+        for users in models.Staff.query.all():
             if users.email == user or users.name == name or users.address == address:
                 return False
         return True
@@ -106,36 +106,23 @@ class AddStaff(unittest.TestCase):
     def tearDown(self):
         db.session.rollback()
     def test_successful_add(self):
-        assert addStaffMem("otheremail@gmail.com", "Password", "67434534", "Alan Smith", "25 fakelane, leeds", 0) == True
+        assert addStaffMem("otheremail@gmail.com", "Password", "67434534", "Alan Smith", "25 fakelane, leeds", shop_id=1) == True
     def test_duplicate_email(self):
-        assert addStaffMem("testemail@gmail.com", "Password", "67434534", "Alan Smith", "25 fakelane, leeds", 0) == False
+        assert addStaffMem("testemail@gmail.com", "Password", "67434534", "Alan Smith", "25 fakelane, leeds", shop_id=1) == False
     def test_duplicate_name(self):
-        assert addStaffMem("otheremail@gmail.com", "Password", "47832917438", "John Smith", "25 fakelane, leeds", 0) == False
+        assert addStaffMem("otheremail@gmail.com", "Password", "47832917438", "John Smith", "25 fakelane, leeds", shop_id=1) == False
     def test_duplicate_address(self):
-        assert addStaffMem("otheremail@gmail.com", "Password", "47832917438", "Alan Smith", "25 fakelane, leeds", 0) == False
-
-
-# class AddAGame(unittest.TestCase):
-#     def setUp(self):
-#         db.session.add(addUser)
-#         db.session.add(addGame)
-#     def tearDown(self):
-#         db.session.rollback()
-#     def test_successful_add(self):
-#         assert addAGame("testname", "example game") == True
-#     def test_game_already_exists(self):
-#         assert addAGame("testname", "other example") == False
-#
-# class RemoveAGame(unittest.TestCase):
-#     def setUp(self):
-#         db.session.add(addUser)
-#         addGame.users.append(addUser)
-#     def tearDown(self):
-#         db.session.rollback()
-#     def test_successful_removal(self):
-#         assert removeAGame("testname", "other example") == True
-#     def test_game_does_not_exist(self):
-#         assert removeAGame("testname", "failed example") == False
+        assert addStaffMem("otheremail@gmail.com", "Password", "47832917438", "Alan Smith", "23 fakelane, leeds", shop_id=1) == False
+    def test_no_email(self):
+        assert addStaffMem("", "Password", "67434534", "Alan Smith", "25 fakelane, leeds", shop_id=1) == False
+    def test_no_password(self):
+        assert addStaffMem("otheremail@gmail.com", "", "67434534", "Alan Smith", "25 fakelane, leeds", shop_id=1) == False
+    def test_no_number(self):
+        assert addStaffMem("otheremail@gmail.com", "Password", "", "Alan Smith", "25 fakelane, leeds", shop_id=1) == False
+    def test_no_name(self):
+        assert addStaffMem("otheremail@gmail.com", "Password", "67434534", "", "25 fakelane, leeds", shop_id=1) == False
+    def test_no_address(self):
+        assert addStaffMem("otheremail@gmail.com", "Password", "67434534", "Alan Smith", "") == False
 
 if __name__ == '__main__':
     unittest.main()
