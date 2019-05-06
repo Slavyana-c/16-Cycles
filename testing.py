@@ -2,7 +2,7 @@ import os
 import unittest
 from app import db, models
 addUser = models.Users(email="testemail@gmail.com", password="Password", contact_number="3784748433")
-addStaff = models.Staff(email="testemail@gmail.com", password="Password", contact_number="47832917438", name="John Smith", address="23 fakelane, leeds")
+addStaff = models.Staff(email="testemail@gmail.com", password="Password", contact_number="47832917438", name="John Smith", address="23 fakelane, leeds", shop_id=1)
 addBikeType = models.Bike_Types(gears=7, weight=17.5, brand="test brand", model="test model", colour="blue", user_type="adult", use_type="manual")
 addBike = models.Bikes(bike_type_id=0, shop_id=1)
 
@@ -106,21 +106,21 @@ class AddStaff(unittest.TestCase):
     def tearDown(self):
         db.session.rollback()
     def test_successful_add(self):
-        assert addStaffMem("otheremail@gmail.com", "Password", "67434534", "Alan Smith", "25 fakelane, leeds") == True
+        assert addStaffMem("otheremail@gmail.com", "Password", "67434534", "Alan Smith", "25 fakelane, leeds", shop_id=1) == True
     def test_duplicate_email(self):
-        assert addStaffMem("testemail@gmail.com", "Password", "67434534", "Alan Smith", "25 fakelane, leeds") == False
+        assert addStaffMem("testemail@gmail.com", "Password", "67434534", "Alan Smith", "25 fakelane, leeds", shop_id=1) == False
     def test_duplicate_name(self):
-        assert addStaffMem("otheremail@gmail.com", "Password", "47832917438", "John Smith", "25 fakelane, leeds") == False
+        assert addStaffMem("otheremail@gmail.com", "Password", "47832917438", "John Smith", "25 fakelane, leeds", shop_id=1) == False
     def test_duplicate_address(self):
-        assert addStaffMem("otheremail@gmail.com", "Password", "47832917438", "Alan Smith", "23 fakelane, leeds") == False
+        assert addStaffMem("otheremail@gmail.com", "Password", "47832917438", "Alan Smith", "23 fakelane, leeds", shop_id=1) == False
     def test_no_email(self):
-        assert addStaffMem("", "Password", "67434534", "Alan Smith", "25 fakelane, leeds") == False
+        assert addStaffMem("", "Password", "67434534", "Alan Smith", "25 fakelane, leeds", shop_id=1) == False
     def test_no_password(self):
-        assert addStaffMem("otheremail@gmail.com", "", "67434534", "Alan Smith", "25 fakelane, leeds") == False
+        assert addStaffMem("otheremail@gmail.com", "", "67434534", "Alan Smith", "25 fakelane, leeds", shop_id=1) == False
     def test_no_number(self):
-        assert addStaffMem("otheremail@gmail.com", "Password", "", "Alan Smith", "25 fakelane, leeds") == False
+        assert addStaffMem("otheremail@gmail.com", "Password", "", "Alan Smith", "25 fakelane, leeds", shop_id=1) == False
     def test_no_name(self):
-        assert addStaffMem("otheremail@gmail.com", "Password", "67434534", "", "25 fakelane, leeds") == False
+        assert addStaffMem("otheremail@gmail.com", "Password", "67434534", "", "25 fakelane, leeds", shop_id=1) == False
     def test_no_address(self):
         assert addStaffMem("otheremail@gmail.com", "Password", "67434534", "Alan Smith", "") == False
 
