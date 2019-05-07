@@ -39,7 +39,7 @@ def addBike(gears, weight, brand, model, colour, user_type, use_type):
         db.session.rollback()
         return True
 
-def addStaffMem(user, password, number, name, address):
+def addStaffMem(user, password, number, name, address, shop_id):
     if user and password and number and name and address:
         for users in models.Staff.query.all():
             if users.email == user or users.name == name or users.address == address:
@@ -122,7 +122,7 @@ class AddStaff(unittest.TestCase):
     def test_no_name(self):
         assert addStaffMem("otheremail@gmail.com", "Password", "67434534", "", "25 fakelane, leeds", shop_id=1) == False
     def test_no_address(self):
-        assert addStaffMem("otheremail@gmail.com", "Password", "67434534", "Alan Smith", "") == False
+        assert addStaffMem("otheremail@gmail.com", "Password", "67434534", "Alan Smith", "", shop_id=1) == False
 
 if __name__ == '__main__':
     unittest.main()
