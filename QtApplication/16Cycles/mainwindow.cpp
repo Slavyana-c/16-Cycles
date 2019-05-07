@@ -32,7 +32,7 @@ bool MainWindow::openConnection()
     db = QSqlDatabase::addDatabase("QSQLITE");
     QDir dir = QDir::current();
     QString dbpath = dir.currentPath();
-    dbpath += "/../16Cycles/app.db";
+    dbpath += "/app.db";
     db.setDatabaseName(dbpath);
 
     if(!db.open())

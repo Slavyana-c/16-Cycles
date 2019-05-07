@@ -23,6 +23,7 @@ AddStaff::AddStaff(QWidget *parent) :
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery *query = new QSqlQuery(mainWindow.db);
 
+    // Query to get all current shops id's
     query-> prepare("SELECT id FROM shops");
     query-> exec();
     if(!query-> next())

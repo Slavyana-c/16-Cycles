@@ -22,11 +22,13 @@ AdminHome::~AdminHome()
 
 void AdminHome::setGroupBoxName(QString name)
 {
+    // Add specific user welcome message
     QString boxName = "Welcome " + name;
     ui-> welcomeGroupBox-> setTitle(boxName);
     userName = name;
 }
 
+// Set email to be used for password reset
 void AdminHome::setUserEmail(QString email)
 {
     userEmail = email;
@@ -46,8 +48,10 @@ void AdminHome::on_adminLogOutButton_clicked()
     }
 }
 
+// Button to display staff members in a table
 void AdminHome::on_staffViewButton_clicked()
 {
+    // Open db
     MainWindow mainWindow;
     if(!mainWindow.openConnection())
     {
@@ -58,6 +62,7 @@ void AdminHome::on_staffViewButton_clicked()
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery *query = new QSqlQuery(mainWindow.db);
 
+    // Get all staff data excpet password
     query-> prepare("SELECT id,email,contact_number,name,address,admin,shop_id FROM staff");
     query-> exec();
     if(!query-> next())
@@ -70,6 +75,7 @@ void AdminHome::on_staffViewButton_clicked()
 
     model-> setQuery(*query);
 
+    // Add data to table UI
     ui-> tableView-> setModel(model);
     ui-> tableView-> resizeColumnsToContents();
     ui-> tableView-> resizeRowsToContents();

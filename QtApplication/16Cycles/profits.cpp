@@ -48,6 +48,7 @@ Profits::Profits(QWidget *parent) :
     ui-> plot-> graph(3)-> setLineStyle(QCPGraph::lsLine);
     ui-> plot-> graph(3)-> setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross));
 
+    // Change colour of line for each graph
     QPen pen0,pen1,pen2,pen3;
     pen0 = ui-> plot-> graph(0)-> pen();
     pen0.setWidth(1.5);
@@ -103,8 +104,10 @@ void Profits::on_goBackButton_clicked()
     this-> close();
 }
 
+// Refresh profits label
 void Profits::on_filterTwoDatesRefreshButton_clicked()
 {
+    // Get the dates entered
     QString dateOne,dateTwo;
     dateOne = ui-> dateOneLineEdit-> text();
     dateTwo = ui-> dateTwoLineEdit-> text();
@@ -148,8 +151,10 @@ void Profits::on_filterTwoDatesRefreshButton_clicked()
     mainWindow.closeConnection();
 }
 
+// Automatically update profits label when combo box changed
 void Profits::on_filterTwoDatesShopsComboBox_activated(const QString &arg1)
 {
+    // Get dates again and data from combo box
     QString dateOne,dateTwo,shopID;
     dateOne = ui-> dateOneLineEdit-> text();
     dateTwo = ui-> dateTwoLineEdit-> text();
@@ -194,6 +199,7 @@ void Profits::on_filterTwoDatesShopsComboBox_activated(const QString &arg1)
     mainWindow.closeConnection();
 }
 
+// Automatically update all time profits label when shop id changed
 void Profits::on_filterAllTimeShopsComboBox_activated(const QString &arg1)
 {
     QString shopID;
